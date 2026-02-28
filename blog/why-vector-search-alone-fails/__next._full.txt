@@ -1,0 +1,103 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","blog","why-vector-search-alone-fails",""],"q":"","i":false,"f":[[["",{"children":["blog",{"children":[["slug","why-vector-search-alone-fails","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[1268,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-dbae36b1030f3d7c.js","689","static/chunks/689-4fcf9680fdc90283.js","953","static/chunks/app/blog/%5Bslug%5D/page-a68506d98e2282cb.js"],"BlogPostClient"]
+f:T1213,
+# Why Vector Search Alone Fails Your AI Agent
+
+Imagine you're building a healthcare AI agent. A patient asks: *"Can I eat shrimp tonight?"*
+
+Your agent does what it's supposed to do - it embeds the question and runs a similarity search. Back come the results: shrimp recipes, nutritional info, some allergy FAQs. All genuinely relevant to the words "eat shrimp."
+
+All completely wrong for this patient.
+
+## What went wrong
+
+The correct answer is "No, and it could be dangerous." But that answer doesn't live in any single document. It lives across three separate pieces of information:
+
+```chain
+Sarah takes Amiodarone
+-- interacts with
+Iodine
+-- found in
+Shrimp
+=> Shrimp is risky for Sarah
+```
+
+The patient takes a specific medication. That medication interacts with iodine. Shrimp is high in iodine. Each fact sits in a different database. And the phrase "shrimp dinner" has zero similarity to "medication contraindications" - they share no words, no concepts, no embedding overlap.
+
+This is the core problem: **the connection between these facts is logical, not semantic.** You can't find it by looking for similar text. You have to follow a chain of relationships from one fact to the next.
+
+## This shows up everywhere
+
+The healthcare example is vivid, but this same pattern appears in every domain where answers require connecting multiple facts.
+
+```steps
+A compliance analyst asks: "Is this transaction suspicious?" :: The vector DB finds similar transactions. It misses that Entity A is owned by Entity B, which is on a sanctions list.
+An employee searches for Q3 revenue reports :: The vector DB returns 40 matches. It can't check whether this employee has permission to see any of them through the org hierarchy.
+A supply chain manager asks about disruptions :: The vector DB finds news about port closures. It can't trace which of your suppliers use that port, and which products are affected.
+```
+
+In every case, the answer requires **following a chain of connected facts** - not finding a similar document. The information exists, but it's spread across different sources, and the connections between them are structural, not textual.
+
+## Why more RAG tricks won't help
+
+When teams hit this problem, the first instinct is to optimize the retrieval pipeline. Better chunking. Better embeddings. Hybrid search. Re-ranking.
+
+None of these help, because the problem isn't retrieval quality. The retrieval is working perfectly - it's finding the most similar content. The problem is that similarity is the wrong tool for the job.
+
+```flow
+User question -> Embed -> Similarity search -> Similar documents
+```
+
+This pipeline answers: *"What text looks most like my question?"* That's great when the answer exists in a single document. It fails when the answer must be **derived** by connecting facts from different places.
+
+## What teams end up building
+
+To work around this, teams start adding systems. A graph database for relationships. A rules engine for business logic. An authorization service for access control. Application code to stitch it all together.
+
+```flow
+User question -> Vector DB [primary] -> Graph DB -> Rules engine -> Auth service -> Reconcile in app code
+```
+
+The reasoning logic ends up scattered across services. When a fact changes, you have to propagate the change across all of them. It works, but it's fragile, and each new capability makes it more fragile.
+
+## What it looks like with a reasoning layer
+
+InputLayer sits alongside your vector database and handles the part that similarity search can't: following chains of logic and deriving conclusions.
+
+```flow
+User question -> Your vector DB -> Similar documents
+```
+
+```flow
+User question -> InputLayer [primary] -> Derived conclusions
+```
+
+You keep your vector database for what it's good at - finding similar content. You add InputLayer for questions that require reasoning: traversing relationships, evaluating rules, checking permissions through hierarchies.
+
+When the patient's medication list changes, InputLayer automatically updates every downstream risk assessment. When an employee changes departments, their permissions recalculate through the org hierarchy. When a corporate ownership structure shifts, the compliance analysis adjusts. All of this happens incrementally - only the affected conclusions recompute, not the entire knowledge base.
+
+## Getting started
+
+InputLayer is open-source and runs in a single Docker container:
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) walks you through building your first knowledge graph in about 10 minutes.5:["$","$Le",null,{"post":{"slug":"why-vector-search-alone-fails","title":"Why Vector Search Alone Fails Your AI Agent","date":"2026-02-25","author":"InputLayer Team","category":"Architecture","excerpt":"Vector similarity finds things that look like the answer. But when the answer requires connecting facts across different sources, similarity search hits a wall.","content":"$f","toc":[{"level":2,"text":"What went wrong","id":"what-went-wrong"},{"level":2,"text":"This shows up everywhere","id":"this-shows-up-everywhere"},{"level":2,"text":"Why more RAG tricks won't help","id":"why-more-rag-tricks-wont-help"},{"level":2,"text":"What teams end up building","id":"what-teams-end-up-building"},{"level":2,"text":"What it looks like with a reasoning layer","id":"what-it-looks-like-with-a-reasoning-layer"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"why-vector-search-alone-fails"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

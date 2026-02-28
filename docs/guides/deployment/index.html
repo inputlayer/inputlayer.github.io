@@ -1,0 +1,463 @@
+<!DOCTYPE html><!--05bjYGyiAumoEMBrfWHih--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/4cf2300e9c8272f7-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/93f479601ee12b01-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/css/4bd7a24b7976d4e6.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js"/><script src="/_next/static/chunks/4bd1b696-deba172d32c79f82.js" async=""></script><script src="/_next/static/chunks/794-275dc9ebd3a29fbf.js" async=""></script><script src="/_next/static/chunks/main-app-1fa5b694e5d36a75.js" async=""></script><script src="/_next/static/chunks/app/layout-7e9963bf811be36b.js" async=""></script><script src="/_next/static/chunks/758-3cb69ce377cde046.js" async=""></script><script src="/_next/static/chunks/121-aece4f809b101dc1.js" async=""></script><script src="/_next/static/chunks/502-e809071f8789437b.js" async=""></script><script src="/_next/static/chunks/689-4fcf9680fdc90283.js" async=""></script><script src="/_next/static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js" async=""></script><meta name="next-size-adjust" content=""/><title>InputLayer - A symbolic reasoning engine for AI agents</title><meta name="description" content="Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."/><link rel="icon" href="/icon.svg"/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="__variable_188709 __variable_9a8899 font-sans antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","dark",null,["light","dark"],null,true,true)</script><div class="flex flex-col h-dvh"><header class="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"><div class="flex h-14 items-center px-6"><a class="mr-8" href="/"><span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg><span class="font-extrabold tracking-tight text-lg">InputLayer</span></span></a><nav class="hidden md:flex items-center gap-6 text-sm"><a class="text-muted-foreground transition-colors hover:text-foreground" href="/docs/">Docs</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/blog/">Blog</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/use-cases/">Use Cases</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/compare/">Compare</a><a href="https://demo.inputlayer.ai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link h-3 w-3"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></nav><div class="ml-auto flex items-center gap-3"><div class="inline-flex items-center gap-1.5"><a href="https://github.com/inputlayer/inputlayer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star h-3.5 w-3.5"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><span>Star</span></a><a href="https://github.com/inputlayer/inputlayer/fork" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork h-3.5 w-3.5"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path><path d="M12 12v3"></path></svg><span>Fork</span></a></div><button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 size-9 h-9 w-9"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-4 w-4"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><div class="md:hidden"><button class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" aria-label="Open menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button></div></div></div></header><div class="flex flex-1 overflow-hidden"><div class="w-64 shrink-0 border-r border-border/50 overflow-y-auto"><div class="flex flex-col h-full"><div class="p-3 border-b border-border/50"><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" placeholder="Search docs..." class="w-full h-8 pl-8 pr-3 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring" value=""/></div></div><nav class="flex-1 overflow-y-auto p-2 space-y-0.5"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" href="/docs/index/">Overview</a><div data-state="open" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-foreground font-medium" style="padding-left:12px" type="button" aria-controls="radix-_R_j6av5ubtb_" aria-expanded="true" data-state="open" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform rotate-90"><path d="m9 18 6-6-6-6"></path></svg>Guides</button><div data-state="open" id="radix-_R_j6av5ubtb_" data-slot="collapsible-content"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/quickstart/">Quick Start</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/installation/">Installation</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/first-program/">Your First Program</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/core-concepts/">Data Modeling</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/repl/">REPL Guide</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/recursion/">Recursion</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/vectors/">Vector Search</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/indexing/">Indexing</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/temporal/">Temporal Reasoning</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/persistence/">Persistence</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/configuration/">Configuration</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/rest-api/">REST API</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/python-sdk/">Python SDK</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors bg-primary/10 text-primary font-medium" style="padding-left:24px" href="/docs/guides/deployment/">Deployment</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/authentication/">Authentication</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/websocket-api/">WebSocket API</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/migrations/">Migrations</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/troubleshooting/">Troubleshooting</a></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_r6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Reference</button><div data-state="closed" id="radix-_R_r6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_136av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Specification</button><div data-state="closed" id="radix-_R_136av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_1b6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Internals</button><div data-state="closed" id="radix-_R_1b6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div></nav></div></div><div class="flex flex-1 flex-col overflow-hidden"><div class="flex flex-1 overflow-hidden"><div class="flex-1 overflow-y-auto px-8 py-6 max-w-4xl mx-auto"><article class="docs-prose"><h1 id="deployment" node="[object Object]">Deployment</h1>
+<p>Run InputLayer in production with Docker, systemd, reverse proxies, and Kubernetes.</p>
+<h2 id="quick-reference" node="[object Object]">Quick Reference</h2>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Setting</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Default</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">CLI Flag</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Env Variable</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Config Key</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Host</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">127.0.0.1</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--host</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_HTTP__HOST</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.host</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Port</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">8080</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--port</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_HTTP__PORT</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.port</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Data directory</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">./data</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--data-dir</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_STORAGE__DATA_DIR</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">storage.data_dir</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Log level</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">info</code></td><td class="border px-4 py-2" node="[object Object]">--</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">IL_TRACE_LEVEL</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">logging.level</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Log format</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">text</code></td><td class="border px-4 py-2" node="[object Object]">--</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">IL_TRACE_JSON=1</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">logging.format</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Admin password</td><td class="border px-4 py-2" node="[object Object]">auto-generated</td><td class="border px-4 py-2" node="[object Object]">--</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_ADMIN_PASSWORD</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.auth.bootstrap_admin_password</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Config file</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">config.toml</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--config</code></td><td class="border px-4 py-2" node="[object Object]">--</td><td class="border px-4 py-2" node="[object Object]">--</td></tr></tbody></table></div>
+<h2 id="environment-variables" node="[object Object]">Environment Variables</h2>
+<p>InputLayer uses the <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_</code> prefix with double-underscore separators for nested keys.
+Environment variables override values from config files.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-comment"># Server binding</span>
+<span class="syn-keyword">export</span> INPUTLAYER_HTTP__HOST=0.0.0.0
+<span class="syn-keyword">export</span> INPUTLAYER_HTTP__PORT=8080
+
+<span class="syn-comment"># Storage</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__DATA_DIR=/var/lib/inputlayer/data
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__AUTO_CREATE_KNOWLEDGE_GRAPHS=true
+
+<span class="syn-comment"># Persistence</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERSIST__ENABLED=true
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE=immediate
+
+<span class="syn-comment"># Logging (via tracing)</span>
+<span class="syn-keyword">export</span> IL_TRACE_LEVEL=info          <span class="syn-comment"># trace, debug, info, warn, error</span>
+<span class="syn-keyword">export</span> IL_TRACE_JSON=1              <span class="syn-comment"># JSON structured logging</span>
+<span class="syn-keyword">export</span> IL_TRACE_FILE=/var/log/inputlayer/server.log  <span class="syn-comment"># Log to file instead of stderr</span>
+
+<span class="syn-comment"># Authentication</span>
+<span class="syn-keyword">export</span> INPUTLAYER_ADMIN_PASSWORD=your<span class="syn-meta">-secure-password</span>
+
+<span class="syn-comment"># Performance</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERFORMANCE__NUM_THREADS=4
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERFORMANCE__QUERY_TIMEOUT_MS=30000</code></pre>
+<h2 id="configuration-file" node="[object Object]">Configuration File</h2>
+<p>Create a <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">config.toml</code> for persistent configuration. Pass a custom path with <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--config</code>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm">inputlayer<span class="syn-meta">-server</span> <span class="syn-meta">--config</span> /etc/inputlayer/config.toml</code></pre>
+<p>Example production configuration:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-meta">[storage]</span>
+<span class="syn-identifier">data_dir</span> = <span class="syn-string">"/var/lib/inputlayer/data"</span>
+<span class="syn-identifier">default_knowledge_graph</span> = <span class="syn-string">"default"</span>
+<span class="syn-identifier">auto_create_knowledge_graphs</span> = <span class="syn-keyword">false</span>
+<span class="syn-identifier">max_knowledge_graphs</span> = <span class="syn-number">100</span>
+
+<span class="syn-meta">[storage.persist]</span>
+<span class="syn-identifier">enabled</span> = <span class="syn-keyword">true</span>
+<span class="syn-identifier">durability_mode</span> = <span class="syn-string">"immediate"</span>
+<span class="syn-identifier">buffer_size</span> = <span class="syn-number">10000</span>
+<span class="syn-identifier">max_wal_size_bytes</span> = <span class="syn-number">67108864</span>       <span class="syn-comment"># 64 MB</span>
+
+<span class="syn-meta">[storage.performance]</span>
+<span class="syn-identifier">num_threads</span> = <span class="syn-number">0</span>                     <span class="syn-comment"># 0 = all available CPU cores</span>
+<span class="syn-identifier">query_timeout_ms</span> = <span class="syn-number">30000</span>            <span class="syn-comment"># 30 seconds</span>
+<span class="syn-identifier">max_query_size_bytes</span> = <span class="syn-number">1048576</span>      <span class="syn-comment"># 1 MB</span>
+<span class="syn-identifier">max_insert_tuples</span> = <span class="syn-number">10000</span>
+<span class="syn-identifier">max_result_rows</span> = <span class="syn-number">100000</span>
+<span class="syn-identifier">slow_query_log_ms</span> = <span class="syn-number">5000</span>
+
+<span class="syn-meta">[logging]</span>
+<span class="syn-identifier">level</span> = <span class="syn-string">"info"</span>
+<span class="syn-identifier">format</span> = <span class="syn-string">"json"</span>
+
+<span class="syn-meta">[http]</span>
+<span class="syn-identifier">host</span> = <span class="syn-string">"0.0.0.0"</span>
+<span class="syn-identifier">port</span> = <span class="syn-number">8080</span>
+<span class="syn-identifier">shutdown_timeout_secs</span> = <span class="syn-number">30</span>
+
+<span class="syn-meta">[http.auth]</span>
+<span class="syn-identifier">session_timeout_secs</span> = <span class="syn-number">86400</span>        <span class="syn-comment"># 24 hours</span>
+
+<span class="syn-meta">[http.rate_limit]</span>
+<span class="syn-identifier">max_connections</span> = <span class="syn-number">10000</span>
+<span class="syn-identifier">max_ws_connections</span> = <span class="syn-number">5000</span>
+<span class="syn-identifier">ws_max_messages_per_sec</span> = <span class="syn-number">1000</span>
+<span class="syn-identifier">per_ip_max_rps</span> = <span class="syn-number">100</span>
+
+<span class="syn-meta">[http.gui]</span>
+<span class="syn-identifier">enabled</span> = <span class="syn-keyword">true</span>
+<span class="syn-identifier">static_dir</span> = <span class="syn-string">"/var/lib/inputlayer/gui/dist"</span></code></pre>
+<h2 id="health-checks" node="[object Object]">Health Checks</h2>
+<p>InputLayer exposes three probe endpoints. All bypass authentication.</p>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Endpoint</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Method</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Purpose</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Healthy Response</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/health</code></td><td class="border px-4 py-2" node="[object Object]">GET</td><td class="border px-4 py-2" node="[object Object]">General health check</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">200 OK</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/live</code></td><td class="border px-4 py-2" node="[object Object]">GET</td><td class="border px-4 py-2" node="[object Object]">Kubernetes liveness probe</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">200 OK</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/ready</code></td><td class="border px-4 py-2" node="[object Object]">GET</td><td class="border px-4 py-2" node="[object Object]">Kubernetes readiness probe</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">200 OK</code> (or <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">503</code> if storage is unavailable)</td></tr></tbody></table></div>
+<p>All endpoints are also available under the <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/v1/</code> prefix (e.g., <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/v1/health</code>).</p>
+<p>Example health check:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">curl</span> <span class="syn-meta">-sf</span> http://localhost:8080/health</code></pre>
+<h2 id="docker" node="[object Object]">Docker</h2>
+<p>InputLayer provides a multi-stage Dockerfile that produces a minimal Debian-based image.</p>
+<h3 id="build-the-image" node="[object Object]">Build the Image</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">docker</span> build <span class="syn-meta">-t</span> inputlayer:latest .</code></pre>
+<h3 id="run-a-container" node="[object Object]">Run a Container</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">docker</span> run <span class="syn-meta">-d</span> \
+  <span class="syn-meta">--name</span> inputlayer \
+  <span class="syn-meta">-p</span> 8080:8080 \
+  <span class="syn-meta">-v</span> inputlayer<span class="syn-meta">-data</span>:/var/lib/inputlayer/data \
+  <span class="syn-meta">-e</span> INPUTLAYER_ADMIN_PASSWORD=changeme \
+  inputlayer:latest</code></pre>
+<p>The image includes a built-in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">HEALTHCHECK</code> that polls <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/health</code> every 10 seconds:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-dockerfile text-sm"><span class="syn-keyword">HEALTHCHECK</span> --interval=10s --timeout=3s --start-period=5s --retries=3 \
+    <span class="syn-keyword">CMD</span> curl -sf http://localhost:8080/health || exit 1</code></pre>
+<h3 id="image-details" node="[object Object]">Image Details</h3>
+<p>The image runs as a non-root <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">inputlayer</code> user with the following defaults:</p>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Setting</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Value</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Binary</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/usr/local/bin/inputlayer-server</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Data volume</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/var/lib/inputlayer/data</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">GUI assets</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/var/lib/inputlayer/gui/dist/</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Exposed port</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">8080</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">User</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">inputlayer</code> (non-root)</td></tr></tbody></table></div>
+<h3 id="custom-configuration-in-docker" node="[object Object]">Custom Configuration in Docker</h3>
+<p>Mount a config file and pass it via the CLI:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">docker</span> run <span class="syn-meta">-d</span> \
+  <span class="syn-meta">--name</span> inputlayer \
+  <span class="syn-meta">-p</span> 8080:8080 \
+  <span class="syn-meta">-v</span> inputlayer<span class="syn-meta">-data</span>:/var/lib/inputlayer/data \
+  <span class="syn-meta">-v</span> ./config.toml:/etc/inputlayer/config.toml:ro \
+  inputlayer:latest \
+  <span class="syn-meta">--config</span> /etc/inputlayer/config.toml</code></pre>
+<h2 id="docker-compose" node="[object Object]">Docker Compose</h2>
+<h3 id="basic-setup" node="[object Object]">Basic Setup</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">version</span>: <span class="syn-string">"3.8"</span>
+
+<span class="syn-identifier">services</span>:
+  inputlayer:
+    image: inputlayer:latest
+    build: .
+    ports:
+      - <span class="syn-string">"8080:8080"</span>
+    volumes:
+      - inputlayer-data:/var/lib/inputlayer/data
+    environment:
+      INPUTLAYER_HTTP__HOST: <span class="syn-string">"0.0.0.0"</span>
+      INPUTLAYER_HTTP__PORT: <span class="syn-string">"8080"</span>
+      INPUTLAYER_STORAGE__DATA_DIR: <span class="syn-string">"/var/lib/inputlayer/data"</span>
+      INPUTLAYER_STORAGE__PERSIST__ENABLED: <span class="syn-string">"true"</span>
+      INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE: <span class="syn-string">"immediate"</span>
+      INPUTLAYER_ADMIN_PASSWORD: <span class="syn-string">"${INPUTLAYER_ADMIN_PASSWORD}"</span>
+      IL_TRACE_LEVEL: <span class="syn-string">"info"</span>
+      IL_TRACE_JSON: <span class="syn-string">"1"</span>
+    healthcheck:
+      test: [<span class="syn-string">"CMD"</span>, <span class="syn-string">"curl"</span>, <span class="syn-string">"-sf"</span>, <span class="syn-string">"http://localhost:8080/health"</span>]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: <span class="syn-number">3</span>
+    restart: unless-stopped
+
+<span class="syn-identifier">volumes</span>:
+  inputlayer-data:</code></pre>
+<h3 id="with-traefik-reverse-proxy" node="[object Object]">With Traefik Reverse Proxy</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">version</span>: <span class="syn-string">"3.8"</span>
+
+<span class="syn-identifier">services</span>:
+  traefik:
+    image: traefik:v3.<span class="syn-number">2</span>
+    command:
+      - <span class="syn-string">"--providers.docker=true"</span>
+      - <span class="syn-string">"--providers.docker.exposedByDefault=false"</span>
+      - <span class="syn-string">"--entrypoints.web.address=:80"</span>
+      - <span class="syn-string">"--entrypoints.websecure.address=:443"</span>
+      - <span class="syn-string">"--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"</span>
+      - <span class="syn-string">"--certificatesresolvers.le.acme.email=admin@example.com"</span>
+      - <span class="syn-string">"--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json"</span>
+    ports:
+      - <span class="syn-string">"80:80"</span>
+      - <span class="syn-string">"443:443"</span>
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+
+  inputlayer:
+    image: inputlayer:latest
+    build: .
+    volumes:
+      - inputlayer-data:/var/lib/inputlayer/data
+    environment:
+      INPUTLAYER_HTTP__HOST: <span class="syn-string">"0.0.0.0"</span>
+      INPUTLAYER_HTTP__PORT: <span class="syn-string">"8080"</span>
+      INPUTLAYER_STORAGE__DATA_DIR: <span class="syn-string">"/var/lib/inputlayer/data"</span>
+      INPUTLAYER_ADMIN_PASSWORD: <span class="syn-string">"${INPUTLAYER_ADMIN_PASSWORD}"</span>
+      IL_TRACE_JSON: <span class="syn-string">"1"</span>
+    labels:
+      - <span class="syn-string">"traefik.enable=true"</span>
+      - <span class="syn-string">"traefik.http.routers.inputlayer.rule=Host(`inputlayer.example.com`)"</span>
+      - <span class="syn-string">"traefik.http.routers.inputlayer.entrypoints=websecure"</span>
+      - <span class="syn-string">"traefik.http.routers.inputlayer.tls.certresolver=le"</span>
+      - <span class="syn-string">"traefik.http.services.inputlayer.loadbalancer.server.port=8080"</span>
+    healthcheck:
+      test: [<span class="syn-string">"CMD"</span>, <span class="syn-string">"curl"</span>, <span class="syn-string">"-sf"</span>, <span class="syn-string">"http://localhost:8080/health"</span>]
+      interval: 10s
+      timeout: 3s
+      start_period: 5s
+      retries: <span class="syn-number">3</span>
+    restart: unless-stopped
+
+<span class="syn-identifier">volumes</span>:
+  inputlayer-data:
+  letsencrypt:</code></pre>
+<h2 id="systemd" node="[object Object]">systemd</h2>
+<p>Create a systemd service for running InputLayer on a bare-metal or VM deployment.</p>
+<h3 id="create-a-system-user" node="[object Object]">Create a System User</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">sudo</span> useradd <span class="syn-meta">-r</span> <span class="syn-meta">-s</span> /bin/false <span class="syn-meta">-m</span> <span class="syn-meta">-d</span> /var/lib/inputlayer inputlayer
+<span class="syn-builtin">sudo</span> <span class="syn-builtin">mkdir</span> <span class="syn-meta">-p</span> /var/lib/inputlayer/data
+<span class="syn-builtin">sudo</span> <span class="syn-builtin">chown</span> inputlayer:inputlayer /var/lib/inputlayer/data</code></pre>
+<h3 id="install-the-binary" node="[object Object]">Install the Binary</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">sudo</span> <span class="syn-builtin">cp</span> target/release/inputlayer<span class="syn-meta">-server</span> /usr/<span class="syn-keyword">local</span>/bin/
+<span class="syn-builtin">sudo</span> <span class="syn-builtin">chmod</span> 755 /usr/<span class="syn-keyword">local</span>/bin/inputlayer<span class="syn-meta">-server</span></code></pre>
+<h3 id="create-the-service-file" node="[object Object]">Create the Service File</h3>
+<p>Write the following to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">/etc/systemd/system/inputlayer.service</code>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-ini text-sm"><span class="syn-meta">[Unit]</span>
+<span class="syn-identifier">Description</span>=InputLayer
+<span class="syn-identifier">After</span>=network-online.target
+<span class="syn-identifier">Wants</span>=network-online.target
+
+<span class="syn-meta">[Service]</span>
+<span class="syn-identifier">Type</span>=simple
+<span class="syn-identifier">User</span>=inputlayer
+<span class="syn-identifier">Group</span>=inputlayer
+<span class="syn-identifier">ExecStart</span>=/usr/local/bin/inputlayer-<span class="syn-keyword">server</span> \
+    --host <span class="syn-number">0</span>.<span class="syn-number">0</span>.<span class="syn-number">0</span>.<span class="syn-number">0</span> \
+    --port <span class="syn-number">8080</span> \
+    --config /etc/inputlayer/config.toml \
+    --data-dir /var/lib/inputlayer/data
+<span class="syn-identifier">Restart</span>=on-failure
+<span class="syn-identifier">RestartSec</span>=<span class="syn-number">5</span>
+<span class="syn-identifier">LimitNOFILE</span>=<span class="syn-number">65536</span>
+
+<span class="syn-comment"># Security hardening</span>
+<span class="syn-identifier">ProtectSystem</span>=strict
+<span class="syn-identifier">ProtectHome</span>=true
+<span class="syn-identifier">ReadWritePaths</span>=/var/lib/inputlayer/data
+<span class="syn-identifier">PrivateTmp</span>=true
+<span class="syn-identifier">NoNewPrivileges</span>=true
+<span class="syn-identifier">ProtectKernelTunables</span>=true
+<span class="syn-identifier">ProtectControlGroups</span>=true
+
+<span class="syn-comment"># Environment</span>
+<span class="syn-identifier">Environment</span>=IL_TRACE_LEVEL=info
+<span class="syn-identifier">Environment</span>=IL_TRACE_JSON=<span class="syn-number">1</span>
+<span class="syn-identifier">Environment</span>=IL_TRACE_FILE=/var/<span class="syn-keyword">log</span>/inputlayer/<span class="syn-keyword">server</span>.<span class="syn-keyword">log</span>
+
+<span class="syn-meta">[Install]</span>
+<span class="syn-identifier">WantedBy</span>=multi-user.target</code></pre>
+<h3 id="enable-and-start" node="[object Object]">Enable and Start</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-builtin">sudo</span> <span class="syn-builtin">mkdir</span> <span class="syn-meta">-p</span> /var/log/inputlayer
+<span class="syn-builtin">sudo</span> <span class="syn-builtin">chown</span> inputlayer:inputlayer /var/log/inputlayer
+
+<span class="syn-builtin">sudo</span> systemctl daemon<span class="syn-meta">-reload</span>
+<span class="syn-builtin">sudo</span> systemctl enable inputlayer
+<span class="syn-builtin">sudo</span> systemctl start inputlayer
+
+<span class="syn-comment"># Check status</span>
+<span class="syn-builtin">sudo</span> systemctl status inputlayer
+<span class="syn-builtin">sudo</span> journalctl <span class="syn-meta">-u</span> inputlayer <span class="syn-meta">-f</span></code></pre>
+<h2 id="tls-and-reverse-proxies" node="[object Object]">TLS and Reverse Proxies</h2>
+<p>InputLayer does not terminate TLS natively. Use a reverse proxy for TLS termination in production.</p>
+<h3 id="nginx" node="[object Object]">Nginx</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-nginx text-sm"><span class="syn-keyword">server</span> {
+    <span class="syn-keyword">listen</span> <span class="syn-number">443</span> ssl;
+    server_name inputlayer.example.com;
+    <span class="syn-keyword">ssl_certificate</span>     /etc/ssl/certs/inputlayer.crt;
+    <span class="syn-keyword">ssl_certificate_key</span> /etc/ssl/private/inputlayer.key;
+    ssl_protocols       TLSv1.<span class="syn-number">2</span> TLSv1.<span class="syn-number">3</span>;
+    <span class="syn-keyword">location</span> / {
+        <span class="syn-keyword">proxy_pass</span> <span class="syn-keyword">http</span>://<span class="syn-number">127</span>.<span class="syn-number">0</span>.<span class="syn-number">0</span>.<span class="syn-number">1</span>:<span class="syn-number">8080</span>;
+        proxy_http_version <span class="syn-number">1</span>.<span class="syn-number">1</span>;
+        proxy_set_header Upgrade <span class="syn-variable">$http_upgrade</span>;
+        proxy_set_header Connection <span class="syn-string">"upgrade"</span>;
+        proxy_set_header Host <span class="syn-variable">$host</span>;
+        proxy_set_header X-Real-IP <span class="syn-variable">$remote_addr</span>;
+        proxy_set_header X-Forwarded-For <span class="syn-variable">$proxy_add_x_forwarded_for</span>;
+        proxy_set_header X-Forwarded-Proto <span class="syn-variable">$scheme</span>;
+        proxy_read_timeout <span class="syn-number">300s</span>;
+        proxy_send_timeout <span class="syn-number">300s</span>;
+    }
+}</code></pre>
+<p>The <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">proxy_read_timeout</code> and <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">proxy_send_timeout</code> values of 300 seconds accommodate long-running WebSocket connections. The <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">Upgrade</code> and <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">Connection</code> headers are required for WebSocket support.</p>
+<p>For HTTP-to-HTTPS redirect, add a companion server block:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-nginx text-sm"><span class="syn-keyword">server</span> {
+    <span class="syn-keyword">listen</span> <span class="syn-number">80</span>;
+    server_name inputlayer.example.com;
+    return <span class="syn-number">301</span> https://<span class="syn-variable">$host</span><span class="syn-variable">$request_uri</span>;
+}</code></pre>
+<h3 id="caddy" node="[object Object]">Caddy</h3>
+<p>Caddy automatically provisions and renews TLS certificates via Let&#x27;s Encrypt:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-caddyfile text-sm"><span class="syn-identifier">inputlayer.example.com</span> {
+    <span class="syn-keyword">reverse_proxy</span> <span class="syn-number">127</span>.<span class="syn-number">0</span>.<span class="syn-number">0</span>.<span class="syn-number">1</span>:<span class="syn-number">8080</span> {
+        header_up X-Real-IP {remote_host}
+    }
+}</code></pre>
+<p>No additional TLS configuration is needed. Caddy handles certificates, HTTPS redirect, and WebSocket upgrades automatically.</p>
+<h2 id="kubernetes" node="[object Object]">Kubernetes</h2>
+<h3 id="deployment" node="[object Object]">Deployment</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">apiVersion</span>: apps/v1
+<span class="syn-identifier">kind</span>: Deployment
+<span class="syn-identifier">metadata</span>:
+  name: inputlayer
+  labels:
+    app: inputlayer
+<span class="syn-identifier">spec</span>:
+  replicas: <span class="syn-number">1</span>
+  selector:
+    matchLabels:
+      app: inputlayer
+  template:
+    metadata:
+      labels:
+        app: inputlayer
+    spec:
+      containers:
+        - name: inputlayer
+          image: inputlayer:latest
+          ports:
+            - containerPort: <span class="syn-number">8080</span>
+              name: http
+          env:
+            - name: INPUTLAYER_HTTP__HOST
+              value: <span class="syn-string">"0.0.0.0"</span>
+            - name: INPUTLAYER_HTTP__PORT
+              value: <span class="syn-string">"8080"</span>
+            - name: INPUTLAYER_STORAGE__DATA_DIR
+              value: <span class="syn-string">"/var/lib/inputlayer/data"</span>
+            - name: INPUTLAYER_STORAGE__PERSIST__ENABLED
+              value: <span class="syn-string">"true"</span>
+            - name: INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE
+              value: <span class="syn-string">"immediate"</span>
+            - name: IL_TRACE_LEVEL
+              value: <span class="syn-string">"info"</span>
+            - name: IL_TRACE_JSON
+              value: <span class="syn-string">"1"</span>
+            - name: INPUTLAYER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: inputlayer-secrets
+                  key: admin-password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/inputlayer/data
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: http
+            initialDelaySeconds: <span class="syn-number">5</span>
+            periodSeconds: <span class="syn-number">10</span>
+            timeoutSeconds: <span class="syn-number">3</span>
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: <span class="syn-number">3</span>
+            periodSeconds: <span class="syn-number">5</span>
+            timeoutSeconds: <span class="syn-number">3</span>
+          resources:
+            requests:
+              cpu: <span class="syn-string">"500m"</span>
+              memory: <span class="syn-string">"512Mi"</span>
+            limits:
+              cpu: <span class="syn-string">"4"</span>
+              memory: <span class="syn-string">"4Gi"</span>
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: inputlayer-data</code></pre>
+<h3 id="service" node="[object Object]">Service</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">apiVersion</span>: v1
+<span class="syn-identifier">kind</span>: Service
+<span class="syn-identifier">metadata</span>:
+  name: inputlayer
+<span class="syn-identifier">spec</span>:
+  selector:
+    app: inputlayer
+  ports:
+    - port: <span class="syn-number">8080</span>
+      targetPort: http
+      name: http
+  type: ClusterIP</code></pre>
+<h3 id="persistentvolumeclaim" node="[object Object]">PersistentVolumeClaim</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">apiVersion</span>: v1
+<span class="syn-identifier">kind</span>: PersistentVolumeClaim
+<span class="syn-identifier">metadata</span>:
+  name: inputlayer-data
+<span class="syn-identifier">spec</span>:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi</code></pre>
+<h3 id="secret" node="[object Object]">Secret</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm">kubectl create secret generic inputlayer<span class="syn-meta">-secrets</span> \
+  <span class="syn-meta">--from-literal</span>=admin<span class="syn-meta">-password</span>=<span class="syn-string">'your-secure-password'</span></code></pre>
+<h3 id="ingress" node="[object Object]">Ingress</h3>
+<p>Using the nginx ingress controller with TLS:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-yaml text-sm"><span class="syn-identifier">apiVersion</span>: networking.k8s.io/v1
+<span class="syn-identifier">kind</span>: Ingress
+<span class="syn-identifier">metadata</span>:
+  name: inputlayer
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: <span class="syn-string">"300"</span>
+    nginx.ingress.kubernetes.io/proxy-send-timeout: <span class="syn-string">"300"</span>
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: <span class="syn-string">"60"</span>
+    <span class="syn-comment"># Required for WebSocket support</span>
+    nginx.ingress.kubernetes.io/websocket-services: <span class="syn-string">"inputlayer"</span>
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+<span class="syn-identifier">spec</span>:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - inputlayer.example.com
+      secretName: inputlayer-tls
+  rules:
+    - host: inputlayer.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: inputlayer
+                port:
+                  number: <span class="syn-number">8080</span></code></pre>
+<h2 id="resource-sizing" node="[object Object]">Resource Sizing</h2>
+<h3 id="memory" node="[object Object]">Memory</h3>
+<p>InputLayer holds the active working set in memory via Differential Dataflow. Memory usage is proportional to the number of facts, rules, and active computations.</p>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Workload</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Facts</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Rules</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Recommended Memory</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Development</td><td class="border px-4 py-2" node="[object Object]">&lt; 100K</td><td class="border px-4 py-2" node="[object Object]">&lt; 50</td><td class="border px-4 py-2" node="[object Object]">512 MB</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Small production</td><td class="border px-4 py-2" node="[object Object]">100K - 1M</td><td class="border px-4 py-2" node="[object Object]">50 - 200</td><td class="border px-4 py-2" node="[object Object]">2 - 4 GB</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Medium production</td><td class="border px-4 py-2" node="[object Object]">1M - 10M</td><td class="border px-4 py-2" node="[object Object]">200 - 1000</td><td class="border px-4 py-2" node="[object Object]">8 - 16 GB</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Large production</td><td class="border px-4 py-2" node="[object Object]">10M+</td><td class="border px-4 py-2" node="[object Object]">1000+</td><td class="border px-4 py-2" node="[object Object]">32 GB+</td></tr></tbody></table></div>
+<h3 id="cpu" node="[object Object]">CPU</h3>
+<p>Differential Dataflow benefits from multiple cores for parallel dataflow computation. The <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">num_threads</code> setting (default: <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">0</code>, meaning all available cores) controls worker parallelism.</p>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Workload</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Recommended CPU</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Development</td><td class="border px-4 py-2" node="[object Object]">2 cores</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Small production</td><td class="border px-4 py-2" node="[object Object]">4 cores</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Medium production</td><td class="border px-4 py-2" node="[object Object]">8 cores</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Large production</td><td class="border px-4 py-2" node="[object Object]">16+ cores</td></tr></tbody></table></div>
+<h3 id="disk" node="[object Object]">Disk</h3>
+<p>The data directory stores WAL files and compacted batch files. Disk usage depends on fact volume and the WAL rotation settings.</p>
+<ul>
+<li>WAL files rotate at 64 MB by default (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">max_wal_size_bytes</code>)</li>
+<li>Batch files are compacted when a shard exceeds 10 files (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">auto_compact_threshold</code>)</li>
+<li>Plan for 2-3x the raw data size to account for WAL overhead and compaction headroom</li>
+</ul>
+<p>Use fast local storage (SSD/NVMe) for the data directory. Network-attached storage works but increases write latency, which impacts durability mode <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">immediate</code>.</p>
+<h3 id="file-descriptors" node="[object Object]">File Descriptors</h3>
+<p>For production deployments with many concurrent WebSocket connections, increase the file descriptor limit:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-comment"># In systemd service</span>
+LimitNOFILE=65536
+
+<span class="syn-comment"># Or system-wide in /etc/security/limits.conf</span>
+inputlayer    soft    nofile    65536
+inputlayer    hard    nofile    65536</code></pre>
+<h2 id="security-recommendations" node="[object Object]">Security Recommendations</h2>
+<h3 id="authentication" node="[object Object]">Authentication</h3>
+<p>InputLayer requires WebSocket authentication for all data operations. On first boot, if no admin password is configured, a random password is generated and printed to stderr. For production:</p>
+<ol>
+<li>Always set <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_ADMIN_PASSWORD</code> explicitly</li>
+<li>Use Kubernetes Secrets or Docker secrets for the password</li>
+<li>Rotate credentials periodically</li>
+</ol>
+<h3 id="network" node="[object Object]">Network</h3>
+<ol>
+<li>Bind the server to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">127.0.0.1</code> when behind a reverse proxy (the default)</li>
+<li>Use a reverse proxy for TLS termination -- InputLayer does not terminate TLS natively</li>
+<li>Enable rate limiting via <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.rate_limit.per_ip_max_rps</code> for public-facing deployments</li>
+<li>Restrict CORS origins in production (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.cors_origins</code> instead of <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">http.cors_allow_all</code>)</li>
+</ol>
+<h3 id="filesystem" node="[object Object]">Filesystem</h3>
+<ol>
+<li>Run as a dedicated non-root user</li>
+<li>Use <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">ProtectSystem=strict</code> in systemd to prevent writes outside allowed paths</li>
+<li>Set appropriate permissions on the data directory (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">750</code> or stricter)</li>
+<li>Back up the data directory regularly -- the WAL and batch files are the source of truth</li>
+</ol>
+<h3 id="durability" node="[object Object]">Durability</h3>
+<p>For production, always use <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">durability_mode = &quot;immediate&quot;</code>. The server warns on startup if a weaker mode is configured:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">WARNING: Durability mode is Batched (not Immediate).
+Recent writes may be lost on crash.
+</code></pre>
+<p>Also ensure <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">storage.persist.enabled = true</code>. Without it, all data is lost on restart:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">WARNING: DD-native persist layer is DISABLED.
+Data will NOT survive restarts.
+</code></pre></article></div><div class="hidden lg:block w-48 shrink-0 border-l border-border/50"><div class="sticky top-0 p-4"><p class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">On this page</p><nav class="space-y-1"><a href="#quick-reference" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Quick Reference</a><a href="#environment-variables" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Environment Variables</a><a href="#configuration-file" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Configuration File</a><a href="#health-checks" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Health Checks</a><a href="#docker" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Docker</a><a href="#build-the-image" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Build the Image</a><a href="#run-a-container" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Run a Container</a><a href="#image-details" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Image Details</a><a href="#custom-configuration-in-docker" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Custom Configuration in Docker</a><a href="#docker-compose" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Docker Compose</a><a href="#basic-setup" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Basic Setup</a><a href="#with-traefik-reverse-proxy" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">With Traefik Reverse Proxy</a><a href="#systemd" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">systemd</a><a href="#create-a-system-user" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Create a System User</a><a href="#install-the-binary" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Install the Binary</a><a href="#create-the-service-file" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Create the Service File</a><a href="#enable-and-start" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Enable and Start</a><a href="#tls-and-reverse-proxies" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">TLS and Reverse Proxies</a><a href="#nginx" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Nginx</a><a href="#caddy" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Caddy</a><a href="#kubernetes" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Kubernetes</a><a href="#deployment" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Deployment</a><a href="#service" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Service</a><a href="#persistentvolumeclaim" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">PersistentVolumeClaim</a><a href="#secret" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Secret</a><a href="#ingress" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Ingress</a><a href="#resource-sizing" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Resource Sizing</a><a href="#memory" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Memory</a><a href="#cpu" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">CPU</a><a href="#disk" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Disk</a><a href="#file-descriptors" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">File Descriptors</a><a href="#security-recommendations" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Security Recommendations</a><a href="#authentication" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Authentication</a><a href="#network" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Network</a><a href="#filesystem" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Filesystem</a><a href="#durability" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Durability</a></nav></div></div></div></div></div></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[1942,[\"177\",\"static/chunks/app/layout-7e9963bf811be36b.js\"],\"ThemeProvider\"]\n3:I[7121,[],\"\"]\n4:I[4581,[],\"\"]\n6:I[484,[],\"OutletBoundary\"]\n7:\"$Sreact.suspense\"\n9:I[484,[],\"ViewportBoundary\"]\nb:I[484,[],\"MetadataBoundary\"]\nd:I[7123,[],\"\"]\n:HL[\"/_next/static/media/4cf2300e9c8272f7-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/93f479601ee12b01-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/4bd7a24b7976d4e6.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"05bjYGyiAumoEMBrfWHih\",\"c\":[\"\",\"docs\",\"guides\",\"deployment\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"docs\",{\"children\":[[\"slug\",\"guides/deployment\",\"oc\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/4bd7a24b7976d4e6.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_188709 __variable_9a8899 font-sans antialiased\",\"children\":[\"$\",\"$L2\",null,{\"attribute\":\"class\",\"defaultTheme\":\"dark\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L5\",null,[\"$\",\"$L6\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@8\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$L9\",null,{\"children\":\"$@a\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lb\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.Metadata\",\"children\":\"$@c\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$d\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"e:I[8428,[\"758\",\"static/chunks/758-3cb69ce377cde046.js\",\"121\",\"static/chunks/121-aece4f809b101dc1.js\",\"502\",\"static/chunks/502-e809071f8789437b.js\",\"689\",\"static/chunks/689-4fcf9680fdc90283.js\",\"870\",\"static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js\"],\"DocsPageClient\"]\nf:T40d7,"])</script><script>self.__next_f.push([1,"# Deployment\n\nRun InputLayer in production with Docker, systemd, reverse proxies, and Kubernetes.\n\n## Quick Reference\n\n| Setting | Default | CLI Flag | Env Variable | Config Key |\n|---|---|---|---|---|\n| Host | `127.0.0.1` | `--host` | `INPUTLAYER_HTTP__HOST` | `http.host` |\n| Port | `8080` | `--port` | `INPUTLAYER_HTTP__PORT` | `http.port` |\n| Data directory | `./data` | `--data-dir` | `INPUTLAYER_STORAGE__DATA_DIR` | `storage.data_dir` |\n| Log level | `info` | -- | `IL_TRACE_LEVEL` | `logging.level` |\n| Log format | `text` | -- | `IL_TRACE_JSON=1` | `logging.format` |\n| Admin password | auto-generated | -- | `INPUTLAYER_ADMIN_PASSWORD` | `http.auth.bootstrap_admin_password` |\n| Config file | `config.toml` | `--config` | -- | -- |\n\n## Environment Variables\n\nInputLayer uses the `INPUTLAYER_` prefix with double-underscore separators for nested keys.\nEnvironment variables override values from config files.\n\n```bash\n# Server binding\nexport INPUTLAYER_HTTP__HOST=0.0.0.0\nexport INPUTLAYER_HTTP__PORT=8080\n\n# Storage\nexport INPUTLAYER_STORAGE__DATA_DIR=/var/lib/inputlayer/data\nexport INPUTLAYER_STORAGE__AUTO_CREATE_KNOWLEDGE_GRAPHS=true\n\n# Persistence\nexport INPUTLAYER_STORAGE__PERSIST__ENABLED=true\nexport INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE=immediate\n\n# Logging (via tracing)\nexport IL_TRACE_LEVEL=info          # trace, debug, info, warn, error\nexport IL_TRACE_JSON=1              # JSON structured logging\nexport IL_TRACE_FILE=/var/log/inputlayer/server.log  # Log to file instead of stderr\n\n# Authentication\nexport INPUTLAYER_ADMIN_PASSWORD=your-secure-password\n\n# Performance\nexport INPUTLAYER_STORAGE__PERFORMANCE__NUM_THREADS=4\nexport INPUTLAYER_STORAGE__PERFORMANCE__QUERY_TIMEOUT_MS=30000\n```\n\n## Configuration File\n\nCreate a `config.toml` for persistent configuration. Pass a custom path with `--config`:\n\n```bash\ninputlayer-server --config /etc/inputlayer/config.toml\n```\n\nExample production configuration:\n\n```toml\n[storage]\ndata_dir = \"/var/lib/inputlayer/data\"\ndefault_knowledge_graph = \"default\"\nauto_create_knowledge_graphs = false\nmax_knowledge_graphs = 100\n\n[storage.persist]\nenabled = true\ndurability_mode = \"immediate\"\nbuffer_size = 10000\nmax_wal_size_bytes = 67108864       # 64 MB\n\n[storage.performance]\nnum_threads = 0                     # 0 = all available CPU cores\nquery_timeout_ms = 30000            # 30 seconds\nmax_query_size_bytes = 1048576      # 1 MB\nmax_insert_tuples = 10000\nmax_result_rows = 100000\nslow_query_log_ms = 5000\n\n[logging]\nlevel = \"info\"\nformat = \"json\"\n\n[http]\nhost = \"0.0.0.0\"\nport = 8080\nshutdown_timeout_secs = 30\n\n[http.auth]\nsession_timeout_secs = 86400        # 24 hours\n\n[http.rate_limit]\nmax_connections = 10000\nmax_ws_connections = 5000\nws_max_messages_per_sec = 1000\nper_ip_max_rps = 100\n\n[http.gui]\nenabled = true\nstatic_dir = \"/var/lib/inputlayer/gui/dist\"\n```\n\n## Health Checks\n\nInputLayer exposes three probe endpoints. All bypass authentication.\n\n| Endpoint | Method | Purpose | Healthy Response |\n|---|---|---|---|\n| `/health` | GET | General health check | `200 OK` |\n| `/live` | GET | Kubernetes liveness probe | `200 OK` |\n| `/ready` | GET | Kubernetes readiness probe | `200 OK` (or `503` if storage is unavailable) |\n\nAll endpoints are also available under the `/v1/` prefix (e.g., `/v1/health`).\n\nExample health check:\n\n```bash\ncurl -sf http://localhost:8080/health\n```\n\n## Docker\n\nInputLayer provides a multi-stage Dockerfile that produces a minimal Debian-based image.\n\n### Build the Image\n\n```bash\ndocker build -t inputlayer:latest .\n```\n\n### Run a Container\n\n```bash\ndocker run -d \\\n  --name inputlayer \\\n  -p 8080:8080 \\\n  -v inputlayer-data:/var/lib/inputlayer/data \\\n  -e INPUTLAYER_ADMIN_PASSWORD=changeme \\\n  inputlayer:latest\n```\n\nThe image includes a built-in `HEALTHCHECK` that polls `/health` every 10 seconds:\n\n```dockerfile\nHEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \\\n    CMD curl -sf http://localhost:8080/health || exit 1\n```\n\n### Image Details\n\nThe image runs as a non-root `inputlayer` user with the following defaults:\n\n| Setting | Value |\n|---|---|\n| Binary | `/usr/local/bin/inputlayer-server` |\n| Data volume | `/var/lib/inputlayer/data` |\n| GUI assets | `/var/lib/inputlayer/gui/dist/` |\n| Exposed port | `8080` |\n| User | `inputlayer` (non-root) |\n\n### Custom Configuration in Docker\n\nMount a config file and pass it via the CLI:\n\n```bash\ndocker run -d \\\n  --name inputlayer \\\n  -p 8080:8080 \\\n  -v inputlayer-data:/var/lib/inputlayer/data \\\n  -v ./config.toml:/etc/inputlayer/config.toml:ro \\\n  inputlayer:latest \\\n  --config /etc/inputlayer/config.toml\n```\n\n## Docker Compose\n\n### Basic Setup\n\n```yaml\nversion: \"3.8\"\n\nservices:\n  inputlayer:\n    image: inputlayer:latest\n    build: .\n    ports:\n      - \"8080:8080\"\n    volumes:\n      - inputlayer-data:/var/lib/inputlayer/data\n    environment:\n      INPUTLAYER_HTTP__HOST: \"0.0.0.0\"\n      INPUTLAYER_HTTP__PORT: \"8080\"\n      INPUTLAYER_STORAGE__DATA_DIR: \"/var/lib/inputlayer/data\"\n      INPUTLAYER_STORAGE__PERSIST__ENABLED: \"true\"\n      INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE: \"immediate\"\n      INPUTLAYER_ADMIN_PASSWORD: \"${INPUTLAYER_ADMIN_PASSWORD}\"\n      IL_TRACE_LEVEL: \"info\"\n      IL_TRACE_JSON: \"1\"\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-sf\", \"http://localhost:8080/health\"]\n      interval: 10s\n      timeout: 3s\n      start_period: 5s\n      retries: 3\n    restart: unless-stopped\n\nvolumes:\n  inputlayer-data:\n```\n\n### With Traefik Reverse Proxy\n\n```yaml\nversion: \"3.8\"\n\nservices:\n  traefik:\n    image: traefik:v3.2\n    command:\n      - \"--providers.docker=true\"\n      - \"--providers.docker.exposedByDefault=false\"\n      - \"--entrypoints.web.address=:80\"\n      - \"--entrypoints.websecure.address=:443\"\n      - \"--certificatesresolvers.le.acme.httpchallenge.entrypoint=web\"\n      - \"--certificatesresolvers.le.acme.email=admin@example.com\"\n      - \"--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json\"\n    ports:\n      - \"80:80\"\n      - \"443:443\"\n    volumes:\n      - /var/run/docker.sock:/var/run/docker.sock:ro\n      - letsencrypt:/letsencrypt\n\n  inputlayer:\n    image: inputlayer:latest\n    build: .\n    volumes:\n      - inputlayer-data:/var/lib/inputlayer/data\n    environment:\n      INPUTLAYER_HTTP__HOST: \"0.0.0.0\"\n      INPUTLAYER_HTTP__PORT: \"8080\"\n      INPUTLAYER_STORAGE__DATA_DIR: \"/var/lib/inputlayer/data\"\n      INPUTLAYER_ADMIN_PASSWORD: \"${INPUTLAYER_ADMIN_PASSWORD}\"\n      IL_TRACE_JSON: \"1\"\n    labels:\n      - \"traefik.enable=true\"\n      - \"traefik.http.routers.inputlayer.rule=Host(`inputlayer.example.com`)\"\n      - \"traefik.http.routers.inputlayer.entrypoints=websecure\"\n      - \"traefik.http.routers.inputlayer.tls.certresolver=le\"\n      - \"traefik.http.services.inputlayer.loadbalancer.server.port=8080\"\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-sf\", \"http://localhost:8080/health\"]\n      interval: 10s\n      timeout: 3s\n      start_period: 5s\n      retries: 3\n    restart: unless-stopped\n\nvolumes:\n  inputlayer-data:\n  letsencrypt:\n```\n\n## systemd\n\nCreate a systemd service for running InputLayer on a bare-metal or VM deployment.\n\n### Create a System User\n\n```bash\nsudo useradd -r -s /bin/false -m -d /var/lib/inputlayer inputlayer\nsudo mkdir -p /var/lib/inputlayer/data\nsudo chown inputlayer:inputlayer /var/lib/inputlayer/data\n```\n\n### Install the Binary\n\n```bash\nsudo cp target/release/inputlayer-server /usr/local/bin/\nsudo chmod 755 /usr/local/bin/inputlayer-server\n```\n\n### Create the Service File\n\nWrite the following to `/etc/systemd/system/inputlayer.service`:\n\n```ini\n[Unit]\nDescription=InputLayer\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nType=simple\nUser=inputlayer\nGroup=inputlayer\nExecStart=/usr/local/bin/inputlayer-server \\\n    --host 0.0.0.0 \\\n    --port 8080 \\\n    --config /etc/inputlayer/config.toml \\\n    --data-dir /var/lib/inputlayer/data\nRestart=on-failure\nRestartSec=5\nLimitNOFILE=65536\n\n# Security hardening\nProtectSystem=strict\nProtectHome=true\nReadWritePaths=/var/lib/inputlayer/data\nPrivateTmp=true\nNoNewPrivileges=true\nProtectKernelTunables=true\nProtectControlGroups=true\n\n# Environment\nEnvironment=IL_TRACE_LEVEL=info\nEnvironment=IL_TRACE_JSON=1\nEnvironment=IL_TRACE_FILE=/var/log/inputlayer/server.log\n\n[Install]\nWantedBy=multi-user.target\n```\n\n### Enable and Start\n\n```bash\nsudo mkdir -p /var/log/inputlayer\nsudo chown inputlayer:inputlayer /var/log/inputlayer\n\nsudo systemctl daemon-reload\nsudo systemctl enable inputlayer\nsudo systemctl start inputlayer\n\n# Check status\nsudo systemctl status inputlayer\nsudo journalctl -u inputlayer -f\n```\n\n## TLS and Reverse Proxies\n\nInputLayer does not terminate TLS natively. Use a reverse proxy for TLS termination in production.\n\n### Nginx\n\n```nginx\nserver {\n    listen 443 ssl;\n    server_name inputlayer.example.com;\n    ssl_certificate     /etc/ssl/certs/inputlayer.crt;\n    ssl_certificate_key /etc/ssl/private/inputlayer.key;\n    ssl_protocols       TLSv1.2 TLSv1.3;\n    location / {\n        proxy_pass http://127.0.0.1:8080;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection \"upgrade\";\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n        proxy_read_timeout 300s;\n        proxy_send_timeout 300s;\n    }\n}\n```\n\nThe `proxy_read_timeout` and `proxy_send_timeout` values of 300 seconds accommodate long-running WebSocket connections. The `Upgrade` and `Connection` headers are required for WebSocket support.\n\nFor HTTP-to-HTTPS redirect, add a companion server block:\n\n```nginx\nserver {\n    listen 80;\n    server_name inputlayer.example.com;\n    return 301 https://$host$request_uri;\n}\n```\n\n### Caddy\n\nCaddy automatically provisions and renews TLS certificates via Let's Encrypt:\n\n```caddyfile\ninputlayer.example.com {\n    reverse_proxy 127.0.0.1:8080 {\n        header_up X-Real-IP {remote_host}\n    }\n}\n```\n\nNo additional TLS configuration is needed. Caddy handles certificates, HTTPS redirect, and WebSocket upgrades automatically.\n\n## Kubernetes\n\n### Deployment\n\n```yaml\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: inputlayer\n  labels:\n    app: inputlayer\nspec:\n  replicas: 1\n  selector:\n    matchLabels:\n      app: inputlayer\n  template:\n    metadata:\n      labels:\n        app: inputlayer\n    spec:\n      containers:\n        - name: inputlayer\n          image: inputlayer:latest\n          ports:\n            - containerPort: 8080\n              name: http\n          env:\n            - name: INPUTLAYER_HTTP__HOST\n              value: \"0.0.0.0\"\n            - name: INPUTLAYER_HTTP__PORT\n              value: \"8080\"\n            - name: INPUTLAYER_STORAGE__DATA_DIR\n              value: \"/var/lib/inputlayer/data\"\n            - name: INPUTLAYER_STORAGE__PERSIST__ENABLED\n              value: \"true\"\n            - name: INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE\n              value: \"immediate\"\n            - name: IL_TRACE_LEVEL\n              value: \"info\"\n            - name: IL_TRACE_JSON\n              value: \"1\"\n            - name: INPUTLAYER_ADMIN_PASSWORD\n              valueFrom:\n                secretKeyRef:\n                  name: inputlayer-secrets\n                  key: admin-password\n          volumeMounts:\n            - name: data\n              mountPath: /var/lib/inputlayer/data\n          livenessProbe:\n            httpGet:\n              path: /live\n              port: http\n            initialDelaySeconds: 5\n            periodSeconds: 10\n            timeoutSeconds: 3\n          readinessProbe:\n            httpGet:\n              path: /ready\n              port: http\n            initialDelaySeconds: 3\n            periodSeconds: 5\n            timeoutSeconds: 3\n          resources:\n            requests:\n              cpu: \"500m\"\n              memory: \"512Mi\"\n            limits:\n              cpu: \"4\"\n              memory: \"4Gi\"\n      volumes:\n        - name: data\n          persistentVolumeClaim:\n            claimName: inputlayer-data\n```\n\n### Service\n\n```yaml\napiVersion: v1\nkind: Service\nmetadata:\n  name: inputlayer\nspec:\n  selector:\n    app: inputlayer\n  ports:\n    - port: 8080\n      targetPort: http\n      name: http\n  type: ClusterIP\n```\n\n### PersistentVolumeClaim\n\n```yaml\napiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: inputlayer-data\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 10Gi\n```\n\n### Secret\n\n```bash\nkubectl create secret generic inputlayer-secrets \\\n  --from-literal=admin-password='your-secure-password'\n```\n\n### Ingress\n\nUsing the nginx ingress controller with TLS:\n\n```yaml\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: inputlayer\n  annotations:\n    nginx.ingress.kubernetes.io/proxy-read-timeout: \"300\"\n    nginx.ingress.kubernetes.io/proxy-send-timeout: \"300\"\n    nginx.ingress.kubernetes.io/proxy-connect-timeout: \"60\"\n    # Required for WebSocket support\n    nginx.ingress.kubernetes.io/websocket-services: \"inputlayer\"\n    cert-manager.io/cluster-issuer: letsencrypt-prod\nspec:\n  ingressClassName: nginx\n  tls:\n    - hosts:\n        - inputlayer.example.com\n      secretName: inputlayer-tls\n  rules:\n    - host: inputlayer.example.com\n      http:\n        paths:\n          - path: /\n            pathType: Prefix\n            backend:\n              service:\n                name: inputlayer\n                port:\n                  number: 8080\n```\n\n## Resource Sizing\n\n### Memory\n\nInputLayer holds the active working set in memory via Differential Dataflow. Memory usage is proportional to the number of facts, rules, and active computations.\n\n| Workload | Facts | Rules | Recommended Memory |\n|---|---|---|---|\n| Development | \u003c 100K | \u003c 50 | 512 MB |\n| Small production | 100K - 1M | 50 - 200 | 2 - 4 GB |\n| Medium production | 1M - 10M | 200 - 1000 | 8 - 16 GB |\n| Large production | 10M+ | 1000+ | 32 GB+ |\n\n### CPU\n\nDifferential Dataflow benefits from multiple cores for parallel dataflow computation. The `num_threads` setting (default: `0`, meaning all available cores) controls worker parallelism.\n\n| Workload | Recommended CPU |\n|---|---|\n| Development | 2 cores |\n| Small production | 4 cores |\n| Medium production | 8 cores |\n| Large production | 16+ cores |\n\n### Disk\n\nThe data directory stores WAL files and compacted batch files. Disk usage depends on fact volume and the WAL rotation settings.\n\n- WAL files rotate at 64 MB by default (`max_wal_size_bytes`)\n- Batch files are compacted when a shard exceeds 10 files (`auto_compact_threshold`)\n- Plan for 2-3x the raw data size to account for WAL overhead and compaction headroom\n\nUse fast local storage (SSD/NVMe) for the data directory. Network-attached storage works but increases write latency, which impacts durability mode `immediate`.\n\n### File Descriptors\n\nFor production deployments with many concurrent WebSocket connections, increase the file descriptor limit:\n\n```bash\n# In systemd service\nLimitNOFILE=65536\n\n# Or system-wide in /etc/security/limits.conf\ninputlayer    soft    nofile    65536\ninputlayer    hard    nofile    65536\n```\n\n## Security Recommendations\n\n### Authentication\n\nInputLayer requires WebSocket authentication for all data operations. On first boot, if no admin password is configured, a random password is generated and printed to stderr. For production:\n\n1. Always set `INPUTLAYER_ADMIN_PASSWORD` explicitly\n2. Use Kubernetes Secrets or Docker secrets for the password\n3. Rotate credentials periodically\n\n### Network\n\n1. Bind the server to `127.0.0.1` when behind a reverse proxy (the default)\n2. Use a reverse proxy for TLS termination -- InputLayer does not terminate TLS natively\n3. Enable rate limiting via `http.rate_limit.per_ip_max_rps` for public-facing deployments\n4. Restrict CORS origins in production (`http.cors_origins` instead of `http.cors_allow_all`)\n\n### Filesystem\n\n1. Run as a dedicated non-root user\n2. Use `ProtectSystem=strict` in systemd to prevent writes outside allowed paths\n3. Set appropriate permissions on the data directory (`750` or stricter)\n4. Back up the data directory regularly -- the WAL and batch files are the source of truth\n\n### Durability\n\nFor production, always use `durability_mode = \"immediate\"`. The server warns on startup if a weaker mode is configured:\n\n```\nWARNING: Durability mode is Batched (not Immediate).\nRecent writes may be lost on crash.\n```\n\nAlso ensure `storage.persist.enabled = true`. Without it, all data is lost on restart:\n\n```\nWARNING: DD-native persist layer is DISABLED.\nData will NOT survive restarts.\n```"])</script><script>self.__next_f.push([1,"5:[\"$\",\"$Le\",null,{\"page\":{\"title\":\"Deployment\",\"content\":\"$f\",\"toc\":[{\"level\":2,\"text\":\"Quick Reference\",\"id\":\"quick-reference\"},{\"level\":2,\"text\":\"Environment Variables\",\"id\":\"environment-variables\"},{\"level\":2,\"text\":\"Configuration File\",\"id\":\"configuration-file\"},{\"level\":2,\"text\":\"Health Checks\",\"id\":\"health-checks\"},{\"level\":2,\"text\":\"Docker\",\"id\":\"docker\"},{\"level\":3,\"text\":\"Build the Image\",\"id\":\"build-the-image\"},{\"level\":3,\"text\":\"Run a Container\",\"id\":\"run-a-container\"},{\"level\":3,\"text\":\"Image Details\",\"id\":\"image-details\"},{\"level\":3,\"text\":\"Custom Configuration in Docker\",\"id\":\"custom-configuration-in-docker\"},{\"level\":2,\"text\":\"Docker Compose\",\"id\":\"docker-compose\"},{\"level\":3,\"text\":\"Basic Setup\",\"id\":\"basic-setup\"},{\"level\":3,\"text\":\"With Traefik Reverse Proxy\",\"id\":\"with-traefik-reverse-proxy\"},{\"level\":2,\"text\":\"systemd\",\"id\":\"systemd\"},{\"level\":3,\"text\":\"Create a System User\",\"id\":\"create-a-system-user\"},{\"level\":3,\"text\":\"Install the Binary\",\"id\":\"install-the-binary\"},{\"level\":3,\"text\":\"Create the Service File\",\"id\":\"create-the-service-file\"},{\"level\":3,\"text\":\"Enable and Start\",\"id\":\"enable-and-start\"},{\"level\":2,\"text\":\"TLS and Reverse Proxies\",\"id\":\"tls-and-reverse-proxies\"},{\"level\":3,\"text\":\"Nginx\",\"id\":\"nginx\"},{\"level\":3,\"text\":\"Caddy\",\"id\":\"caddy\"},{\"level\":2,\"text\":\"Kubernetes\",\"id\":\"kubernetes\"},{\"level\":3,\"text\":\"Deployment\",\"id\":\"deployment\"},{\"level\":3,\"text\":\"Service\",\"id\":\"service\"},{\"level\":3,\"text\":\"PersistentVolumeClaim\",\"id\":\"persistentvolumeclaim\"},{\"level\":3,\"text\":\"Secret\",\"id\":\"secret\"},{\"level\":3,\"text\":\"Ingress\",\"id\":\"ingress\"},{\"level\":2,\"text\":\"Resource Sizing\",\"id\":\"resource-sizing\"},{\"level\":3,\"text\":\"Memory\",\"id\":\"memory\"},{\"level\":3,\"text\":\"CPU\",\"id\":\"cpu\"},{\"level\":3,\"text\":\"Disk\",\"id\":\"disk\"},{\"level\":3,\"text\":\"File Descriptors\",\"id\":\"file-descriptors\"},{\"level\":2,\"text\":\"Security Recommendations\",\"id\":\"security-recommendations\"},{\"level\":3,\"text\":\"Authentication\",\"id\":\"authentication\"},{\"level\":3,\"text\":\"Network\",\"id\":\"network\"},{\"level\":3,\"text\":\"Filesystem\",\"id\":\"filesystem\"},{\"level\":3,\"text\":\"Durability\",\"id\":\"durability\"}]},\"slugKey\":\"guides/deployment\"}]\n"])</script><script>self.__next_f.push([1,"a:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"10:I[6869,[],\"IconMark\"]\nc:[[\"$\",\"title\",\"0\",{\"children\":\"InputLayer - A symbolic reasoning engine for AI agents\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/icon.svg\"}],[\"$\",\"$L10\",\"3\",{}]]\n8:null\n"])</script></body></html>

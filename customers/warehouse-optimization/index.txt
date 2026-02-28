@@ -1,0 +1,63 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","customers","warehouse-optimization",""],"q":"","i":false,"f":[[["",{"children":["customers",{"children":[["slug","warehouse-optimization","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[4782,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-dbae36b1030f3d7c.js","689","static/chunks/689-4fcf9680fdc90283.js","792","static/chunks/app/customers/%5Bslug%5D/page-5be121d63392c32b.js"],"CustomerClient"]
+f:Te8b,
+# Warehouse Optimization
+
+A European appliance manufacturer needed real-time reasoning for their warehouse operations. Their existing databases handled inventory tracking and order management well, but when it came to making fast, logic-heavy decisions - like optimal pick routing and dynamic re-prioritization - the application layer was doing too much heavy lifting.
+
+They added InputLayer as the reasoning layer on top of their existing infrastructure, and the results were immediate: sub-50ms query latency for decisions that previously took hundreds of milliseconds to assemble from multiple data sources.
+
+## The challenge
+
+The company operates large-scale distribution centers across Europe. Their existing systems were solid for what they were designed to do - track inventory levels, manage orders, store warehouse layouts. The problem wasn't with those systems. It was with the gap between them.
+
+```flow
+Picking robot needs route -> Inventory DB [primary] -> Order priority DB -> Layout DB -> Application code stitches it all together [highlight]
+```
+
+When a picking robot needed to determine the optimal route, the application layer had to pull data from inventory, cross-reference it with order priorities, factor in the physical layout, and compute a path. All of this logic lived in application code, making separate queries to different systems.
+
+This added hundreds of milliseconds to each decision. For a warehouse running thousands of picks per hour, those milliseconds add up fast.
+
+## The solution
+
+InputLayer was added as a dedicated reasoning layer sitting alongside the existing infrastructure. Warehouse layout, inventory positions, and order priorities are ingested as facts. The routing and optimization logic that used to live in scattered application code is now expressed as reasoning rules that the engine evaluates in real time.
+
+Here's what that looks like conceptually. The warehouse layout is represented as a graph - bins connected to aisles, aisles connected to docks. Inventory tells the engine what's in each bin. Order priorities tell it what needs to be picked first. And the routing rules compute optimal paths through this graph, taking all of these factors into account simultaneously.
+
+The key part is that the path computation is recursive - the engine explores routes through the warehouse graph, finding how to get from the dock to each bin that has items needed for high-priority orders. It evaluates this in one pass rather than requiring the application to make separate calls to different systems.
+
+## Results
+
+```steps
+Routing decisions :: Under 50ms (previously hundreds of ms) [success]
+Inventory change propagation :: Only affected routes recompute [primary]
+Stale route elimination :: Automatic - no robots sent to empty bins [success]
+```
+
+The impact was felt almost immediately. Query latency dropped to under 50ms for routing decisions that previously required multiple round-trips between systems.
+
+The incremental computation engine turned out to be especially valuable. When inventory changes (which happens constantly in a busy warehouse), only the affected routes recompute. No need to rebuild the entire routing graph every time someone picks an item. And when an item is fully picked, the correct retraction mechanism ensures that all dependent routing decisions update automatically.
+
+## Key technical insight
+
+```note
+type: tip
+The recursive path computation through the warehouse graph is what makes this practical. InputLayer's incremental computation means adding or removing inventory doesn't require recomputing all paths - only the affected routes update. This is what keeps latency under 50ms even as the warehouse state changes continuously.
+```5:["$","$Le",null,{"story":{"slug":"warehouse-optimization","title":"Warehouse Optimization","industry":"Manufacturing","keyMetric":"<50ms reasoning latency","content":"$f","toc":[{"level":2,"text":"The challenge","id":"the-challenge"},{"level":2,"text":"The solution","id":"the-solution"},{"level":2,"text":"Results","id":"results"},{"level":2,"text":"Key technical insight","id":"key-technical-insight"}]},"slug":"warehouse-optimization"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

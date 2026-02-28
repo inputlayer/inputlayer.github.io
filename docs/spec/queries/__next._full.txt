@@ -1,0 +1,286 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","spec","queries",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","spec/queries","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:Te32,# Queries
+
+Queries retrieve data from InputLayer. They return matching facts without modifying any data.
+
+## Basic Syntax
+
+Queries start with `?`:
+
+```datalog
+?edge(X, Y)
+```
+
+## Grammar
+
+```ebnf
+query ::= "?" body ;
+body  ::= literal ("," literal)* ;
+```
+
+## Query Patterns
+
+### Get All Data
+
+Query all facts in a relation:
+
+```datalog
+?edge(X, Y)
+```
+
+Result:
+
+| X | Y |
+|---|---|
+| 1 | 2 |
+| 2 | 3 |
+| 3 | 4 |
+
+*3 rows*
+
+### Filter by Value
+
+Fix one column to filter results:
+
+```datalog
+// Edges starting from node 1
+?edge(1, Y)
+```
+
+Result:
+
+| 1 | Y |
+|---|---|
+| 1 | 2 |
+
+*1 rows*
+
+### Check Existence
+
+Query with all constants to check if a fact exists:
+
+```datalog
+?edge(1, 2)
+```
+
+If the fact exists, you get a result with the constant values as columns. If it doesn't exist, you get `No results.`
+
+### Ignore Columns
+
+Use `_` (wildcard) to ignore columns you don't need:
+
+```datalog
+// Get all source nodes (ignore destination)
+?edge(X, _)
+```
+
+Result:
+
+| X |
+|---|
+| 1 |
+| 2 |
+| 3 |
+
+*3 rows*
+
+## Queries with Conditions
+
+### Comparisons
+
+Filter results with comparison operators:
+
+```datalog
+?person(Name, Age), Age > 25
+```
+
+### Multiple Conditions
+
+Combine conditions with commas (AND):
+
+```datalog
+?person(Name, Age), Age >= 18, Age <= 65
+```
+
+### Negation
+
+Find facts that don't match a pattern:
+
+```datalog
+// People who are not managers
+?employee(Id, Name), !manager(Id)
+```
+
+## Joins
+
+### Two-Way Join
+
+Join two relations:
+
+```datalog
+?employee(Id, Name), works_in(Id, DeptId), department(DeptId, DeptName)
+```
+
+This finds employees with their department names.
+
+### Self-Join
+
+Join a relation with itself:
+
+```datalog
+// Find pairs where A follows B and B follows A (mutual follows)
+?follows(A, B), follows(B, A), A < B
+```
+
+The `A < B` avoids duplicate pairs.
+
+## Querying Views
+
+Query derived relations (views) the same way as base relations:
+
+```datalog
+// Define a rule
++path(X, Y) <- edge(X, Y)
++path(X, Z) <- path(X, Y), edge(Y, Z)
+
+// Query the derived data
+?path(1, X)
+```
+
+## Computed Values
+
+### Arithmetic
+
+Compute values in queries:
+
+```datalog
+?product(Name, Price, Qty), Total = Price * Qty
+```
+
+### Vector Functions
+
+Compute distances or similarities:
+
+```datalog
+?vectors(Id1, V1), vectors(Id2, V2),
+   Id1 < Id2,
+   Dist = euclidean(V1, V2)
+```
+
+## Aggregations in Queries
+
+For aggregations, define a rule first then query it:
+
+```datalog
++dept_count(Dept, count<Id>) <- works_in(Id, Dept)
+?dept_count(Dept, Count)
+```
+
+## Result Format
+
+Query results are displayed as formatted tables with column headers:
+
+| Name | Age |
+|---|---|
+| "alice" | 30 |
+| "bob" | 25 |
+
+*2 rows*
+
+If no matches are found:
+
+```
+No results.
+```
+
+## Examples
+
+### Simple Lookup
+
+```datalog
++person[("alice", 30), ("bob", 25), ("charlie", 35)]
+
+?person("alice", Age)
+```
+
+Result:
+
+| "alice" | Age |
+|---|---|
+| "alice" | 30 |
+
+*1 rows*
+
+### Filtered Search
+
+```datalog
++employee[(1, "alice", 75000), (2, "bob", 65000), (3, "charlie", 80000)]
+
+?employee(Id, Name, Salary), Salary > 70000
+```
+
+Result:
+
+| Id | Name | Salary |
+|---|---|---|
+| 1 | "alice" | 75000 |
+| 3 | "charlie" | 80000 |
+
+*2 rows*
+
+### Complex Query
+
+```datalog
+// Data
++follows[(1, 2), (2, 3), (3, 1), (2, 1)]
+
+// Find mutual follows
+?follows(A, B), follows(B, A), A < B
+```
+
+Result:
+
+| A | B |
+|---|---|
+| 1 | 2 |
+| 1 | 3 |
+
+*2 rows*
+
+### Query with Aggregation
+
+```datalog
++sales[("north", 100), ("north", 200), ("south", 150)]
+
+// Define aggregation rule
++total_by_region(Region, sum<Amount>) <- sales(Region, Amount)
+
+// Query it
+?total_by_region(Region, Total)
+```
+
+Result:
+
+| Region | Total |
+|---|---|
+| "north" | 300 |
+| "south" | 150 |
+
+*2 rows*5:["$","$Le",null,{"page":{"title":"Queries","content":"$f","toc":[{"level":2,"text":"Basic Syntax","id":"basic-syntax"},{"level":2,"text":"Grammar","id":"grammar"},{"level":2,"text":"Query Patterns","id":"query-patterns"},{"level":3,"text":"Get All Data","id":"get-all-data"},{"level":3,"text":"Filter by Value","id":"filter-by-value"},{"level":3,"text":"Check Existence","id":"check-existence"},{"level":3,"text":"Ignore Columns","id":"ignore-columns"},{"level":2,"text":"Queries with Conditions","id":"queries-with-conditions"},{"level":3,"text":"Comparisons","id":"comparisons"},{"level":3,"text":"Multiple Conditions","id":"multiple-conditions"},{"level":3,"text":"Negation","id":"negation"},{"level":2,"text":"Joins","id":"joins"},{"level":3,"text":"Two-Way Join","id":"two-way-join"},{"level":3,"text":"Self-Join","id":"self-join"},{"level":2,"text":"Querying Views","id":"querying-views"},{"level":2,"text":"Computed Values","id":"computed-values"},{"level":3,"text":"Arithmetic","id":"arithmetic"},{"level":3,"text":"Vector Functions","id":"vector-functions"},{"level":2,"text":"Aggregations in Queries","id":"aggregations-in-queries"},{"level":2,"text":"Result Format","id":"result-format"},{"level":2,"text":"Examples","id":"examples"},{"level":3,"text":"Simple Lookup","id":"simple-lookup"},{"level":3,"text":"Filtered Search","id":"filtered-search"},{"level":3,"text":"Complex Query","id":"complex-query"},{"level":3,"text":"Query with Aggregation","id":"query-with-aggregation"}]},"slugKey":"spec/queries"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

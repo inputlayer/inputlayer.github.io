@@ -1,0 +1,271 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","spec","rules",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","spec/rules","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:T14f3,# Rules
+
+Rules define derived relations (views) by computing new facts from existing data. InputLayer has two types of rules:
+
+| Type | Syntax | Persistence |
+|------|--------|-------------|
+| **Session rule** | `head <- body` | Temporary, cleared on disconnect |
+| **Persistent rule** | `+head <- body` | Saved to disk, survives restarts |
+
+## Session Rules
+
+Session rules exist only for your current connection:
+
+```datalog
+// Define a session rule
+ancestor(X, Y) <- parent(X, Y)
+ancestor(X, Z) <- ancestor(X, Y), parent(Y, Z)
+
+// Use it immediately
+?ancestor("alice", X)
+
+// Rule is gone when you disconnect
+```
+
+Session rules are useful for:
+- Ad-hoc analysis
+- Experimenting with rule definitions
+- One-time computations
+
+### Managing Session Rules
+
+```
+.session              // List all session rules
+.session clear        // Clear all session rules
+.session drop 1       // Drop session rule #1
+```
+
+## Persistent Rules
+
+Persistent rules are saved to disk and automatically loaded:
+
+```datalog
+// Create a persistent rule (saved)
++path(X, Y) <- edge(X, Y)
++path(X, Z) <- path(X, Y), edge(Y, Z)
+
+// Works immediately and after restart
+?path(1, X)
+```
+
+Persistent rules are stored in `{data_dir}/{kg}/rules/catalog.json`.
+
+### Multi-Clause Rules
+
+A view can be defined by multiple rules (clauses):
+
+```datalog
+// First clause: base case
++ancestor(X, Y) <- parent(X, Y)
+
+// Second clause: recursive case
++ancestor(X, Z) <- parent(X, Y), ancestor(Y, Z)
+```
+
+Both clauses define `ancestor`. Results are the union of all matching clauses.
+
+### Deleting Persistent Rules
+
+Remove a persistent rule with `-`:
+
+```datalog
+-path(X, Y)    // Removes all rules defining 'path'
+```
+
+Or use meta commands:
+
+```
+.rule drop path        // Drop 'path' rule
+.rule clear path       // Clear for re-registration
+```
+
+## Rule Structure
+
+A rule has two parts:
+
+```
+head(Variables) <- body
+     ^              ^
+  What to         What must
+  produce         be true
+```
+
+### Head
+
+The head is an atom that defines what the rule produces:
+
+```datalog
++path(X, Y) <- edge(X, Y)
+// ^^^^^^^^
+// Head: produces facts for 'path' relation
+```
+
+The head must use a **lowercase** predicate name.
+
+### Body
+
+The body specifies conditions using literals separated by commas (AND):
+
+```datalog
++employee_in_dept(Name, Dept) <- employee(Id, Name), works_in(Id, Dept)
+//                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//                                Body: both conditions must match
+```
+
+## Grammar
+
+```ebnf
+session_rule    ::= head "<-" body ;
+persistent_rule ::= "+" head "<-" body ;
+delete_rule     ::= "-" predicate "(" variables ")" ;
+head            ::= predicate "(" term ("," term)* ")" ;
+body            ::= literal ("," literal)* ;
+```
+
+## Body Literals
+
+The body can contain:
+
+| Literal | Example | Meaning |
+|---------|---------|---------|
+| Positive atom | `edge(X, Y)` | Relation must have matching fact |
+| Negated atom | `!edge(X, Y)` | Relation must NOT have matching fact |
+| Comparison | `X > 10` | Condition must be true |
+| Arithmetic | `Z = X + Y` | Compute and bind value |
+| Aggregation | `count<X>` | Aggregate over variable |
+
+## Recursion
+
+Rules can reference themselves (recursion):
+
+```datalog
+// Transitive closure - find all reachable nodes
++reach(X, Y) <- edge(X, Y)
++reach(X, Z) <- reach(X, Y), edge(Y, Z)
+```
+
+InputLayer handles recursion automatically. It keeps computing until no new facts are found (fixpoint).
+
+### Mutual Recursion
+
+Rules can reference each other:
+
+```datalog
++even(0)
++odd(X) <- even(Y), succ(Y, X)
++even(X) <- odd(Y), succ(Y, X)
+```
+
+## Variable Safety Rules
+
+All variables in the **head** must appear in a **positive** body literal:
+
+```datalog
+// GOOD: X appears in edge(X, Y)
++start_nodes(X) <- edge(X, Y)
+
+// BAD: X only in head, not in positive body literal
++broken(X) <- edge(A, B)   // ERROR: X is unbound
+```
+
+Variables in **negations** or **comparisons** must also appear in a positive literal:
+
+```datalog
+// GOOD: X is bound by edge, then filtered
++filtered(X) <- edge(X, Y), X > 5
+
+// BAD: X only in comparison
++broken(X) <- Y > 5   // ERROR: X unbound, Y only in comparison
+```
+
+## Common Patterns
+
+### Filter
+
+```datalog
++adults(Name, Age) <- person(Name, Age), Age >= 18
+```
+
+### Join
+
+```datalog
++employee_dept(Name, DeptName) <-
+    employee(Id, Name),
+    works_in(Id, DeptId),
+    department(DeptId, DeptName)
+```
+
+### Set Difference
+
+```datalog
++not_in_b(X) <- a(X), !b(X)
+```
+
+### Aggregation
+
+```datalog
++dept_count(Dept, count<Id>) <- works_in(Id, Dept)
+```
+
+## Examples
+
+### Social Network
+
+```datalog
+// Facts
++follows[(1, 2), (2, 3), (3, 4), (2, 4)]
+
+// Find who user 1 can reach (transitive)
++can_reach(X, Y) <- follows(X, Y)
++can_reach(X, Z) <- can_reach(X, Y), follows(Y, Z)
+
+// Query
+?can_reach(1, X)
+```
+
+### Access Control
+
+```datalog
+// Facts
++user_role[("alice", "admin"), ("bob", "viewer")]
++role_perm[("admin", "read"), ("admin", "write"), ("viewer", "read")]
+
+// Rule: user has permission via role
++has_perm(User, Perm) <- user_role(User, Role), role_perm(Role, Perm)
+
+// Query
+?has_perm("alice", Perm)
+```
+
+### Graph Analysis
+
+```datalog
+// Facts
++edge[(1, 2), (2, 3), (3, 1), (4, 5)]
+
+// Nodes in same strongly connected component
++same_scc(X, Y) <- reach(X, Y), reach(Y, X)
++reach(X, Y) <- edge(X, Y)
++reach(X, Z) <- reach(X, Y), edge(Y, Z)
+
+// Query
+?same_scc(1, X)
+```5:["$","$Le",null,{"page":{"title":"Rules","content":"$f","toc":[{"level":2,"text":"Session Rules","id":"session-rules"},{"level":3,"text":"Managing Session Rules","id":"managing-session-rules"},{"level":2,"text":"Persistent Rules","id":"persistent-rules"},{"level":3,"text":"Multi-Clause Rules","id":"multi-clause-rules"},{"level":3,"text":"Deleting Persistent Rules","id":"deleting-persistent-rules"},{"level":2,"text":"Rule Structure","id":"rule-structure"},{"level":3,"text":"Head","id":"head"},{"level":3,"text":"Body","id":"body"},{"level":2,"text":"Grammar","id":"grammar"},{"level":2,"text":"Body Literals","id":"body-literals"},{"level":2,"text":"Recursion","id":"recursion"},{"level":3,"text":"Mutual Recursion","id":"mutual-recursion"},{"level":2,"text":"Variable Safety Rules","id":"variable-safety-rules"},{"level":2,"text":"Common Patterns","id":"common-patterns"},{"level":3,"text":"Filter","id":"filter"},{"level":3,"text":"Join","id":"join"},{"level":3,"text":"Set Difference","id":"set-difference"},{"level":3,"text":"Aggregation","id":"aggregation"},{"level":2,"text":"Examples","id":"examples"},{"level":3,"text":"Social Network","id":"social-network"},{"level":3,"text":"Access Control","id":"access-control"},{"level":3,"text":"Graph Analysis","id":"graph-analysis"}]},"slugKey":"spec/rules"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

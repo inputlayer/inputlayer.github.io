@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+3:I[484,[],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Reference Overview","content":"\n# Reference\n\nComplete reference documentation for InputLayer.\n\n- [Commands](/docs/reference/commands) — All REPL and meta commands\n- [Functions](/docs/reference/functions) — Built-in functions for math, strings, vectors, and more\n- [Syntax](/docs/reference/syntax) — Query language syntax reference\n- [Syntax Cheatsheet](/docs/reference/syntax-cheatsheet) — Quick reference card\n- [Aggregations](/docs/reference/aggregations) — Aggregate functions (count, sum, avg, etc.)","toc":[]},"slugKey":"reference/index"}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null

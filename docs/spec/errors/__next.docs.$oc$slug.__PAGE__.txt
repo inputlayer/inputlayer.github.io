@@ -1,0 +1,232 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:Teb3,# Error Reference
+
+This section documents common errors you may encounter when using InputLayer.
+
+## Syntax Errors
+
+### Invalid Statement
+
+```
+Error: Invalid statement: unexpected token
+```
+
+Check that your statement follows correct syntax.
+
+### Parse Error
+
+```
+Error: Parse error at line N
+```
+
+Common causes:
+- Unbalanced parentheses
+- Invalid characters
+
+## Relation Errors
+
+### Undefined Relation
+
+```
+Error: Undefined relation 'foo'
+```
+
+The relation doesn't exist. Insert facts or check spelling:
+
+```datalog
++foo(1, 2)        // Creates relation
+?foo(X, Y)        // Now works
+```
+
+### Arity Mismatch
+
+```
+Error: Arity mismatch for 'edge': expected 2, got 3
+```
+
+You provided the wrong number of columns:
+
+```datalog
++edge(1, 2)       // edge has 2 columns
++edge(1, 2, 3)    // ERROR: 3 values for 2-column relation
+```
+
+### Type Mismatch
+
+```
+Error: Type mismatch: expected int, got string
+```
+
+Value types don't match the schema:
+
+```datalog
++person(name: string, age: int)
++person(30, "alice")   // ERROR: reversed types
+```
+
+### Insert into View
+
+```
+Error: Cannot insert into view 'path'
+```
+
+You can't insert facts into a derived relation (view):
+
+```datalog
++path(X, Y) <- edge(X, Y)   // path is a view
++path(1, 2)                  // ERROR: can't insert into view
+```
+
+## Rule Errors
+
+### Unsafe Variable
+
+```
+Unsafe rule 'bad': Head variable(s) X not bound by any positive body atom.
+All head variables must appear in at least one positive body predicate.
+```
+
+All head variables must appear in a positive body literal:
+
+```datalog
+// BAD: X not bound in body
++bad(X) <- edge(A, B)
+
+// GOOD: X bound by edge
++good(X) <- edge(X, _)
+```
+
+### Unsafe Negation Variable
+
+```
+Unsafe negation in rule 'bad': Variable(s) X in negated atom !excluded(...)
+must be bound by a positive body atom. Range restriction violation.
+```
+
+Variables in negations must also appear in positive literals:
+
+```datalog
+// BAD: X only in negation
++bad(X) <- !excluded(X)
+
+// GOOD: X bound first
++good(X) <- items(X), !excluded(X)
+```
+
+### Unstratifiable Negation
+
+```
+Unstratified negation: Rule 'a' negates itself (!a in body). Self-negation is not supported.
+```
+
+A relation can't negatively depend on itself:
+
+```datalog
+// BAD: a depends on !a
++a(X) <- b(X), !a(X)
+
+// GOOD: negate a different relation
++a(X) <- b(X), !c(X)
+```
+
+## Arithmetic Errors
+
+### Division by Zero
+
+```
+Error: Division by zero
+```
+
+Check your data for zero divisors:
+
+```datalog
+// May error if Y = 0
++ratio(X, R) <- data(X, Y), R = X / Y
+
+// Safe: filter out zeros
++ratio(X, R) <- data(X, Y), Y != 0, R = X / Y
+```
+
+### Overflow
+
+```
+Error: Integer overflow
+```
+
+Result exceeds 64-bit integer range.
+
+## Knowledge Graph Errors
+
+### Knowledge Graph Not Found
+
+```
+Error: Knowledge graph 'foo' not found
+```
+
+The knowledge graph doesn't exist:
+
+```
+.kg create foo    // Create it first
+.kg use foo       // Then use it
+```
+
+### Cannot Drop Current
+
+```
+Error: Cannot drop current knowledge graph
+```
+
+Switch to a different knowledge graph first:
+
+```
+.kg use other     // Switch away
+.kg drop target   // Now drop works
+```
+
+## Aggregation Errors
+
+### Invalid Aggregation Variable
+
+```
+Error: Aggregation variable 'X' not found in body
+```
+
+The aggregated variable must appear in the rule body:
+
+```datalog
+// BAD: Z not in body
++bad(sum<Z>) <- data(X, Y)
+
+// GOOD: X appears in body
++good(sum<X>) <- data(X, _)
+```
+
+## Connection Errors
+
+### Server Unavailable
+
+```
+Error: Could not connect to server at http://127.0.0.1:8080
+```
+
+The InputLayer server isn't running. Start it with:
+
+```bash
+inputlayer-server
+```
+
+### Request Timeout
+
+```
+Error: Request timed out
+```
+
+The query took too long. Try:
+- Adding filters to reduce data
+- Breaking into smaller queries
+- Increasing timeout in config0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Error Reference","content":"$3","toc":[{"level":2,"text":"Syntax Errors","id":"syntax-errors"},{"level":3,"text":"Invalid Statement","id":"invalid-statement"},{"level":3,"text":"Parse Error","id":"parse-error"},{"level":2,"text":"Relation Errors","id":"relation-errors"},{"level":3,"text":"Undefined Relation","id":"undefined-relation"},{"level":3,"text":"Arity Mismatch","id":"arity-mismatch"},{"level":3,"text":"Type Mismatch","id":"type-mismatch"},{"level":3,"text":"Insert into View","id":"insert-into-view"},{"level":2,"text":"Rule Errors","id":"rule-errors"},{"level":3,"text":"Unsafe Variable","id":"unsafe-variable"},{"level":3,"text":"Unsafe Negation Variable","id":"unsafe-negation-variable"},{"level":3,"text":"Unstratifiable Negation","id":"unstratifiable-negation"},{"level":2,"text":"Arithmetic Errors","id":"arithmetic-errors"},{"level":3,"text":"Division by Zero","id":"division-by-zero"},{"level":3,"text":"Overflow","id":"overflow"},{"level":2,"text":"Knowledge Graph Errors","id":"knowledge-graph-errors"},{"level":3,"text":"Knowledge Graph Not Found","id":"knowledge-graph-not-found"},{"level":3,"text":"Cannot Drop Current","id":"cannot-drop-current"},{"level":2,"text":"Aggregation Errors","id":"aggregation-errors"},{"level":3,"text":"Invalid Aggregation Variable","id":"invalid-aggregation-variable"},{"level":2,"text":"Connection Errors","id":"connection-errors"},{"level":3,"text":"Server Unavailable","id":"server-unavailable"},{"level":3,"text":"Request Timeout","id":"request-timeout"}]},"slugKey":"spec/errors"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

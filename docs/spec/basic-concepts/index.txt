@@ -1,0 +1,192 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","spec","basic-concepts",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","spec/basic-concepts","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:T1222,# Core Concepts
+
+This section explains the fundamental building blocks of InputLayer's query language.
+
+## Relations (Tables)
+
+A relation is a table that stores facts. Each relation has:
+- A **name** (lowercase, like `edge` or `person`)
+- A **schema** (the columns and their types)
+- **Facts** (the rows)
+
+```datalog
+// Create a relation by inserting facts
++person("alice", 30)
++person("bob", 25)
+```
+
+This creates a `person` relation with 2 columns (name and age) and 2 rows.
+
+## Facts (Rows)
+
+A fact is a single row in a relation. Facts contain only values (no variables).
+
+```datalog
+// Insert facts
++edge(1, 2)           // edge has two integer columns
++user("alice", true)  // user has string and boolean columns
+```
+
+Facts are stored persistently. When you restart InputLayer, your facts are still there.
+
+## Rules (Derived Tables)
+
+Rules define new relations based on existing data. A rule has:
+- A **head** (the relation being defined)
+- A **body** (the conditions for deriving facts)
+
+```datalog
+// "path exists from X to Y if edge exists from X to Y"
++path(X, Y) <- edge(X, Y)
+
+// "path exists from X to Z if path exists from X to Y and edge from Y to Z"
++path(X, Z) <- path(X, Y), edge(Y, Z)
+```
+
+The head is `path(X, Y)`. The body is everything after `<-`.
+
+Rules don't store data directly - they compute results from stored facts. When facts change, rule results update automatically.
+
+## Views
+
+A view is a relation defined by rules. In the example above, `path` is a view.
+
+Views are virtual tables:
+- They don't store data directly
+- Results are computed when queried
+- Updates are incremental (only changed parts recompute)
+
+## Queries
+
+A query asks a question about your data. It returns matching facts.
+
+```datalog
+// Find all edges starting from node 1
+?edge(1, X)
+
+// Find all people older than 25
+?person(Name, Age), Age > 25
+```
+
+Queries return results but don't modify any data.
+
+## Variables
+
+Variables start with an uppercase letter. They match any value.
+
+| Pattern | Matches |
+|---------|---------|
+| `edge(X, Y)` | All edges (both columns bound to variables) |
+| `edge(1, Y)` | Edges starting from node 1 |
+| `edge(X, X)` | Self-loops (same value in both columns) |
+| `edge(_, Y)` | All edges (ignore first column) |
+
+The underscore `_` is a special variable that means "I don't care about this value."
+
+## Constants
+
+Constants are literal values:
+
+| Type | Examples |
+|------|----------|
+| **Integer** | `1`, `-42`, `1000000` |
+| **Float** | `3.14`, `-0.5`, `1e10` |
+| **String** | `"hello"`, `"alice"`, `"with spaces"` |
+| **Boolean** | `true`, `false` |
+| **Vector** | `[1.0, 2.0, 3.0]` |
+
+## Atoms (Predicate Calls)
+
+An atom is a relation name with arguments:
+
+```datalog
+edge(1, 2)              // Atom with two constants
+person(Name, Age)       // Atom with two variables
+friend(X, "alice")      // Atom with variable and constant
+```
+
+In a rule body, atoms specify patterns to match. In a rule head, atoms specify what to produce.
+
+## Schema (Column Types)
+
+You can declare a relation's schema before inserting data:
+
+```datalog
+// Declare schema with types
++employee(id: int, name: string, salary: int)
+
+// Now insert data
++employee(1, "alice", 50000)
++employee(2, "bob", 60000)
+```
+
+Schema declarations are optional. Without a schema, InputLayer accepts any value types (schema-less mode).
+
+### Session vs Persistent Schemas
+
+Like rules, schemas can be session or persistent:
+
+```datalog
+// Persistent schema - saved with knowledge graph
++user(id: int, email: string, name: string)
+
+// Session schema - only for current connection
+user(id: int, email: string, name: string)
+```
+
+## Program Structure
+
+An InputLayer session consists of:
+
+1. **Stored facts** - data in relations
+2. **Persistent rules** - saved rule definitions
+3. **Session rules** - temporary rules for this session
+4. **Queries** - questions you ask
+
+```datalog
+// 1. Insert facts (stored)
++edge[(1, 2), (2, 3), (3, 4)]
+
+// 2. Define persistent rule (saved)
++path(X, Y) <- edge(X, Y)
++path(X, Z) <- path(X, Y), edge(Y, Z)
+
+// 3. Define session rule (temporary)
+long_path(X, Y) <- path(X, Y), X < Y
+
+// 4. Query
+?path(1, X)
+```
+
+## Knowledge Graphs
+
+A knowledge graph is a named container for relations and rules. It's like a database in SQL systems.
+
+```datalog
+.kg create social        // Create a knowledge graph
+.kg use social           // Switch to it
++follows(1, 2)           // Data goes in 'social'
+.kg create work          // Create another
+.kg use work             // Switch to it
++reports_to(1, 2)        // Data goes in 'work'
+```
+
+Each knowledge graph is isolated. Relations in `social` are separate from relations in `work`.5:["$","$Le",null,{"page":{"title":"Core Concepts","content":"$f","toc":[{"level":2,"text":"Relations (Tables)","id":"relations-tables"},{"level":2,"text":"Facts (Rows)","id":"facts-rows"},{"level":2,"text":"Rules (Derived Tables)","id":"rules-derived-tables"},{"level":2,"text":"Views","id":"views"},{"level":2,"text":"Queries","id":"queries"},{"level":2,"text":"Variables","id":"variables"},{"level":2,"text":"Constants","id":"constants"},{"level":2,"text":"Atoms (Predicate Calls)","id":"atoms-predicate-calls"},{"level":2,"text":"Schema (Column Types)","id":"schema-column-types"},{"level":3,"text":"Session vs Persistent Schemas","id":"session-vs-persistent-schemas"},{"level":2,"text":"Program Structure","id":"program-structure"},{"level":2,"text":"Knowledge Graphs","id":"knowledge-graphs"}]},"slugKey":"spec/basic-concepts"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

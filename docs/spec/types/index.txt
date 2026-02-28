@@ -1,0 +1,261 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","spec","types",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","spec/types","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:T1119,# Data Types
+
+InputLayer supports several data types for constants.
+
+## Type Summary
+
+| Type | Syntax | Examples |
+|------|--------|----------|
+| Integer | digits | `1`, `-42`, `1000000` |
+| Float | digits with decimal | `3.14`, `-0.5`, `1e10` |
+| String | double quotes | `"hello"`, `"alice"` |
+| Boolean | true/false | `true`, `false` |
+| Vector | brackets | `[1.0, 2.0, 3.0]` |
+| Timestamp | Unix milliseconds | `1704067200000` |
+
+**Schema hint**: `symbol` — interned string optimization (see [Symbols](#symbols) below).
+
+## Integers
+
+64-bit signed integers:
+
+```datalog
+42
+-17
+0
+1000000
+-9223372036854775808   // Minimum
+9223372036854775807    // Maximum
+```
+
+### Grammar
+
+```ebnf
+integer ::= "-"? [0-9]+ ;
+```
+
+## Floats
+
+64-bit floating-point numbers:
+
+```datalog
+3.14
+-0.5
+0.0
+1.23e10
+-4.56e-7
+```
+
+### Grammar
+
+```ebnf
+float ::= "-"? [0-9]+ "." [0-9]+ ( ("e" | "E") "-"? [0-9]+ )? ;
+```
+
+## Strings
+
+UTF-8 text enclosed in double quotes:
+
+```datalog
+"hello"
+"Alice Smith"
+"with spaces and punctuation!"
+""                    // Empty string
+```
+
+### Escape Sequences
+
+| Sequence | Meaning |
+|----------|---------|
+| `\"` | Double quote |
+| `\\` | Backslash |
+| `\n` | Newline |
+| `\t` | Tab |
+| `\r` | Carriage return |
+
+```datalog
++"She said \"hello\""
++"Line 1\nLine 2"
++"Path: C:\\Users\\alice"
+```
+
+### Grammar
+
+```ebnf
+string ::= '"' ( [^"\\] | escape )* '"' ;
+escape ::= '\\' ( '"' | '\\' | 'n' | 't' | 'r' ) ;
+```
+
+## Booleans
+
+Boolean true or false:
+
+```datalog
+true
+false
+```
+
+### Grammar
+
+```ebnf
+boolean ::= "true" | "false" ;
+```
+
+## Vectors
+
+Arrays of floating-point numbers:
+
+```datalog
+[1.0, 2.0, 3.0]
+[0.5, -0.5]
+[]                  // Empty vector
+```
+
+Vectors are used for embeddings and similarity search:
+
+```datalog
++vectors(1, [1.0, 0.0, 0.0])
++vectors(2, [0.0, 1.0, 0.0])
+
+?vectors(Id1, V1), vectors(Id2, V2),
+   Dist = euclidean(V1, V2)
+```
+
+### Grammar
+
+```ebnf
+vector ::= "[" ( float ( "," float )* )? "]" ;
+```
+
+## Timestamps
+
+Unix timestamps in milliseconds since epoch (1970-01-01 00:00:00 UTC):
+
+```datalog
+1704067200000           // 2024-01-01 00:00:00 UTC
+```
+
+Timestamps are used with temporal functions:
+
+```datalog
++events(1, 1704067200000)
++events(2, 1704153600000)
+
+// Find events from last 24 hours
+?events(Id, Ts),
+   Now = time_now(),
+   within_last(Ts, Now, 86400000)
+```
+
+Timestamps are stored as 64-bit integers internally.
+
+### Schema Declaration
+
+```datalog
++event_log(id: int, occurred_at: timestamp, message: string)
+```
+
+Aliases: `timestamp`, `time`, `datetime`
+
+## Symbols
+
+Symbols are interned strings optimized for frequent comparisons (like identifiers or tags):
+
+```datalog
++user(1, "alice", "admin")     // "admin" as string
+```
+
+### Schema Declaration
+
+Use the `symbol` type when a column contains a small set of repeated values:
+
+```datalog
++user(id: int, name: string, role: symbol)
+```
+
+Symbols provide better performance for equality comparisons and use less memory when values repeat frequently.
+
+**Note**: At the data level, symbols appear as strings. The `symbol` type is a schema hint for optimization.
+
+## Type Coercion
+
+InputLayer performs limited automatic type coercion:
+
+| From | To | Automatic? |
+|------|-----|------------|
+| Integer | Float | Yes (in arithmetic) |
+| Others | Any | No |
+
+```datalog
+// Integer + Float = Float
+?data(X, Y), Z = X + 3.14  // X (int) coerced to float
+```
+
+## Type in Schemas
+
+When declaring schemas, use these type names:
+
+```datalog
++employee(
+    id: int,
+    name: string,
+    salary: float,
+    active: bool
+)
+```
+
+| Type Keyword | Aliases | Accepts |
+|--------------|---------|---------|
+| `int` | `integer`, `i32`, `i64` | Integers |
+| `float` | `double`, `f64`, `number` | Floats |
+| `string` | `str`, `text` | Strings |
+| `bool` | `boolean` | true, false |
+| `vector` | `embedding`, `vec` | Vector arrays |
+| `timestamp` | `time`, `datetime` | Unix milliseconds |
+| `symbol` | - | Interned strings (schema hint) |
+
+## Examples
+
+### Mixed Types
+
+```datalog
++product(1, "Widget", 19.99, true)
++product(2, "Gadget", 29.99, false)
+```
+
+### Vectors for Similarity
+
+```datalog
++embedding[(1, [0.1, 0.2, 0.3]), (2, [0.2, 0.3, 0.4])]
+
+?embedding(Id1, V1), embedding(Id2, V2),
+   Id1 < Id2,
+   Sim = cosine(V1, V2),
+   Sim > 0.9
+```
+
+### String Comparisons
+
+```datalog
++person[("alice", "engineering"), ("bob", "sales")]
+
+?person(Name, Dept), Dept = "engineering"
+```5:["$","$Le",null,{"page":{"title":"Data Types","content":"$f","toc":[{"level":2,"text":"Type Summary","id":"type-summary"},{"level":2,"text":"Integers","id":"integers"},{"level":3,"text":"Grammar","id":"grammar"},{"level":2,"text":"Floats","id":"floats"},{"level":3,"text":"Grammar","id":"grammar"},{"level":2,"text":"Strings","id":"strings"},{"level":3,"text":"Escape Sequences","id":"escape-sequences"},{"level":3,"text":"Grammar","id":"grammar"},{"level":2,"text":"Booleans","id":"booleans"},{"level":3,"text":"Grammar","id":"grammar"},{"level":2,"text":"Vectors","id":"vectors"},{"level":3,"text":"Grammar","id":"grammar"},{"level":2,"text":"Timestamps","id":"timestamps"},{"level":3,"text":"Schema Declaration","id":"schema-declaration"},{"level":2,"text":"Symbols","id":"symbols"},{"level":3,"text":"Schema Declaration","id":"schema-declaration"},{"level":2,"text":"Type Coercion","id":"type-coercion"},{"level":2,"text":"Type in Schemas","id":"type-in-schemas"},{"level":2,"text":"Examples","id":"examples"},{"level":3,"text":"Mixed Types","id":"mixed-types"},{"level":3,"text":"Vectors for Similarity","id":"vectors-for-similarity"},{"level":3,"text":"String Comparisons","id":"string-comparisons"}]},"slugKey":"spec/types"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

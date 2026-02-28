@@ -1,0 +1,1235 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+5:I[8318,["758","static/chunks/758-3cb69ce377cde046.js","830","static/chunks/830-dbae36b1030f3d7c.js","831","static/chunks/app/blog/page-15f85819cb48bf7d.js"],"BlogIndexClient"]
+11:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+6:T1213,
+# Why Vector Search Alone Fails Your AI Agent
+
+Imagine you're building a healthcare AI agent. A patient asks: *"Can I eat shrimp tonight?"*
+
+Your agent does what it's supposed to do - it embeds the question and runs a similarity search. Back come the results: shrimp recipes, nutritional info, some allergy FAQs. All genuinely relevant to the words "eat shrimp."
+
+All completely wrong for this patient.
+
+## What went wrong
+
+The correct answer is "No, and it could be dangerous." But that answer doesn't live in any single document. It lives across three separate pieces of information:
+
+```chain
+Sarah takes Amiodarone
+-- interacts with
+Iodine
+-- found in
+Shrimp
+=> Shrimp is risky for Sarah
+```
+
+The patient takes a specific medication. That medication interacts with iodine. Shrimp is high in iodine. Each fact sits in a different database. And the phrase "shrimp dinner" has zero similarity to "medication contraindications" - they share no words, no concepts, no embedding overlap.
+
+This is the core problem: **the connection between these facts is logical, not semantic.** You can't find it by looking for similar text. You have to follow a chain of relationships from one fact to the next.
+
+## This shows up everywhere
+
+The healthcare example is vivid, but this same pattern appears in every domain where answers require connecting multiple facts.
+
+```steps
+A compliance analyst asks: "Is this transaction suspicious?" :: The vector DB finds similar transactions. It misses that Entity A is owned by Entity B, which is on a sanctions list.
+An employee searches for Q3 revenue reports :: The vector DB returns 40 matches. It can't check whether this employee has permission to see any of them through the org hierarchy.
+A supply chain manager asks about disruptions :: The vector DB finds news about port closures. It can't trace which of your suppliers use that port, and which products are affected.
+```
+
+In every case, the answer requires **following a chain of connected facts** - not finding a similar document. The information exists, but it's spread across different sources, and the connections between them are structural, not textual.
+
+## Why more RAG tricks won't help
+
+When teams hit this problem, the first instinct is to optimize the retrieval pipeline. Better chunking. Better embeddings. Hybrid search. Re-ranking.
+
+None of these help, because the problem isn't retrieval quality. The retrieval is working perfectly - it's finding the most similar content. The problem is that similarity is the wrong tool for the job.
+
+```flow
+User question -> Embed -> Similarity search -> Similar documents
+```
+
+This pipeline answers: *"What text looks most like my question?"* That's great when the answer exists in a single document. It fails when the answer must be **derived** by connecting facts from different places.
+
+## What teams end up building
+
+To work around this, teams start adding systems. A graph database for relationships. A rules engine for business logic. An authorization service for access control. Application code to stitch it all together.
+
+```flow
+User question -> Vector DB [primary] -> Graph DB -> Rules engine -> Auth service -> Reconcile in app code
+```
+
+The reasoning logic ends up scattered across services. When a fact changes, you have to propagate the change across all of them. It works, but it's fragile, and each new capability makes it more fragile.
+
+## What it looks like with a reasoning layer
+
+InputLayer sits alongside your vector database and handles the part that similarity search can't: following chains of logic and deriving conclusions.
+
+```flow
+User question -> Your vector DB -> Similar documents
+```
+
+```flow
+User question -> InputLayer [primary] -> Derived conclusions
+```
+
+You keep your vector database for what it's good at - finding similar content. You add InputLayer for questions that require reasoning: traversing relationships, evaluating rules, checking permissions through hierarchies.
+
+When the patient's medication list changes, InputLayer automatically updates every downstream risk assessment. When an employee changes departments, their permissions recalculate through the org hierarchy. When a corporate ownership structure shifts, the compliance analysis adjusts. All of this happens incrementally - only the affected conclusions recompute, not the entire knowledge base.
+
+## Getting started
+
+InputLayer is open-source and runs in a single Docker container:
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) walks you through building your first knowledge graph in about 10 minutes.7:T1933,
+# InputLayer in 10 Minutes: From Docker to Your First Knowledge Graph
+
+By the end of this tutorial, you'll have a running knowledge graph that can answer questions no regular database can handle. We'll build it step by step, and I'll explain what's happening at each point.
+
+## Step 1: Start InputLayer
+
+Run this in your terminal:
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+You'll see InputLayer start up and print a message telling you it's ready. That's it - no config files, no setup.
+
+## Step 2: Open the REPL
+
+Now you need a way to talk to InputLayer. Open your browser and go to:
+
+```
+http://localhost:8080
+```
+
+This opens InputLayer's interactive REPL - a command line where you can type queries and see results immediately. Think of it like a SQL console, but for knowledge graphs.
+
+You can also use the [Python SDK](/docs/guides/python-sdk/) or the [REST API](/docs/guides/configuration/), but the REPL is the fastest way to explore.
+
+## Step 3: Store some facts
+
+Let's model a small organization. In the REPL, you'll store three facts about who manages whom:
+
+```
+Alice manages Bob
+Bob manages Charlie
+Bob manages Diana
+```
+
+Here's what that looks like as a structure:
+
+```tree
+Alice [primary]
+  Bob
+    Charlie
+    Diana
+```
+
+That's the entire org chart. Three facts, four people. InputLayer stores these immediately - no schema to define, no tables to create.
+
+You can already ask simple questions: "Who does Bob manage?" returns Charlie and Diana. "Who manages Bob?" returns Alice. These are direct lookups, nothing special yet.
+
+## Step 4: Define a rule
+
+This is the step where InputLayer becomes fundamentally different from a regular database.
+
+We want to answer: *"Who does Alice have authority over?"* Alice manages Bob directly. But does she have authority over Charlie? She doesn't manage Charlie - Bob does. But intuitively, yes - because she manages the person who manages Charlie.
+
+You express this intuition as a rule:
+
+```note
+type: tip
+If person A manages person B, then A has authority over B.
+And if A has authority over B, and B has authority over C, then A has authority over C too.
+```
+
+That second sentence is the important part - it's recursive. It says: authority flows down through the management chain, no matter how deep it goes.
+
+When you enter this rule, InputLayer immediately starts reasoning. It applies the rule over and over until there are no more conclusions to draw. Here's what it figures out:
+
+```steps
+Alice manages Bob, so Alice has authority over Bob :: Direct - from the fact you stored
+Bob manages Charlie, so Bob has authority over Charlie :: Direct - from the fact you stored
+Bob manages Diana, so Bob has authority over Diana :: Direct - from the fact you stored
+Alice has authority over Bob, and Bob has authority over Charlie... :: Following the chain one more step
+Alice has authority over Charlie :: Derived - the engine figured this out [success]
+Alice has authority over Diana :: Derived - same logic, through Bob [success]
+```
+
+Five authority relationships, derived automatically from three facts and one rule.
+
+## Step 5: Ask a question
+
+Now query: *"Who does Alice have authority over?"*
+
+The answer: **Bob, Charlie, and Diana.**
+
+Alice doesn't manage Charlie or Diana directly. But the engine followed the chain and figured it out. This is something a regular database can't do - it required two hops of reasoning.
+
+## Step 6: Add vector search
+
+InputLayer supports vector embeddings alongside logical reasoning. This is where it gets powerful, because you can combine the two in a single query.
+
+Say each person has authored some documents, and each document has an embedding vector. You can now ask something that would normally require multiple systems:
+
+*"Find documents similar to my query, but only from people that Alice has authority over."*
+
+```steps
+Resolve Alice's authority chain :: The engine figures out: Bob, Charlie, Diana
+Find documents authored by those people :: Filters to their documents only
+Rank by semantic similarity to the query :: Returns the most relevant ones [success]
+```
+
+Reasoning and retrieval, combined in one pass. No separate authorization service, no glue code.
+
+## Step 7: See incremental updates
+
+Add a new fact: Diana now manages a new employee, Frank.
+
+```tree
+Alice [primary]
+  Bob
+    Charlie
+    Diana
+      Frank [success]
+```
+
+Query authority again. Frank shows up in Alice's results immediately - even though you never told the system about Alice's relationship to Frank. The engine derived it: Alice has authority over Diana, Diana manages Frank, therefore Alice has authority over Frank.
+
+The important part: InputLayer didn't recompute everything from scratch. It identified that the new fact only affects a small part of the graph and updated just that. On a 2,000-node graph, this is over **1,600x faster** than recomputing everything.
+
+## Step 8: See correct retraction
+
+Remove the fact that Bob manages Diana.
+
+```tree
+Alice [primary]
+  Bob
+    Charlie
+```
+
+Query authority again. Diana and Frank are gone from Alice's results. But Bob still has authority over Charlie - that relationship doesn't depend on Diana at all.
+
+Here's the subtle part: what if Diana had reported to Alice through *two* paths? Say both Bob and Eve managed Diana. Removing Bob's management of Diana shouldn't remove Alice's authority over Diana if the Eve path still exists. InputLayer tracks this automatically - a conclusion only disappears when *all* paths supporting it are gone.
+
+## What you just built
+
+In about 10 minutes, you've used:
+
+| Capability | What happened |
+|---|---|
+| Knowledge graph | Stored facts about people and relationships |
+| Recursive reasoning | A rule derived authority chains automatically |
+| Vector search | Combined similarity with logical reasoning |
+| Incremental updates | New facts propagated in milliseconds |
+| Correct retraction | Removed facts cleaned up precisely |
+
+These capabilities normally require stitching together multiple systems - a graph database, a vector database, a rules engine, application code. InputLayer handles them all in one place.
+
+## Next steps
+
+The [data modeling guide](/docs/guides/core-concepts/) covers how to design your knowledge graph schema. The [vectors guide](/docs/guides/vectors/) dives deeper into similarity search and HNSW indexes. And the [Python SDK](/docs/guides/python-sdk/) is the fastest way to integrate InputLayer into your applications.8:T1f32,
+# Benchmarks: 1,587x Faster Recursive Queries with Differential Dataflow
+
+When a single fact changes in a knowledge graph with 400,000 derived relationships, how much work should the system do?
+
+The naive answer: recompute all 400,000 relationships from scratch. That's what most systems do. It takes 11 seconds.
+
+The smart answer: figure out which relationships are actually affected by the change and update only those. That takes 6.83 milliseconds.
+
+That's a **1,652x** difference. And it's the difference between "we can check permissions in real time" and "we run a batch job overnight and hope nothing changes before morning."
+
+## The benchmark setup
+
+We wanted to test something that reflects real-world usage, not a synthetic micro-benchmark. So we picked a common pattern: computing transitive authority in an organizational graph. This is the same kind of computation you'd need for access control chains, supply chain risk propagation, or entity resolution across corporate structures.
+
+```flow
+2,000 nodes -> ~6,000 edges -> ~400,000 derived relationships
+```
+
+```note
+type: info
+The test: add one new edge, then measure how long it takes to update all derived relationships.
+```
+
+The 400,000 derived relationships come from the transitive nature of authority. If A manages B and B manages C, then A has authority over C. Follow that logic through 2,000 nodes with an average depth of 8-10 levels, and the number of derived relationships grows fast.
+
+## The results
+
+| Approach | Time | What it does |
+|---|---|---|
+| Full recomputation | 11,280 ms | Throws away all 400,000 derived relationships, re-derives them all |
+| InputLayer (incremental) | 6.83 ms | Identifies affected relationships, updates only those |
+
+Full recomputation doesn't care that you only changed one edge. It treats the entire graph as dirty and rebuilds everything. InputLayer's engine, on the other hand, traces the impact of the change through the derivation graph and touches only what's affected.
+
+To put 6.83ms in perspective: that's fast enough to run inline with an API request. You can check permissions, compute supply chain exposure, or resolve entity relationships at query time rather than pre-computing them in a batch process.
+
+## The scaling story
+
+Here's where it gets really interesting. The incremental advantage doesn't stay constant as your graph grows - it gets *dramatically* better.
+
+| Graph size | Derived relationships | Full recompute | Incremental | Speedup |
+|---|---|---|---|---|
+| 500 nodes | ~25,000 | 420 ms | 1.2 ms | **350x** |
+| 1,000 nodes | ~100,000 | 2,800 ms | 3.1 ms | **903x** |
+| 2,000 nodes | ~400,000 | 11,280 ms | 6.83 ms | **1,652x** |
+
+Look at how the two columns grow. Full recomputation grows roughly quadratically - double the nodes, quadruple the time. But incremental updates grow much slower, because most single-fact changes only ripple through a small portion of the graph.
+
+```steps
+500 nodes: 420ms full vs 1.2ms incremental :: 350x faster
+1,000 nodes: 2,800ms full vs 3.1ms incremental :: 903x faster
+2,000 nodes: 11,280ms full vs 6.83ms incremental :: 1,652x faster [primary]
+```
+
+This scaling behavior is fundamental, not accidental. Full recomputation has to process the entire graph regardless of what changed. Incremental updates process only the "blast radius" of the change, which stays relatively small even as the total graph grows.
+
+At 10,000 nodes, the full recompute would take over a minute. The incremental update would still be in the low tens of milliseconds. That's the difference between a feature that's practical in production and one that isn't.
+
+## Why the numbers work this way
+
+InputLayer is built on [Differential Dataflow](https://github.com/TimelyDataflow/differential-dataflow), a Rust library for incremental computation created by Frank McSherry. The core idea is simple: instead of storing derived results as static data, the engine represents everything as *differences* that can be efficiently passed along.
+
+Here's how a fact change flows through the system:
+
+```chain
+You add an edge: "Diana manages Eve"
+-- who has authority over Diana?
+Engine finds: Alice and Bob (from existing derivations) [primary]
+-- so they must also have authority over Eve
+Engine checks: does Eve manage anyone? Yes - Frank
+-- so Alice and Bob also get authority over Frank
+Engine checks: does Frank manage anyone? No. Done. [success]
+=> Total work: 4 new derived relationships in ~2ms
+```
+
+The engine didn't scan the entire graph. It didn't recompute relationships for nodes that weren't affected. It started from the change, followed the ripple effects, and stopped as soon as the ripple died out.
+
+For recursive reasoning - like transitive authority where conclusions feed back into the computation - the engine runs a loop until it reaches a stable point where no new differences are produced. When something changes later, it re-enters that loop at the point of change and computes only the new differences.
+
+InputLayer also uses a technique called Magic Sets that makes queries demand-driven. When you ask "who does Alice have authority over?", the engine doesn't compute authority for every person in the organization. It starts from Alice and follows only the relevant paths. Query time becomes proportional to Alice's portion of the graph, not the entire organization.
+
+## Correct retraction: the hard part
+
+Adding facts is relatively straightforward to handle incrementally. Removing them is where things get genuinely hard.
+
+Say Alice has authority over Charlie through two independent paths:
+
+```flow
+Alice -> Bob -> Charlie [primary]
+```
+
+```flow
+Alice -> Diana -> Charlie [primary]
+```
+
+If you remove Bob's management of Charlie, Alice should still have authority over Charlie through Diana. But if you remove Diana's management of Charlie too, the authority should disappear entirely.
+
+The engine tracks this through weighted differences. Each derived relationship has a weight based on the number of independent paths that support it. When a path is removed, the weight goes down. Only when it reaches zero does the conclusion go away.
+
+```steps
+Both paths exist: authority(Alice, Charlie) weight is 2 :: via Bob and Diana
+Remove Bob to Charlie: weight drops to 1 :: still exists via Diana [success]
+Remove Diana to Charlie: weight drops to 0 :: retracted [highlight]
+```
+
+On our benchmark graph, retracting a single edge and propagating all downstream changes takes under 10ms. Bulk retractions (removing 100 edges) complete in about a second. Fast enough for real-time applications where facts change frequently.
+
+## What this means in practice
+
+The practical takeaway here is about which architectural patterns become possible.
+
+**Without incremental computation**, you're stuck with batch processing. Pre-compute permissions overnight. Rebuild recommendation indexes hourly. Re-run compliance checks on a schedule. And accept that between runs, your derived data is stale.
+
+**With incremental computation**, you can do these things live:
+
+| Use case | Batch approach | Incremental approach |
+|---|---|---|
+| Access control | Nightly permission rebuild | Live permission check at query time |
+| Supply chain risk | Hourly risk recalculation | Instant risk update when a supplier status changes |
+| Compliance screening | Daily sanctions check | Real-time flag when ownership structure changes |
+| Recommendations | Model retrain every few hours | Instant update when user behavior or inventory changes |
+
+The 1,652x speedup isn't about making a slow thing faster. It's about making batch-only workloads work in real time. That's a qualitative difference in what you can build.
+
+## Try it yourself
+
+InputLayer is open-source:
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+Start with the [quickstart guide](/docs/guides/quickstart/) to build your first knowledge graph, or dive into the [recursion documentation](/docs/guides/recursion/) to see how recursive reasoning works under the hood.9:T1d6b,
+# Policy-Filtered Semantic Search: Access Control Meets Vector Similarity
+
+Every enterprise RAG application eventually runs into the same problem. The semantic search works great - it finds relevant documents. But then you need to check whether the user is actually allowed to see those documents. And suddenly you're maintaining two systems, writing glue code between them, and dealing with consistency bugs that only show up in production.
+
+This post is about what happens when you stop treating authorization and retrieval as separate concerns and combine them into a single operation.
+
+## How it usually works (and where it breaks)
+
+The typical architecture looks like this:
+
+```chain
+User sends a query
+-- calls auth service
+Auth service returns permissions (e.g. department: "engineering", level: "L5+")
+-- passes filters to vector database
+Vector database runs query with metadata filters
+-- returns results
+Filtered results [success]
+```
+
+The application calls an auth service to figure out the user's permissions, translates those permissions into metadata filters, and passes those filters to the vector database along with the query. It works. For simple permission models - "engineering can see engineering docs" - it works fine.
+
+But here's where it falls apart. Most real organizations don't have flat permission models. They have hierarchies. And hierarchies are recursive.
+
+## The recursion problem
+
+Consider Sarah, a VP of Engineering at a 500-person company. Her reporting chain looks like this:
+
+```tree
+Sarah (VP Engineering) [primary]
+  Marcus (Dir. Platform)
+    Team Alpha (8 people)
+    Team Beta (6 people)
+  Priya (Dir. AI/ML)
+    Team Gamma (10 people)
+    Team Delta (5 people)
+  James (Dir. DevOps)
+    Team Epsilon (7 people)
+```
+
+Sarah should be able to see documents from everyone in her org - all 36 people across 5 teams. Marcus should see documents from Alpha and Beta (14 people). A team lead in Alpha should see only Alpha's documents (8 people).
+
+How do you express "Sarah can see documents from everyone beneath her in the org chart" as a metadata filter? You can't hardcode the list of 36 people - that becomes stale the moment someone joins, leaves, or transfers. You can't say `department = "engineering"` because that doesn't respect the sub-hierarchies (Marcus shouldn't see Priya's team's confidential documents unless the policy says so).
+
+What you actually need is a recursive walk of the reporting structure, starting from Sarah and going down through every layer. And that walk needs to happen at query time, against the current state of the org chart, every single time.
+
+That's not something a metadata filter can do.
+
+## Combining authorization and search in one pass
+
+In InputLayer, you describe your org structure as facts (who reports to whom) and your access policy as a rule (managers can see documents from their entire reporting chain). The engine handles both the authorization logic and the semantic search in a single query.
+
+Here's what happens when Sarah searches for "deployment best practices":
+
+```steps
+Resolve authorization (recursive): start from Sarah, walk her full reporting chain :: Sarah can see docs from 36 people [primary]
+Find documents: filter to documents authored by those 36 people :: 847 documents in scope
+Rank by similarity: compare each document's embedding to the query :: Top 10 results, all authorized, ranked by relevance [success]
+```
+
+```note
+type: tip
+All three steps happen in one pass. No separate auth service call, no metadata filter translation, no consistency gap.
+```
+
+The authorization is evaluated against the current state of the org chart, right now, as part of the query.
+
+## The consistency problem most teams don't notice
+
+Here's a subtle bug that exists in nearly every two-system auth+search setup.
+
+Monday: Bob reports to Sarah. Sarah can see Bob's documents. The auth service knows this, the metadata filters reflect it.
+
+Tuesday morning: Bob transfers from Engineering to Product. The auth service updates immediately. But the metadata on Bob's documents in the vector database? That gets updated in a batch job that runs at midnight.
+
+Tuesday afternoon: Sarah searches for something. The auth service says she can't see Bob's docs anymore (correct). But what about documents authored by someone who reported to Bob, whose metadata filter was set to `org: "engineering"` and hasn't been updated yet? That depends on how your metadata propagation works. And these edge cases multiply with every layer of hierarchy and every type of permission grant.
+
+```chain
+Bob transfers at 9am
+-- 15-hour consistency gap begins
+Auth says NO, but vector database says YES [highlight]
+-- batch job runs at midnight
+Gap finally closes the next day [success]
+```
+
+With InputLayer, this gap doesn't exist. Authorization is computed from the current facts at query time. Update the reporting structure at 9am, and the 9:01am query reflects the change. No propagation delay, no batch job, no stale permissions.
+
+## It also works in reverse: retraction
+
+When Bob leaves the company entirely, you retract the fact that Bob reports to Sarah.
+
+InputLayer automatically retracts everything that was derived through that relationship. Sarah loses access to Bob's documents. She also loses access to documents from anyone who reported through Bob - if Bob managed a team, that entire branch of Sarah's permission tree disappears.
+
+But here's the important part: if any of those people also report to Sarah through a different path (say, a dotted-line relationship), those permissions survive. The engine tracks how many independent paths support each access grant and only retracts when all paths are gone.
+
+In an append-only system, Bob's documents just sit there in the index until someone manually cleans them up. In InputLayer, the cleanup is automatic and precise.
+
+## Performance: can you actually do this at query time?
+
+Evaluating a recursive org chart walk on every search request sounds expensive. In practice, it's not.
+
+InputLayer's incremental computation engine means the recursive authorization isn't recomputed from scratch on every query. The first time Sarah queries, the engine walks her reporting chain. After that, it maintains the result incrementally. When the org chart changes, only the affected portion recomputes.
+
+| Operation | Time |
+|---|---|
+| Initial authority computation (2,000-node org) | ~200ms |
+| Incremental update after one org change | <7ms |
+| Subsequent queries (cached derivations) | <1ms for auth + vector search time |
+
+InputLayer also evaluates demand-driven. When Sarah queries, it doesn't compute the authorization chain for every person in the organization. It starts from Sarah and follows only her reporting paths. Query time scales with the size of Sarah's org, not the total company size.
+
+For a VP with 100 reports (direct and transitive), the authorization adds negligible overhead to the vector search. For a CEO of a 10,000-person company - the most extreme case - it's still in the low tens of milliseconds.
+
+## Getting started
+
+If you're dealing with authorization that's more complex than flat metadata filters - and most enterprise applications are - this pattern is worth exploring.
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [recursion documentation](/docs/guides/recursion/) explains how recursive rules work, which is the foundation for hierarchical authorization.a:T22cc,
+# Building a Product Recommendation Engine with InputLayer
+
+A customer just bought a DSLR camera. Your recommendation engine suggests... more cameras. Three other DSLRs in slightly different price ranges.
+
+The customer doesn't need another camera. They need a lens, a memory card, and a bag to carry it all in. But those items look nothing like a camera in embedding space. The connection between "camera" and "camera bag" is *logical* (one is an accessory for the other), not *semantic* (their product descriptions have little overlap).
+
+This is the gap between similarity-based recommendations and reasoning-based recommendations. In this tutorial, we'll build an engine that handles both - and a few other things that traditional recommenders struggle with.
+
+## What we're building
+
+By the end of this tutorial, you'll have a recommendation engine with four distinct signals:
+
+```tree
+Recommendation Engine [primary]
+  Collaborative Filtering
+    "users who bought X also bought Y"
+  Category Affinity (recursive)
+    "related product categories, at any depth"
+  Semantic Similarity
+    "products with similar descriptions"
+  Accessory Relationships
+    "this product goes with that one"
+```
+
+```note
+type: info
+Results are combined, de-duplicated, and filtered: already purchased items are excluded, out-of-stock items are excluded, and discontinued items are removed automatically.
+```
+
+Each signal is expressed as a simple, readable rule. The engine combines them automatically. And because this runs on a knowledge graph with incremental computation, the recommendations stay fresh without model retraining or index rebuilding.
+
+## Step 1: Model your product catalog
+
+Everything starts with your product data. In InputLayer, this means storing structured facts about products, their categories, and how categories relate to each other.
+
+You store each product with its name and direct category. Then you describe the category hierarchy - running shoes fall under athletic footwear, which falls under footwear, which falls under apparel. This hierarchy is the backbone for one of our recommendation signals.
+
+You also store embedding vectors for each product, generated from product descriptions using a text embedding model. These power the semantic similarity signal.
+
+```tree
+Sports [primary]
+  Athletic
+    Footwear
+      SKU_001 "Running Shoes"
+      SKU_002 "Trail Shoes"
+    Accessories
+      SKU_003 "Running Socks"
+      SKU_004 "Hydration Pack"
+    Electronics
+      SKU_005 "GPS Watch"
+```
+
+## Step 2: Feed in user behavior
+
+Next, purchase history and browsing data. Who bought what, and what have they been looking at recently. In production, you'd ingest this from your transaction database as events happen.
+
+```tree
+Purchase History
+  user_1: Running Shoes, Running Socks
+  user_2: Running Shoes, Hydration Pack
+  user_3: Trail Shoes, GPS Watch
+Browsing Data
+  user_1 viewed: Trail Shoes, GPS Watch [muted]
+```
+
+The important thing: these aren't just rows in a table. They're facts in a knowledge graph that the reasoning engine can combine with other facts through rules. That's the key difference from a traditional recommendation database.
+
+## Step 3: Define recommendation rules
+
+This is where the approach diverges from traditional ML recommendations. Instead of training a model, we express recommendation logic as rules. Each rule captures a different signal, and each rule is readable in plain English.
+
+**Rule 1 - Collaborative filtering:** "If two users bought the same product, the other products each user bought become recommendations for the other." This is the classic "customers who bought X also bought Y" pattern. But it's expressed as a rule, not a matrix factorization - which means you can read it, debug it, and explain exactly why a recommendation appeared.
+
+What this looks like in practice for user_1:
+
+```chain
+user_1 bought Running Shoes
+-- who else bought Running Shoes?
+user_2 also bought Running Shoes [primary]
+-- what else did user_2 buy?
+user_2 also bought Hydration Pack
+=> Recommend Hydration Pack to user_1 [success]
+```
+
+**Rule 2 - Category affinity (recursive):** "If a user bought something in one category, recommend products from related categories." This rule is recursive - it follows the category hierarchy to find related categories at any depth.
+
+```chain
+user_1 bought Running Shoes (in footwear)
+-- walk up the category tree
+Footwear is under Athletic [primary]
+-- what else is under Athletic?
+Accessories and Electronics are also under Athletic
+=> Recommend from related categories: Hydration Pack, GPS Watch [success]
+```
+
+Buying running shoes surfaces recommendations not just from footwear, but from accessories and electronics too, because they share a parent category. And this works no matter how deep or wide your category tree goes.
+
+**Rule 3 - Semantic similarity:** Products with similar descriptions (as measured by their embedding vectors) become recommendations. This catches relationships that the category hierarchy misses - two products from completely different categories that people tend to use together.
+
+**Rule 4 - Accessory relationships:** "When a customer buys a product, recommend its accessories - but only if they haven't already bought them and they're in stock." This is the explicit knowledge that a camera bag goes with a camera, expressed directly rather than inferred statistically.
+
+## Step 4: Combine and query
+
+Now you ask: "What should we recommend to user_1?"
+
+The engine evaluates all four rules, combines their results, filters out products user_1 has already bought, checks stock availability, and returns the final list:
+
+```tree
+Signals for user_1 [primary]
+  Collaborative: Hydration Pack (via user_2)
+  Category: Hydration Pack, GPS Watch, Trail Shoes
+  Semantic: Trail Shoes (0.92 similarity to Running Shoes)
+  Accessory: (none defined in this example) [muted]
+```
+
+```steps
+Trail Shoes - matched by category + semantic similarity :: strongest combined signal [primary]
+Hydration Pack - matched by collaborative + category :: two independent signals [primary]
+GPS Watch - matched by category :: single signal
+```
+
+Each recommendation carries its provenance. You can explain to the user *why* each item was recommended, and you can explain to your product team which signals are driving the most engagement. Try getting that kind of transparency from a neural collaborative filtering model.
+
+## Step 5: Watch it stay fresh
+
+Here's where the knowledge graph approach really shines compared to model-based recommenders.
+
+**A new purchase comes in.** User_1 buys a GPS Watch. You add that fact. All recommendations update instantly - GPS Watch drops out of user_1's recommendations (already purchased), and any collaborative filtering signals that involve GPS Watch recalculate. No model retraining needed.
+
+**A product goes out of stock.** You update the stock status for Trail Shoes. Every recommendation that included Trail Shoes disappears from results automatically. When it's back in stock, the recommendations come back. No index rebuild needed.
+
+**A product is discontinued.** You retract it from the catalog entirely. InputLayer's correct retraction mechanism removes it from every recommendation result, every collaborative filtering signal, every category association - automatically and immediately. No stale suggestions pointing customers to a product page that returns a 404.
+
+```flow
+Traditional ML recommender [highlight] -> Retrain model (hours) -> Rebuild index (minutes) -> Deploy (minutes)
+```
+
+```flow
+InputLayer [success] -> Retract fact -> Recommendations update (~ms) -> Done
+```
+
+## Where to take this next
+
+What we've built is the foundation. Here are the layers you'd add for production:
+
+**Inventory-aware filtering** - only recommend products that are actually in stock and available in the customer's region. This is one more condition on the recommendation rule.
+
+**Time decay** - weight recent purchases more heavily than old ones. A customer who bought running shoes yesterday is more likely to need accessories than a customer who bought them two years ago.
+
+**Price affinity** - recommend products in the customer's typical price range. If they buy premium products, don't recommend budget options.
+
+**Seasonal rules** - boost winter gear in November, swimwear in May. Express seasonality as a rule rather than baking it into a training set.
+
+Each of these is just another rule in the knowledge graph. The engine handles the interactions between all rules automatically - you don't need to worry about how time decay interacts with category affinity, or how inventory filtering affects collaborative signals. Define the rules, and the engine composes them.
+
+Check out the [data modeling guide](/docs/guides/core-concepts/) for patterns that work well at scale, and the [Python SDK](/docs/guides/python-sdk/) for integrating this into your e-commerce platform.b:T256a,
+# Why We Built InputLayer on Differential Dataflow
+
+Every engineering team has that one decision that shaped everything that came after. For us, it was choosing [Differential Dataflow](https://github.com/TimelyDataflow/differential-dataflow) as the computation engine underneath InputLayer. It determined what we could build, what performance we could offer, and which problems we could solve that other systems can't.
+
+This is the story of why we made that choice and what it means for the people building on InputLayer today.
+
+## The problem that started everything
+
+We wanted to build a knowledge graph engine that could do something deceptively simple: keep derived conclusions up to date when facts change.
+
+That sounds straightforward until you think about scale. Imagine a knowledge graph with 100,000 facts and 50 rules that derive new conclusions from those facts. Some of those rules are recursive - their output feeds back into their input. The initial computation produces millions of derived facts. Fine - that's a one-time cost.
+
+But then a single fact changes. One employee transfers departments. One entity gets added to a sanctions list. One product goes out of stock.
+
+```chain
+100,000 source facts feed into 50 rules
+-- initial computation
+2,000,000 derived facts [primary]
+-- then one fact changes
+How many of those 2M derived facts are affected? [highlight]
+=> Usually just a few hundred. But the naive approach recomputes all 2 million.
+```
+
+With a naive approach, you throw away all 2 million derived facts and recompute them from scratch. For small graphs, that's fast enough. For production workloads, it doesn't work. At 11 seconds per recomputation on a 2,000-node graph, you're locked into batch processing. Real-time permission checks, live compliance screening, instant recommendation updates - none of that is practical.
+
+We needed an engine that could update just the affected derivations, correctly, in milliseconds.
+
+## What we evaluated
+
+We spent months evaluating different approaches. Each one taught us something about what we needed.
+
+**Batch-oriented engines** are the gold standard for one-time rule evaluation. They compile rules into extremely efficient programs that process an entire dataset in one pass. Some even generate low-level code that runs blazingly fast for batch workloads.
+
+The limitation: there's no concept of "update." If you add a fact, you rerun the entire program. For a knowledge graph that changes frequently - which is most production use cases - that means paying the full computation cost every time anything changes.
+
+**Graph databases** offer incremental capabilities for simple path queries. But their query languages weren't designed for recursive derivation. They can traverse stored edges, but they can't derive *new* edges based on rules and then recursively reason over those derived edges. And they don't maintain results incrementally when the graph changes.
+
+**Building from scratch** was tempting. We could design an incremental engine perfectly suited to our needs. But correct incremental maintenance through recursive fixpoints is one of the hardest problems in database research. Tracking which derived facts should retract when a source fact is removed - especially when derived facts might have multiple supporting paths - is notoriously subtle. Teams that have tried typically spend years before reaching production quality.
+
+```tree
+What we needed [primary]
+  Fast batch computation
+  Incremental updates (not full recompute)
+  Recursive derivation (rules that reference themselves)
+  Correct retraction (delete actually deletes)
+  Reasonable time to production
+```
+
+```note
+type: warning
+No single existing approach gave us everything we needed. Batch engines lacked incremental updates. Graph databases lacked recursive derivation. Building from scratch would take years.
+```
+
+## Finding Differential Dataflow
+
+Then we found Frank McSherry's work on [Differential Dataflow](https://github.com/TimelyDataflow/differential-dataflow), built on top of [Timely Dataflow](https://github.com/TimelyDataflow/timely-dataflow). Both are Rust libraries. The performance was a bonus. The computational model was the real discovery.
+
+The core idea is simple enough to explain in a paragraph: instead of storing derived data as static results, the engine represents everything as *weighted differences*. Adding a fact is a +1 difference. Removing a fact is a -1 difference. Every computation in the system processes differences in and produces differences out. This means every operation is naturally incremental - it never looks at the whole dataset, only at what changed.
+
+```flow
+Traditional: Input facts -> Compute ALL -> Static results
+```
+
+```flow
+After change (traditional): Changed fact -> Compute ALL again [highlight] -> Rebuilt results
+```
+
+```flow
+Differential: Changed fact -> Compute DIFFERENCE only [success] -> Only changed derivations
+```
+
+## How it handles the hard part: recursive retraction
+
+The real test of an incremental system isn't additions - it's deletions. And specifically, deletions through recursive derivation chains.
+
+Here's the scenario that breaks naive incremental systems. Alice has authority over Charlie through two independent paths:
+
+```flow
+Path 1: Alice -> Bob -> Charlie [primary]
+```
+
+```flow
+Path 2: Alice -> Diana -> Charlie [primary]
+```
+
+Remove Bob's management of Charlie. Does Alice lose authority over Charlie? *No* - the path through Diana still supports it. Now remove Diana's management of Charlie too. Does Alice lose authority over Charlie? *Yes* - there are no remaining paths.
+
+Differential Dataflow handles this through its weight-based model. Each derived fact carries a weight representing the number of independent derivation paths. Removing a path decreases the weight. The fact only retracts when the weight hits zero.
+
+```steps
+Both paths exist: authority(Alice, Charlie) weight is 2 :: Alive
+Remove Bob's path: weight drops to 1 :: Still alive - Diana's path remains [success]
+Remove Diana's path: weight drops to 0 :: Retracted [highlight]
+```
+
+This sounds simple in theory. In practice, getting it right through multiple levels of recursive derivation, where intermediate conclusions can also have multiple support paths, is extraordinarily difficult. Differential Dataflow solves it at the engine level, which means we didn't have to.
+
+## What this gives InputLayer users
+
+Building on Differential Dataflow gave us three properties that show up directly in what you can build with InputLayer.
+
+**Incremental maintenance:** When a fact changes, only the affected derivations recompute. On a 2,000-node graph with 400,000 derived relationships, updating a single edge takes 6.83ms instead of 11.3 seconds. That's a 1,652x speedup that turns batch-only workloads into real-time operations.
+
+**Correct retraction:** Delete a fact, and everything derived through it disappears - but only if there's no alternative derivation path. Phantom permissions, stale recommendations, lingering compliance flags - these bugs simply don't exist when the engine handles retraction correctly.
+
+**Demand-driven evaluation:** We combined Differential Dataflow with Magic Sets optimization, which rewrites recursive rules to only compute what's needed for a specific query. Ask "who does Alice have authority over?" and the engine starts from Alice and follows only her paths - it doesn't compute authority for the entire organization. Query time is proportional to the relevant portion of the graph.
+
+## The tradeoffs
+
+No engineering decision is free. Here's what we trade.
+
+**Memory:** Differential Dataflow maintains operator state in memory. For very large datasets, memory usage grows with the size of the maintained derivations. We handle this with persistent storage - Parquet files plus a write-ahead log - that lets us recover state without keeping everything in memory indefinitely. But it's a real consideration for very large knowledge graphs.
+
+**Complexity floor:** The Timely/Differential Dataflow programming model is powerful but has a steep learning curve. We invested significant engineering time building the abstraction layer that compiles high-level rules into efficient dataflow graphs. Users never touch the dataflow layer directly - but we do, and it required deep expertise to get right.
+
+**Single-node:** Currently, InputLayer runs on a single node. Timely Dataflow supports distributed computation, and that's on our roadmap. But today, the engine is bounded by what a single machine can handle. For most knowledge graph workloads, that's millions of facts and derived relationships - but it's a real limit for truly massive datasets.
+
+## Where the choice matters most
+
+The Differential Dataflow foundation matters most for use cases where data changes frequently and derived conclusions need to stay current. Access control hierarchies where people change roles regularly. Supply chain graphs where supplier status changes daily. Compliance systems where entity relationships and sanctions lists are updated constantly. Agent memory systems where new observations arrive continuously.
+
+For batch-once-query-many workloads with no updates, a simpler engine would be fine. But the moment your facts change and you need derived conclusions to stay correct, the incremental approach pays for itself immediately.
+
+Our [benchmarks post](/blog/benchmarks-1587x-faster-recursive-queries/) has the specific numbers. And the [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes so you can see it in action.c:T2034,
+# Fraud Detection Through Entity Chain Reasoning
+
+Here's a transaction your screening system flagged as clean: a wire transfer from your client to Alpha Corp for $50,000. Alpha Corp is a registered corporation with a clean record. Nothing suspicious.
+
+Except Alpha Corp is a subsidiary of Beta LLC. Beta LLC is 60% owned by Gamma Holding. And Gamma Holding is 80% controlled by someone on a sanctions list.
+
+```chain
+Your client sends $50K to Alpha Corp
+-- subsidiary of
+Beta LLC
+-- 60% owned by
+Gamma Holding
+-- 80% owned by
+SANCTIONED ENTITY [highlight]
+=> Four hops deep. Each record looks clean in isolation. The violation is only visible through the chain.
+```
+
+Traditional fraud detection systems check the direct counterparty against a list. That catches the obvious cases. It completely misses the layered structures that sophisticated actors actually use.
+
+## Why pattern matching can't solve this
+
+Most fraud detection runs on rules over individual transactions. Flag transactions over $10,000. Flag transactions to high-risk jurisdictions. Flag counterparties that appear on sanctions lists. These rules work on a per-transaction basis, looking at fields on a single record.
+
+The structural fraud problem is fundamentally different. You're not looking for a suspicious field on a single transaction. You're looking for a suspicious *path* through a network of entity relationships - a path that might not exist in any single system.
+
+```tree
+What pattern matching sees [muted]
+  Transaction #TX-001
+    From: Our Client
+    To: Alpha Corp
+    Amount: $50,000
+    Sanctions match: NO
+    PEP match: NO
+    High-risk jurisdiction: NO
+```
+
+```tree
+What chain reasoning sees [highlight]
+  Alpha Corp
+    subsidiary of Beta LLC
+      60% owned by Gamma Holding
+        80% owned by SANCTIONED PERSON
+  Indirect sanctions exposure: YES
+```
+
+The information exists across separate registries - corporate records, ownership filings, sanctions lists. No single database contains the complete picture. You have to follow the chain.
+
+## How InputLayer traces these chains
+
+In InputLayer, you model entity relationships as facts: "Person X owns 80% of Company Y." "Company A is a subsidiary of Company B." These facts come from corporate registries, ownership databases, and KYC records - data you probably already collect.
+
+Then you define the compliance logic as a rule: "An entity has sanctions exposure if it's directly sanctioned, or if it's owned (above a threshold) by an entity that has sanctions exposure."
+
+That second clause is recursive. It says: trace the ownership chain as deep as it goes, and at every level, check whether the owner has sanctions exposure. If the owner does - whether directly or through its own ownership chain - the exposure flows down.
+
+Here's what the engine does when it evaluates this rule against our example:
+
+```steps
+Is Alpha Corp directly sanctioned? No. :: Check direct status
+Who owns Alpha Corp? Beta LLC (subsidiary). :: Walk up one level
+Is Beta LLC directly sanctioned? No. :: Check direct status
+Who owns Beta LLC? Gamma Holding (60%, above 25% threshold). :: Walk up one level
+Is Gamma Holding directly sanctioned? No. :: Check direct status
+Who owns Gamma Holding? Sanctioned Person (80%, above 25% threshold). :: Walk up one level
+Is Sanctioned Person directly sanctioned? YES. :: Match found [highlight]
+```
+
+```chain
+Sanctioned Person is sanctioned
+-- exposure flows down through ownership
+Gamma Holding has indirect sanctions exposure [highlight]
+-- exposure flows down
+Beta LLC has indirect sanctions exposure [highlight]
+-- exposure flows down
+Alpha Corp has indirect sanctions exposure [highlight]
+=> Transaction TX-001 is FLAGGED
+```
+
+The engine didn't just check the direct counterparty. It walked the full ownership and control chain, evaluated the sanctions exposure rule at every level, and passed the result back down. All automatically, from a single rule definition.
+
+And this works for chains of any depth. Five layers of shell companies? No problem. Ten intermediaries? The engine follows the chain until there's nowhere left to go.
+
+## Beneficial ownership: the same pattern, different question
+
+Regulators worldwide are tightening beneficial ownership requirements. The core question is: who are the natural persons that ultimately own or control this entity?
+
+The computation is surprisingly similar to sanctions screening, with one twist: you need to multiply ownership percentages through the layers.
+
+```flow
+Person X (80%) -> Holding A (60%) -> Company B [primary]
+```
+
+Effective beneficial ownership of Person X in Company B: 80% x 60% = 48%. If your regulatory threshold is 25%, Person X is a beneficial owner of Company B even though they don't own it directly.
+
+Add more layers, and the math compounds:
+
+```flow
+Person X (80%) -> Holding A (60%) -> Sub B (70%) -> Company C [primary]
+```
+
+Effective ownership: 80% x 60% x 70% = 33.6%. Still above 25% - Person X is a beneficial owner of Company C.
+
+InputLayer handles the multiplication and propagation through any number of layers. Define a threshold, and the engine identifies every natural person who qualifies as a beneficial owner for every entity in your graph.
+
+## What happens when facts change
+
+This is where the knowledge graph approach becomes especially valuable for compliance. Entity relationships change constantly. Companies are acquired. Ownership stakes are transferred. New sanctions designations are published. Old ones are lifted.
+
+When you add a new sanctions designation - say Gamma Holding's owner gets added to the list - InputLayer propagates the change immediately. It identifies every entity in that person's ownership chain, evaluates whether the ownership thresholds are met, and flags the affected transactions. On a graph with thousands of entities, this takes milliseconds.
+
+```flow
+Before (batch): Sanctions list updated [highlight] -> Full recomputation (seconds to minutes) -> Alerts are stale until done
+```
+
+```flow
+With InputLayer: Sanctions list updated [success] -> Incremental update (milliseconds) -> Alerts are current immediately
+```
+
+The reverse is equally important. When someone is removed from a sanctions list, all the downstream flags that were derived through their ownership chain clear automatically. No manual cleanup, no stale alerts clogging up your compliance team's queue. And if an entity had sanctions exposure through *multiple* paths (e.g., owned by two sanctioned individuals), removing one designation correctly preserves the remaining exposure.
+
+## Structuring detection: connecting related entities
+
+Beyond direct sanctions, compliance teams need to detect structuring - splitting large transactions into smaller ones to avoid reporting thresholds. The standard approach checks individual transactions against the $10,000 threshold. Sophisticated actors split transactions across related entities to stay below it.
+
+```tree
+Sanctioned Person [highlight]
+  Entity A
+  Entity B
+  Entity C
+```
+
+```chain
+Entity A sends $4,000 to Target Company
+-- related entity
+Entity B sends $3,500 to Target Company
+-- related entity
+Entity C sends $3,000 to Target Company
+=> Combined total: $10,500 - above threshold [highlight]
+```
+
+Each individual transaction is below $10,000. But the entities are related through common ownership, and their combined transactions to the same target exceed the threshold.
+
+InputLayer's recursive reasoning identifies these relationships automatically. It determines which entities are connected through any chain of ownership, aggregates their transactions within a time window, and fires an alert when the combined total exceeds the threshold. The "related entity" determination is itself a recursive walk - Entity A and Entity C might be connected through multiple intermediate layers.
+
+## Getting started
+
+If you're working on compliance, sanctions screening, or transaction monitoring, this approach to entity chain reasoning is worth exploring.
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [recursion documentation](/docs/guides/recursion/) covers the recursive reasoning that powers entity chain traversal.d:T1d93,
+# InputLayer + Your Vector Database: When Similarity Is Not Enough
+
+Your vector database is probably doing exactly what you need it to do. Embed documents, search by similarity, feed context to your LLM. For a lot of use cases, that pipeline works beautifully and you shouldn't change it.
+
+But at some point - maybe you've already hit it - you'll encounter queries where the results are *relevant* but not *correct*. The returned documents are genuinely similar to the query. They just don't answer the actual question, because the answer requires connecting dots that no similarity metric can connect.
+
+This post is about recognizing that moment and understanding what to do about it.
+
+## A tale of two questions
+
+Here's the clearest way to see the difference. Consider two questions a financial analyst might ask:
+
+**Question A:** "Show me recent reports about risk management."
+
+This is a similarity question. The answer is a set of documents whose content is semantically close to "risk management." Your vector database handles this perfectly. Embed the query, find nearest neighbors, done.
+
+**Question B:** "Does our client have exposure to any sanctioned entities?"
+
+This is a reasoning question. The answer requires tracing ownership chains through corporate structures - Entity A owns 60% of Entity B, which has a subsidiary C, which is on a sanctions list. No single document contains this answer. The information is spread across entity registrations, ownership records, and sanctions lists.
+
+```flow
+Question A: similarity search [success] -> Relevant documents found
+```
+
+```chain
+Question B: similarity search
+-- finds documents that mention sanctions
+But that's not the same as HAVING exposure [highlight]
+-- needs reasoning instead
+Trace ownership chain through entity relationships
+=> Yes or No answer (from connected facts, not document similarity) [success]
+```
+
+Your vector database will find documents that *mention* sanctions for Question B. It might even find documents about your client. But it can't trace the ownership chain that connects them. That connection is structural, not semantic.
+
+## Three signs you've hit the wall
+
+Over time, we've noticed three patterns that signal teams need reasoning alongside their retrieval.
+
+### 1. You're writing multi-query orchestration code
+
+The first sign is architectural. You find yourself writing application code that makes multiple database calls and stitches the results together. Query the vector database for relevant docs. Query a graph for relationships. Hit an auth service. Reconcile everything in application code.
+
+```
+// This code smell means you need a reasoning layer
+const docs = await vectorDB.search(queryEmbedding, topK=50);
+const userPerms = await authService.getPermissions(userId);
+const filteredDocs = docs.filter(d =>
+  userPerms.departments.includes(d.metadata.department) ||
+  userPerms.teams.includes(d.metadata.team) ||
+  (d.metadata.author && await orgChart.isSubordinate(d.metadata.author, userId))
+);
+// ^ This recursive check is the red flag
+```
+
+The recursive `isSubordinate` check at the end is the tell. You've hit a reasoning problem and you're trying to solve it with imperative code and API calls. It works, but it's fragile, slow, and hard to keep consistent.
+
+### 2. Your metadata filters can't express the access policy
+
+This is the access control version. Your permission model started simple - department-based, maybe role-based. But now it involves hierarchies: managers can see their reports' documents, and their reports' reports, and so on down the chain.
+
+```chain
+Simple access control (works fine)
+-- metadata filter
+Filter: department = "engineering" [success]
+```
+
+```chain
+Complex access control (breaks down)
+-- metadata filter
+Filter: author in ??? [highlight]
+-- you don't know the list
+You need to recursively traverse the org chart first
+=> Can't express "everyone in Alice's reporting chain" as a flat filter
+```
+
+You can't express "everyone in Alice's transitive reporting chain" as a flat metadata filter because you don't know who's in that chain until you recursively traverse the org chart. And that chain changes every time someone joins, leaves, or transfers.
+
+### 3. Stale derived data is accumulating silently
+
+The third sign is the most sneaky because it's invisible at first. Your system has derived some conclusions - cached recommendations, pre-computed access lists, materialized views - and the source data has changed, but the conclusions haven't updated.
+
+A partner relationship ended three months ago. The partnership flag was removed from the CRM. But the integration recommendations, the priority support routing, the shared document access - those derived conclusions are still sitting in various caches and indexes. Nobody cleaned them up because nobody knows all the places they spread to.
+
+```tree
+Fact: Partner relationship ended (March) [highlight]
+  Still in vector index: "Company X gets priority support" (from April doc) [muted]
+  Still in recommendations: "Try Company X's integration" (stale since March) [muted]
+  Still in access list: Company X employees see partner docs (stale since March) [muted]
+```
+
+```note
+type: warning
+In InputLayer, retracting the partnership fact automatically retracts every conclusion derived from it. In a system without proper retraction, these stale conclusions accumulate month after month.
+```
+
+## How the two systems complement each other
+
+The mental model is simple:
+
+```flow
+Your vector database [primary] -> "What content looks most like this query?"
+```
+
+```flow
+InputLayer [primary] -> "What can be concluded from these facts and rules?"
+```
+
+Most real applications need both. A customer support agent needs to find relevant help articles (vector search) and check the customer's subscription tier (reasoning). A research assistant needs to find related papers (vector search) and trace the citation graph to foundational work (graph reasoning). A financial advisor needs to find matching investment products (vector search) and verify regulatory compliance (rule evaluation).
+
+The cleanest pattern is straightforward: use each system for what it's best at. Keep your vector database for similarity queries. Add InputLayer for the reasoning queries. For the cases where you need both at the same time - "find documents similar to X that this user is authorized to see through their reporting chain" - InputLayer handles the combined query in a single pass with its native vector search capabilities.
+
+## When to stick with just your vector database
+
+Not every application needs reasoning. If your queries are straightforward similarity lookups with simple metadata filters, your vector database is the right tool and adding InputLayer would be unnecessary complexity.
+
+The honest assessment: if you don't have any of the three signs above - no multi-query orchestration, no hierarchical access control, no stale derived data - you probably don't need InputLayer yet. And that's fine. Build with what works today and add the reasoning layer when you actually need it.
+
+The trigger is when you find yourself building a reasoning engine inside your application code. When that happens, you're better off using one that's purpose-built.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. If you're specifically interested in combining vector search with reasoning, the [vectors documentation](/docs/guides/vectors/) covers InputLayer's native vector capabilities.e:T25cb,
+# Correct Retraction: Why Delete Should Actually Delete
+
+Three months after a security incident, the forensics team discovers something troubling. A former employee - let's call him Bob - had his access revoked on the day he left. His account was deactivated. His role was removed from the auth system.
+
+But Bob had authority over a team of six people. Those six people had authored documents. The system had derived that Bob's manager, Alice, could access those documents through Bob. When Bob left, his direct access disappeared. But Alice's transitive access to those documents - the part that was *derived* through Bob's position - was never cleaned up.
+
+For three months, Alice had access to documents she shouldn't have been able to see. Not because anyone made an error, but because the system didn't properly retract derived conclusions when a source fact was removed.
+
+This is the correct retraction problem. And it's one of the most under-appreciated issues in data systems that derive conclusions from connected facts.
+
+## Simple on the surface, hard underneath
+
+At first glance, retraction seems trivial. Delete a fact, delete everything that depended on it. Done.
+
+Let's walk through why it's not that simple.
+
+Alice manages Bob. Bob manages Charlie. The system derives transitive authority:
+
+```tree
+Alice [primary]
+  Bob (direct report)
+    Charlie (Bob's direct report)
+```
+
+```steps
+Alice has authority over Bob :: direct
+Bob has authority over Charlie :: direct
+Alice has authority over Charlie :: transitive: Alice to Bob to Charlie
+```
+
+Bob leaves the company. You remove "Alice manages Bob." What should happen?
+
+```steps
+Alice has authority over Bob :: RETRACT - no longer manages him [highlight]
+Alice has authority over Charlie :: RETRACT - was derived through Bob [highlight]
+Bob has authority over Charlie :: KEEP - this fact is independent of Alice [success]
+```
+
+Alice loses authority over both Bob and Charlie. But Bob keeps authority over Charlie because that relationship doesn't depend on Alice's management of Bob. The retraction needs to be precise - it can't just cascade blindly down the graph.
+
+OK, that's manageable. But now consider the harder case.
+
+## The diamond problem
+
+Alice manages both Bob and Diana. Both Bob and Diana manage Charlie.
+
+```tree
+Alice [primary]
+  Bob
+    Charlie
+  Diana
+    Charlie
+```
+
+Alice has authority over Charlie through *two independent paths*: through Bob and through Diana. The derived fact `authority(Alice, Charlie)` has two reasons to exist.
+
+Now Bob stops managing Charlie:
+
+```tree
+Alice [primary]
+  Bob [muted]
+  Diana
+    Charlie [success]
+```
+
+Should Alice lose authority over Charlie? **No.** The path through Diana still supports it.
+
+Now Diana also stops managing Charlie:
+
+```tree
+Alice [primary]
+  Bob [muted]
+  Diana [muted]
+Charlie (no paths remain) [highlight]
+```
+
+*Now* Alice should lose authority over Charlie. Both supporting paths are gone.
+
+This is the multiple derivation path problem, and it's what makes correct retraction genuinely difficult. A derived conclusion should only disappear when *every* path that supports it has been removed. Not when the first path is removed. Not when most paths are removed. Only when the count reaches zero.
+
+## How most systems get this wrong
+
+There are three common approaches, and each fails in a different way.
+
+**Approach 1: Don't retract derived data at all.** Many systems are append-only for derived conclusions. You can mark a source fact as deleted, but the derived facts remain in whatever cache, index, or materialized view they were written to. This is the "phantom permissions" problem - users retain access that should have been revoked. It's also the "ghost recommendations" problem - discontinued products keep showing up because the derived recommendation was never cleaned up.
+
+**Approach 2: Recompute everything from scratch.** Throw away all derived data and re-derive it all. This is correct but expensive. On a knowledge graph with millions of derived facts, recomputation takes seconds or minutes. You can run it as a batch job, but between batch runs, your data is potentially inconsistent.
+
+**Approach 3: Delete derived facts that "look related."** Walk from the retracted fact and delete anything downstream. This is fast, but it's wrong whenever the diamond problem appears. You'll delete conclusions that should have survived because they had alternative derivation paths.
+
+```tree
+Approaches compared [primary]
+  Append-only (no retraction)
+    Simple retraction: No [highlight]
+    Diamond problem: No [highlight]
+    Performance: N/A [muted]
+  Full recomputation
+    Simple retraction: Yes [success]
+    Diamond problem: Yes [success]
+    Performance: Slow (seconds to minutes) [highlight]
+  Naive cascade deletion
+    Simple retraction: Yes [success]
+    Diamond problem: No (deletes too much) [highlight]
+    Performance: Fast but incorrect [highlight]
+  Weighted differences (InputLayer)
+    Simple retraction: Yes [success]
+    Diamond problem: Yes [success]
+    Performance: Fast and correct [success]
+```
+
+## How InputLayer solves it: weighted differences
+
+InputLayer is built on Differential Dataflow, which represents every derived fact as a weighted record. The weight counts the number of independent derivation paths that support the conclusion.
+
+Here's the diamond example, step by step:
+
+```steps
+Initial state: Alice manages Bob and Diana, both manage Charlie :: authority(Alice, Charlie) has weight 2
+Remove "Bob manages Charlie": -1 via Bob path :: Weight is now 1 - conclusion SURVIVES [success]
+Remove "Diana manages Charlie": -1 via Diana path :: Weight is now 0 - conclusion RETRACTED [highlight]
+```
+
+The engine doesn't need to search for alternative paths or do any special-case reasoning. The weight arithmetic handles it automatically. And this works through any number of recursive levels - if the derivation chain is 10 hops deep with branching paths at every level, the weights still track correctly.
+
+## Retraction through recursive chains
+
+The diamond problem is hard enough with a single level of derivation. With recursion, it gets harder - but the weighted approach still handles it.
+
+Consider a deeper hierarchy:
+
+```flow
+Alice -> Bob -> Charlie -> Diana -> Eve [primary]
+```
+
+The derived fact `authority(Alice, Eve)` goes through 4 hops. If you remove "Charlie manages Diana," the engine needs to retract not just `authority(Charlie, Diana)` but also `authority(Alice, Diana)`, `authority(Bob, Diana)`, `authority(Alice, Eve)`, `authority(Bob, Eve)`, and `authority(Charlie, Eve)` - every derived authority that passed through the Charlie-Diana link.
+
+But if Diana also reports to someone else (say, Frank, who reports to Alice through a different branch), some of those authority relationships might survive through the alternative path.
+
+The engine tracks all of this through differences. Each removal spreads as a -1 difference through the derivation graph. At each node, the difference combines with existing weights. Conclusions retract when and only when their weight reaches zero. No manual reasoning about paths needed.
+
+## Why this matters: three real scenarios
+
+**Access control:** When someone leaves the company, every permission derived through their position needs to disappear. But only the permissions that were *exclusively* derived through their position. If a document was accessible through two independent authorization paths and one is removed, access should continue through the remaining path. Getting this wrong means either phantom permissions (security risk) or over-retraction (broken access for people who should still have it).
+
+**Recommendations:** When a product is discontinued, every recommendation that included it should vanish. If a recommendation was "users who bought X also bought Y," and Y is discontinued, the recommendation disappears. But if Y was also recommended through a different signal (semantic similarity, category affinity), that recommendation should survive through the remaining signal.
+
+**Compliance:** When an entity is removed from a sanctions list, every downstream flag derived from that designation should clear. But if an entity had sanctions exposure through two different ownership paths, removing one designation should correctly preserve the remaining exposure. Your compliance team should not be chasing alerts that are no longer valid. They should also not miss alerts that are still valid because the retraction was too aggressive.
+
+## Performance
+
+Correct retraction is only useful if it's fast enough to happen in real time. If propagating a retraction takes seconds, you're back to batch processing.
+
+| Operation | Time (2,000-node graph) |
+|---|---|
+| Retract 1 edge, propagate all downstream changes | <10ms |
+| Retract 10 edges, propagate all downstream changes | ~100ms |
+| Retract 100 edges, propagate all downstream changes | ~1 second |
+
+These numbers come from our benchmark graph with ~400,000 derived relationships. The incremental approach means each retraction only touches the affected portion of the derivation graph. The total graph size barely matters - what matters is the size of the ripple effect from the specific retraction.
+
+## Getting started
+
+If you want to see correct retraction in action, the [quickstart guide](/docs/guides/quickstart/) walks through a hands-on example. The [recursion documentation](/docs/guides/recursion/) explains how recursive rules interact with retraction. And our [benchmarks post](/blog/benchmarks-1587x-faster-recursive-queries/) covers the performance characteristics in detail.
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","blog",""],"q":"","i":false,"f":[[["",{"children":["blog",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L5",null,{"posts":[{"slug":"why-vector-search-alone-fails","title":"Why Vector Search Alone Fails Your AI Agent","date":"2026-02-25","author":"InputLayer Team","category":"Architecture","excerpt":"Vector similarity finds things that look like the answer. But when the answer requires connecting facts across different sources, similarity search hits a wall.","content":"$6","toc":[{"level":2,"text":"What went wrong","id":"what-went-wrong"},{"level":2,"text":"This shows up everywhere","id":"this-shows-up-everywhere"},{"level":2,"text":"Why more RAG tricks won't help","id":"why-more-rag-tricks-wont-help"},{"level":2,"text":"What teams end up building","id":"what-teams-end-up-building"},{"level":2,"text":"What it looks like with a reasoning layer","id":"what-it-looks-like-with-a-reasoning-layer"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"inputlayer-in-10-minutes","title":"InputLayer in 10 Minutes: From Docker to Your First Knowledge Graph","date":"2026-02-20","author":"InputLayer Team","category":"Tutorial","excerpt":"A hands-on tutorial to get InputLayer running and build your first knowledge graph with rules, recursive queries, and vector search.","content":"$7","toc":[{"level":2,"text":"Step 1: Start InputLayer","id":"step-1-start-inputlayer"},{"level":2,"text":"Step 2: Open the REPL","id":"step-2-open-the-repl"},{"level":2,"text":"Step 3: Store some facts","id":"step-3-store-some-facts"},{"level":2,"text":"Step 4: Define a rule","id":"step-4-define-a-rule"},{"level":2,"text":"Step 5: Ask a question","id":"step-5-ask-a-question"},{"level":2,"text":"Step 6: Add vector search","id":"step-6-add-vector-search"},{"level":2,"text":"Step 7: See incremental updates","id":"step-7-see-incremental-updates"},{"level":2,"text":"Step 8: See correct retraction","id":"step-8-see-correct-retraction"},{"level":2,"text":"What you just built","id":"what-you-just-built"},{"level":2,"text":"Next steps","id":"next-steps"}]},{"slug":"benchmarks-1587x-faster-recursive-queries","title":"Benchmarks: 1,587x Faster Recursive Queries with Differential Dataflow","date":"2026-02-15","author":"InputLayer Team","category":"Engineering","excerpt":"How InputLayer's incremental computation engine delivers sub-millisecond updates on recursive queries over large graphs. The architecture behind the numbers.","content":"$8","toc":[{"level":2,"text":"The benchmark setup","id":"the-benchmark-setup"},{"level":2,"text":"The results","id":"the-results"},{"level":2,"text":"The scaling story","id":"the-scaling-story"},{"level":2,"text":"Why the numbers work this way","id":"why-the-numbers-work-this-way"},{"level":2,"text":"Correct retraction: the hard part","id":"correct-retraction-the-hard-part"},{"level":2,"text":"What this means in practice","id":"what-this-means-in-practice"},{"level":2,"text":"Try it yourself","id":"try-it-yourself"}]},{"slug":"policy-filtered-semantic-search","title":"Policy-Filtered Semantic Search: Access Control Meets Vector Similarity","date":"2026-02-10","author":"InputLayer Team","category":"Architecture","excerpt":"Most systems handle access control and semantic search as separate concerns. Here's what happens when you combine them into a single query.","content":"$9","toc":[{"level":2,"text":"How it usually works (and where it breaks)","id":"how-it-usually-works-and-where-it-breaks"},{"level":2,"text":"The recursion problem","id":"the-recursion-problem"},{"level":2,"text":"Combining authorization and search in one pass","id":"combining-authorization-and-search-in-one-pass"},{"level":2,"text":"The consistency problem most teams don't notice","id":"the-consistency-problem-most-teams-dont-notice"},{"level":2,"text":"It also works in reverse: retraction","id":"it-also-works-in-reverse-retraction"},{"level":2,"text":"Performance: can you actually do this at query time?","id":"performance-can-you-actually-do-this-at-query-time"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"building-product-recommendation-engine","title":"Building a Product Recommendation Engine with InputLayer","date":"2026-02-05","author":"InputLayer Team","category":"Tutorial","excerpt":"A step-by-step guide to building a recommendation engine that combines collaborative filtering, product relationships, and semantic similarity in a single knowledge graph.","content":"$a","toc":[{"level":2,"text":"What we're building","id":"what-were-building"},{"level":2,"text":"Step 1: Model your product catalog","id":"step-1-model-your-product-catalog"},{"level":2,"text":"Step 2: Feed in user behavior","id":"step-2-feed-in-user-behavior"},{"level":2,"text":"Step 3: Define recommendation rules","id":"step-3-define-recommendation-rules"},{"level":2,"text":"Step 4: Combine and query","id":"step-4-combine-and-query"},{"level":2,"text":"Step 5: Watch it stay fresh","id":"step-5-watch-it-stay-fresh"},{"level":2,"text":"Where to take this next","id":"where-to-take-this-next"}]},{"slug":"why-we-built-on-differential-dataflow","title":"Why We Built InputLayer on Differential Dataflow","date":"2026-01-30","author":"InputLayer Team","category":"Engineering","excerpt":"The story behind our choice of Timely and Differential Dataflow as the computation engine, and what that means for the kinds of problems InputLayer can solve.","content":"$b","toc":[{"level":2,"text":"The problem that started everything","id":"the-problem-that-started-everything"},{"level":2,"text":"What we evaluated","id":"what-we-evaluated"},{"level":2,"text":"Finding Differential Dataflow","id":"finding-differential-dataflow"},{"level":2,"text":"How it handles the hard part: recursive retraction","id":"how-it-handles-the-hard-part-recursive-retraction"},{"level":2,"text":"What this gives InputLayer users","id":"what-this-gives-inputlayer-users"},{"level":2,"text":"The tradeoffs","id":"the-tradeoffs"},{"level":2,"text":"Where the choice matters most","id":"where-the-choice-matters-most"}]},{"slug":"fraud-detection-entity-chain-reasoning","title":"Fraud Detection Through Entity Chain Reasoning","date":"2026-01-25","author":"InputLayer Team","category":"Use Case","excerpt":"How knowledge graph reasoning uncovers fraud that pattern matching misses - by following chains of entity relationships across corporate structures and transaction flows.","content":"$c","toc":[{"level":2,"text":"Why pattern matching can't solve this","id":"why-pattern-matching-cant-solve-this"},{"level":2,"text":"How InputLayer traces these chains","id":"how-inputlayer-traces-these-chains"},{"level":2,"text":"Beneficial ownership: the same pattern, different question","id":"beneficial-ownership-the-same-pattern-different-question"},{"level":2,"text":"What happens when facts change","id":"what-happens-when-facts-change"},{"level":2,"text":"Structuring detection: connecting related entities","id":"structuring-detection-connecting-related-entities"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"when-similarity-is-not-enough","title":"InputLayer + Your Vector Database: When Similarity Is Not Enough","date":"2026-01-20","author":"InputLayer Team","category":"Architecture","excerpt":"Your vector database handles similarity search beautifully. But some queries need reasoning, not just retrieval. Here's how to know when you need both.","content":"$d","toc":[{"level":2,"text":"A tale of two questions","id":"a-tale-of-two-questions"},{"level":2,"text":"Three signs you've hit the wall","id":"three-signs-youve-hit-the-wall"},{"level":3,"text":"1. You're writing multi-query orchestration code","id":"1-youre-writing-multi-query-orchestration-code"},{"level":3,"text":"2. Your metadata filters can't express the access policy","id":"2-your-metadata-filters-cant-express-the-access-policy"},{"level":3,"text":"3. Stale derived data is accumulating silently","id":"3-stale-derived-data-is-accumulating-silently"},{"level":2,"text":"How the two systems complement each other","id":"how-the-two-systems-complement-each-other"},{"level":2,"text":"When to stick with just your vector database","id":"when-to-stick-with-just-your-vector-database"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"correct-retraction-why-delete-should-actually-delete","title":"Correct Retraction: Why Delete Should Actually Delete","date":"2026-01-15","author":"InputLayer Team","category":"Engineering","excerpt":"When you delete a fact from a knowledge graph, what happens to everything that was derived from it? Most systems get this wrong. Here's why it matters and how InputLayer handles it.","content":"$e","toc":[{"level":2,"text":"Simple on the surface, hard underneath","id":"simple-on-the-surface-hard-underneath"},{"level":2,"text":"The diamond problem","id":"the-diamond-problem"},{"level":2,"text":"How most systems get this wrong","id":"how-most-systems-get-this-wrong"},{"level":2,"text":"How InputLayer solves it: weighted differences","id":"how-inputlayer-solves-it-weighted-differences"},{"level":2,"text":"Retraction through recursive chains","id":"retraction-through-recursive-chains"},{"level":2,"text":"Why this matters: three real scenarios","id":"why-this-matters-three-real-scenarios"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"Getting started","id":"getting-started"}]}]}],null,"$Lf"]}],{},null,false,false]},null,false,false]},null,false,false],"$L10",false]],"m":"$undefined","G":["$11",[]],"S":true}
+12:I[484,[],"OutletBoundary"]
+13:"$Sreact.suspense"
+15:I[484,[],"ViewportBoundary"]
+17:I[484,[],"MetadataBoundary"]
+f:["$","$L12",null,{"children":["$","$13",null,{"name":"Next.MetadataOutlet","children":"$@14"}]}]
+10:["$","$1","h",{"children":[null,["$","$L15",null,{"children":"$@16"}],["$","div",null,{"hidden":true,"children":["$","$L17",null,{"children":["$","$13",null,{"name":"Next.Metadata","children":"$@18"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+16:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+19:I[6869,[],"IconMark"]
+18:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L19","3",{}]]
+14:null

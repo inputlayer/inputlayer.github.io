@@ -1,0 +1,143 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+4:I[484,[],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T730,# Quick Start
+
+Get InputLayer running and execute your first query in 5 minutes.
+
+## 1. Install
+
+```bash
+# Clone the repository
+git clone https://github.com/inputlayer/inputlayer.git
+cd inputlayer
+
+# Build (requires Rust 1.88+)
+cargo build --release
+```
+
+## 2. Start the Server and Client
+
+```bash
+# Start the server
+./target/release/inputlayer-server
+
+# In another terminal, start the client
+./target/release/inputlayer-client
+```
+
+You should see:
+```
+Connecting to server at http://127.0.0.1:8080...
+Connected!
+
+Server status: healthy
+Authenticated as: admin
+Current knowledge graph: default
+```
+
+## 3. Add Some Data
+
+```datalog
++person[("alice", 30), ("bob", 25), ("charlie", 35)]
+```
+
+Output:
+```
+Inserted 3 fact(s) into 'person'.
+```
+
+## 4. Query the Data
+
+```datalog
+?person(Name, Age)
+```
+
+Output:
+
+| Name | Age |
+|---|---|
+| "alice" | 30 |
+| "bob" | 25 |
+| "charlie" | 35 |
+
+*3 rows*
+
+## 5. Add a Filter
+
+```datalog
+?person(Name, Age), Age > 28
+```
+
+Output:
+
+| Name | Age |
+|---|---|
+| "alice" | 30 |
+| "charlie" | 35 |
+
+*2 rows*
+
+## 6. Create a Rule
+
+```datalog
++senior(Name) <- person(Name, Age), Age >= 30
+```
+
+Output:
+```
+Rule 'senior' registered.
+```
+
+```datalog
+?senior(X)
+```
+
+Output:
+
+| X |
+|---|
+| "alice" |
+| "charlie" |
+
+*2 rows*
+
+## 7. Use Aggregation
+
+```datalog
++average_age(avg<Age>) <- person(_, Age)
+```
+
+Output:
+```
+Rule 'average_age' registered.
+```
+
+```datalog
+?average_age(X)
+```
+
+Output:
+
+| X |
+|---|
+| 30.0 |
+
+*1 rows*
+
+## What's Next?
+
+- [First Program](first-program) - Learn the basics in depth
+- [Core Concepts](core-concepts) - Understand data modeling
+- [REPL Guide](repl) - Master the interactive environment
+
+## Common Commands
+
+| Command | Description |
+|---------|-------------|
+| `.help` | Show all commands |
+| `.rel` | List all relations |
+| `.rule` | List all rules |
+| `.quit` | Exit the REPL |0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Quick Start","content":"$3","toc":[{"level":2,"text":"1. Install","id":"1-install"},{"level":2,"text":"2. Start the Server and Client","id":"2-start-the-server-and-client"},{"level":2,"text":"3. Add Some Data","id":"3-add-some-data"},{"level":2,"text":"4. Query the Data","id":"4-query-the-data"},{"level":2,"text":"5. Add a Filter","id":"5-add-a-filter"},{"level":2,"text":"6. Create a Rule","id":"6-create-a-rule"},{"level":2,"text":"7. Use Aggregation","id":"7-use-aggregation"},{"level":2,"text":"What's Next?","id":"whats-next"},{"level":2,"text":"Common Commands","id":"common-commands"}]},"slugKey":"guides/quickstart"}],null,["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"loading":null,"isPartial":false}
+6:null

@@ -1,0 +1,312 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T17df,# HTTP API Guide
+
+InputLayer is a **WebSocket-first** system. All data operations (queries, inserts, rule definitions, meta commands) go through the WebSocket API. The HTTP REST endpoints provide health checks, metrics, and documentation.
+
+For query execution, see the [WebSocket API](websocket-api) guide.
+
+## Starting the Server
+
+```bash
+# Start the HTTP server
+./target/release/inputlayer-server
+
+# With custom port
+./target/release/inputlayer-server --port 9090
+
+# With config file
+./target/release/inputlayer-server --config config.toml
+```
+
+Or enable in configuration:
+
+```toml
+[http]
+enabled = true
+host = "127.0.0.1"
+port = 8080
+```
+
+## Base URL
+
+All endpoints are available at both root and versioned paths:
+
+```
+http://localhost:8080/health
+http://localhost:8080/v1/health
+```
+
+---
+
+## Health & Monitoring Endpoints
+
+### Health Check
+
+```http
+GET /health
+```
+
+Returns server health status. Returns HTTP 200 when healthy, 503 when storage is degraded.
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "status": "healthy",
+    "version": "0.1.0",
+    "uptime_secs": 3600
+  }
+}
+```
+
+**Response (503) - Storage lock contended:**
+```json
+{
+  "success": true,
+  "data": {
+    "status": "degraded",
+    "version": "0.1.0",
+    "uptime_secs": 3600
+  }
+}
+```
+
+### Liveness Probe
+
+```http
+GET /live
+```
+
+Always returns HTTP 200 if the process is alive. Does not check storage. Use for Kubernetes liveness probes.
+
+### Readiness Probe
+
+```http
+GET /ready
+```
+
+Returns HTTP 200 if the server can handle requests (storage accessible). Returns 503 if storage lock is contended. Use for Kubernetes readiness probes.
+
+### Server Statistics
+
+```http
+GET /metrics
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "knowledge_graphs": 3,
+    "relations": 10,
+    "views": 5,
+    "memory_usage_bytes": 262144,
+    "query_count": 15000,
+    "uptime_secs": 3600,
+    "sessions": {
+      "total": 5,
+      "clean": 3,
+      "dirty": 2,
+      "total_ephemeral_facts": 100,
+      "total_ephemeral_rules": 10
+    }
+  }
+}
+```
+
+### Prometheus Metrics
+
+```http
+GET /metrics/prometheus
+```
+
+Returns metrics in Prometheus text exposition format:
+
+```
+# HELP inputlayer_uptime_seconds Server uptime in seconds.
+# TYPE inputlayer_uptime_seconds gauge
+inputlayer_uptime_seconds 3600
+# HELP inputlayer_queries_total Total queries executed.
+# TYPE inputlayer_queries_total counter
+inputlayer_queries_total 15000
+# HELP inputlayer_knowledge_graphs Number of knowledge graphs.
+# TYPE inputlayer_knowledge_graphs gauge
+inputlayer_knowledge_graphs 3
+# HELP inputlayer_relations_total Total base relations.
+# TYPE inputlayer_relations_total gauge
+inputlayer_relations_total 10
+# HELP inputlayer_views_total Total derived views (rules).
+# TYPE inputlayer_views_total gauge
+inputlayer_views_total 5
+# HELP inputlayer_sessions_total Active sessions.
+# TYPE inputlayer_sessions_total gauge
+inputlayer_sessions_total 5
+# HELP inputlayer_sessions_clean Clean (idle) sessions.
+# TYPE inputlayer_sessions_clean gauge
+inputlayer_sessions_clean 3
+# HELP inputlayer_sessions_dirty Dirty (active) sessions.
+# TYPE inputlayer_sessions_dirty gauge
+inputlayer_sessions_dirty 2
+# HELP inputlayer_tuples_total Total stored tuples.
+# TYPE inputlayer_tuples_total gauge
+inputlayer_tuples_total 50000
+# HELP inputlayer_memory_usage_bytes Estimated memory usage.
+# TYPE inputlayer_memory_usage_bytes gauge
+inputlayer_memory_usage_bytes 104857600
+# HELP inputlayer_ephemeral_facts Ephemeral facts across sessions.
+# TYPE inputlayer_ephemeral_facts gauge
+inputlayer_ephemeral_facts 10
+# HELP inputlayer_ephemeral_rules Ephemeral rules across sessions.
+# TYPE inputlayer_ephemeral_rules gauge
+inputlayer_ephemeral_rules 2
+```
+
+---
+
+## WebSocket Endpoints
+
+### Global WebSocket
+
+```http
+GET /ws
+```
+
+Upgrades to a WebSocket connection. Requires authentication as the first message. See [WebSocket API](websocket-api) for the full protocol.
+
+### Session-Scoped WebSocket
+
+```http
+GET /sessions/:id/ws
+```
+
+Connects to an existing session by ID.
+
+---
+
+## Documentation Endpoints
+
+### AsyncAPI Specification
+
+```http
+GET /api/asyncapi.yaml
+```
+
+Returns the AsyncAPI specification describing the WebSocket message protocol.
+
+### OpenAPI Specification
+
+```http
+GET /api/openapi.yaml
+```
+
+Returns the OpenAPI specification describing the REST endpoints.
+
+### WebSocket Documentation
+
+```http
+GET /api/ws-docs
+```
+
+Returns an interactive HTML page for exploring the WebSocket API.
+
+---
+
+## Authentication
+
+REST endpoints (except health/live/ready) require an API key in the Authorization header:
+
+```http
+Authorization: Bearer <api-key>
+```
+
+API keys are managed via meta commands in the WebSocket session:
+
+```datalog
+.apikey create my-service-key
+.apikey list
+.apikey revoke my-service-key
+```
+
+See [Authentication](authentication) for details.
+
+---
+
+## Error Responses
+
+All errors use a consistent format:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Resource not found"
+  }
+}
+```
+
+**Error Codes:**
+
+| Code | HTTP Status | Description |
+|------|-------------|-------------|
+| `NOT_FOUND` | 404 | Resource not found |
+| `BAD_REQUEST` | 400 | Invalid request |
+| `INTERNAL_ERROR` | 500 | Server error |
+| `SERVICE_UNAVAILABLE` | 503 | Server not ready |
+
+---
+
+## Client Examples
+
+### cURL - Health Check
+
+```bash
+# Check server health
+curl http://localhost:8080/health
+
+# Get server stats
+curl http://localhost:8080/metrics
+
+# Get Prometheus metrics
+curl http://localhost:8080/metrics/prometheus
+```
+
+### cURL - With Authentication
+
+```bash
+# Authenticated request
+curl -H "Authorization: Bearer your-api-key" http://localhost:8080/metrics
+```
+
+### Kubernetes Probes
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /live
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 8080
+  initialDelaySeconds: 5
+  periodSeconds: 5
+```
+
+---
+
+## Next Steps
+
+- [WebSocket API](websocket-api) - Execute queries and manage data
+- [Configuration](configuration) - Server configuration options
+- [Authentication](authentication) - User and API key management0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"HTTP API Guide","content":"$3","toc":[{"level":2,"text":"Starting the Server","id":"starting-the-server"},{"level":2,"text":"Base URL","id":"base-url"},{"level":2,"text":"Health & Monitoring Endpoints","id":"health-monitoring-endpoints"},{"level":3,"text":"Health Check","id":"health-check"},{"level":3,"text":"Liveness Probe","id":"liveness-probe"},{"level":3,"text":"Readiness Probe","id":"readiness-probe"},{"level":3,"text":"Server Statistics","id":"server-statistics"},{"level":3,"text":"Prometheus Metrics","id":"prometheus-metrics"},{"level":2,"text":"WebSocket Endpoints","id":"websocket-endpoints"},{"level":3,"text":"Global WebSocket","id":"global-websocket"},{"level":3,"text":"Session-Scoped WebSocket","id":"session-scoped-websocket"},{"level":2,"text":"Documentation Endpoints","id":"documentation-endpoints"},{"level":3,"text":"AsyncAPI Specification","id":"asyncapi-specification"},{"level":3,"text":"OpenAPI Specification","id":"openapi-specification"},{"level":3,"text":"WebSocket Documentation","id":"websocket-documentation"},{"level":2,"text":"Authentication","id":"authentication"},{"level":2,"text":"Error Responses","id":"error-responses"},{"level":2,"text":"Client Examples","id":"client-examples"},{"level":3,"text":"cURL - Health Check","id":"curl-health-check"},{"level":3,"text":"cURL - With Authentication","id":"curl-with-authentication"},{"level":3,"text":"Kubernetes Probes","id":"kubernetes-probes"},{"level":2,"text":"Next Steps","id":"next-steps"}]},"slugKey":"guides/rest-api"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

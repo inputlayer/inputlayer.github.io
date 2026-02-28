@@ -1,0 +1,516 @@
+<!DOCTYPE html><!--05bjYGyiAumoEMBrfWHih--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/4cf2300e9c8272f7-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/93f479601ee12b01-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/css/4bd7a24b7976d4e6.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js"/><script src="/_next/static/chunks/4bd1b696-deba172d32c79f82.js" async=""></script><script src="/_next/static/chunks/794-275dc9ebd3a29fbf.js" async=""></script><script src="/_next/static/chunks/main-app-1fa5b694e5d36a75.js" async=""></script><script src="/_next/static/chunks/app/layout-7e9963bf811be36b.js" async=""></script><script src="/_next/static/chunks/758-3cb69ce377cde046.js" async=""></script><script src="/_next/static/chunks/121-aece4f809b101dc1.js" async=""></script><script src="/_next/static/chunks/502-e809071f8789437b.js" async=""></script><script src="/_next/static/chunks/689-4fcf9680fdc90283.js" async=""></script><script src="/_next/static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js" async=""></script><meta name="next-size-adjust" content=""/><title>InputLayer - A symbolic reasoning engine for AI agents</title><meta name="description" content="Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."/><link rel="icon" href="/icon.svg"/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="__variable_188709 __variable_9a8899 font-sans antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","dark",null,["light","dark"],null,true,true)</script><div class="flex flex-col h-dvh"><header class="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"><div class="flex h-14 items-center px-6"><a class="mr-8" href="/"><span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg><span class="font-extrabold tracking-tight text-lg">InputLayer</span></span></a><nav class="hidden md:flex items-center gap-6 text-sm"><a class="text-muted-foreground transition-colors hover:text-foreground" href="/docs/">Docs</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/blog/">Blog</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/use-cases/">Use Cases</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/compare/">Compare</a><a href="https://demo.inputlayer.ai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link h-3 w-3"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></nav><div class="ml-auto flex items-center gap-3"><div class="inline-flex items-center gap-1.5"><a href="https://github.com/inputlayer/inputlayer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star h-3.5 w-3.5"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><span>Star</span></a><a href="https://github.com/inputlayer/inputlayer/fork" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork h-3.5 w-3.5"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path><path d="M12 12v3"></path></svg><span>Fork</span></a></div><button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 size-9 h-9 w-9"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-4 w-4"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><div class="md:hidden"><button class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" aria-label="Open menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button></div></div></div></header><div class="flex flex-1 overflow-hidden"><div class="w-64 shrink-0 border-r border-border/50 overflow-y-auto"><div class="flex flex-col h-full"><div class="p-3 border-b border-border/50"><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" placeholder="Search docs..." class="w-full h-8 pl-8 pr-3 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring" value=""/></div></div><nav class="flex-1 overflow-y-auto p-2 space-y-0.5"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" href="/docs/index/">Overview</a><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_j6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Guides</button><div data-state="closed" id="radix-_R_j6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_r6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Reference</button><div data-state="closed" id="radix-_R_r6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_136av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Specification</button><div data-state="closed" id="radix-_R_136av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="open" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-foreground font-medium" style="padding-left:12px" type="button" aria-controls="radix-_R_1b6av5ubtb_" aria-expanded="true" data-state="open" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform rotate-90"><path d="m9 18 6-6-6-6"></path></svg>Internals</button><div data-state="open" id="radix-_R_1b6av5ubtb_" data-slot="collapsible-content"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/index/">Overview</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/architecture/">Architecture</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors bg-primary/10 text-primary font-medium" style="padding-left:24px" href="/docs/internals/coding-standards/">Coding Standards</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/type-system/">Type System</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/validation/">Validation</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/record-syntax/">Record Syntax</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/roadmap/">Roadmap</a></div></div></nav></div></div><div class="flex flex-1 flex-col overflow-hidden"><div class="flex flex-1 overflow-hidden"><div class="flex-1 overflow-y-auto px-8 py-6 max-w-4xl mx-auto"><article class="docs-prose"><h1 id="inputlayer-coding-standards-principles" node="[object Object]">InputLayer Coding Standards &amp; Principles</h1>
+<blockquote class="border-l-4 border-primary/30 pl-4 italic text-muted-foreground my-4" node="[object Object]">
+<p><strong>Project Status</strong>: Production-Ready</p>
+<p>The architecture is complete and tested (~3,107 unit tests + ~1,121 snapshot tests = ~4,228 total). This means:</p>
+<ul>
+<li>APIs are stable but may evolve with clear migration paths</li>
+<li>Breaking changes require justification and documentation</li>
+<li>Deprecated code should be removed promptly after migration period</li>
+</ul>
+</blockquote>
+<hr/>
+<h2 id="core-principles" node="[object Object]">Core Principles</h2>
+<h3 id="1-single-source-of-truth" node="[object Object]">1. Single Source of Truth</h3>
+<p><strong>Every concept should have exactly one canonical definition.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Same concept defined multiple times</span>
+<span class="syn-comment">// ast/mod.rs</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">enum</span> AggregateFunc { Count, Sum, ... }
+
+<span class="syn-comment">// ir/mod.rs</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">enum</span> AggregateFunction { Count, Sum, ... }  <span class="syn-comment">// Different name!</span>
+
+<span class="syn-comment">// statement.rs</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">enum</span> SerializableAggregateFunc { Count, Sum, ... }  <span class="syn-comment">// Third copy!</span></code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Single definition, re-exported where needed</span>
+<span class="syn-comment">// types/aggregates.rs</span>
+<span class="syn-meta">#[derive(Debug, Clone, Serialize, Deserialize)]</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">enum</span> Aggregate { Count, Sum, ... }
+
+<span class="syn-comment">// ast/mod.rs</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">use</span> <span class="syn-keyword">crate</span>::types::Aggregate;
+
+<span class="syn-comment">// ir/mod.rs</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">use</span> <span class="syn-keyword">crate</span>::types::Aggregate;</code></pre>
+<p><strong>Why</strong>: Prevents drift between definitions, eliminates conversion boilerplate, makes adding new variants trivial.</p>
+<hr/>
+<h3 id="2-no-legacy-compatibility-code" node="[object Object]">2. No Legacy Compatibility Code</h3>
+<p><strong>Delete deprecated code immediately. We have no users to break.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Keeping old code "just in case" (Tuple2 was REMOVED - this is the old pattern)</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">type</span> OldFormat = (<span class="syn-keyword">i32</span>, <span class="syn-keyword">i32</span>);   <span class="syn-comment">// Legacy - DON'T DO THIS</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> Tuple(<span class="syn-builtin">Vec</span>&lt;Value&gt;);      <span class="syn-comment">// New</span>
+
+<span class="syn-keyword">fn</span> execute_old(...) -&gt; <span class="syn-builtin">Vec</span>&lt;OldFormat&gt; { ... }  <span class="syn-comment">// Keep for compatibility?</span>
+<span class="syn-keyword">fn</span> execute_new(...) -&gt; <span class="syn-builtin">Vec</span>&lt;Tuple&gt; { ... }      <span class="syn-comment">// The real one</span></code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: One way to do things (Tuple is now the ONLY data format)</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> Tuple(<span class="syn-builtin">Vec</span>&lt;Value&gt;);
+
+<span class="syn-keyword">fn</span> execute(...) -&gt; <span class="syn-builtin">Vec</span>&lt;Tuple&gt; { ... }</code></pre>
+<p><strong>Why</strong>: Duplicate code paths double maintenance burden, confuse new developers, and create subtle bugs when they diverge.</p>
+<hr/>
+<h3 id="3-types-flow-through-the-pipeline" node="[object Object]">3. Types Flow Through the Pipeline</h3>
+<p><strong>Type information should be available at every stage, not just parsing.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Losing type info</span>
+<span class="syn-keyword">struct</span> IRNode {
+    Scan { relation: <span class="syn-builtin">String</span>, schema: <span class="syn-builtin">Vec</span>&lt;<span class="syn-builtin">String</span>&gt; }  <span class="syn-comment">// Only names, no types!</span>
+}
+
+<span class="syn-comment">// Later in code generator:</span>
+<span class="syn-keyword">fn</span> generate_filter(...) {
+    <span class="syn-comment">// Can't validate types here because we don't have them</span>
+}</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Types preserved</span>
+<span class="syn-keyword">struct</span> IRNode {
+    Scan { relation: <span class="syn-builtin">String</span>, schema: TupleSchema }  <span class="syn-comment">// Full type info!</span>
+}
+
+<span class="syn-keyword">fn</span> generate_filter(schema: <span class="syn-operator">&amp;</span>TupleSchema, predicate: <span class="syn-operator">&amp;</span>Predicate) {
+    <span class="syn-keyword">let</span> col_type = schema.field_type(predicate.column());
+    <span class="syn-builtin">assert</span>!(col_type.is_comparable(), <span class="syn-string">"Invalid comparison on {:?}"</span>, col_type);
+}</code></pre>
+<p><strong>Why</strong>: Enables better error messages, catches bugs earlier, allows type-aware optimizations.</p>
+<hr/>
+<h3 id="4-small-focused-modules" node="[object Object]">4. Small, Focused Modules</h3>
+<p><strong>Each file should have a single, clear purpose. If you can&#x27;t describe it in one sentence, split it.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Monolithic file</span>
+<span class="syn-comment">// statement.rs (2,860 lines)</span>
+<span class="syn-comment">// - Meta command parsing</span>
+<span class="syn-comment">// - Schema parsing</span>
+<span class="syn-comment">// - Data operation parsing</span>
+<span class="syn-comment">// - Serialization types</span>
+<span class="syn-comment">// - Conversion functions</span>
+<span class="syn-comment">// - Query parsing</span></code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Focused modules</span>
+<span class="syn-comment">// statement/</span>
+<span class="syn-comment">//   mod.rs          - Re-exports and Statement enum</span>
+<span class="syn-comment">//   meta.rs         - Meta command parsing (.kg, .rule, .load)</span>
+<span class="syn-comment">//   schema.rs       - Schema declaration parsing</span>
+<span class="syn-comment">//   data.rs         - Insert/Delete/Update operations</span>
+<span class="syn-comment">//   serialize.rs    - JSON serialization types</span>
+<span class="syn-comment">//   parser.rs       - Core parsing utilities</span></code></pre>
+<p><strong>Guidelines</strong>:</p>
+<ul>
+<li>Maximum 500 lines per file (prefer 200-300)</li>
+<li>One <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">pub struct</code> or <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">pub enum</code> as the primary export</li>
+<li>Helper functions should be private unless needed elsewhere</li>
+</ul>
+<hr/>
+<h3 id="5-explicit-over-implicit" node="[object Object]">5. Explicit Over Implicit</h3>
+<p><strong>Be explicit about behavior. Avoid magic and hidden side effects.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Hidden behavior</span>
+<span class="syn-keyword">fn</span> add_fact(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, data: <span class="syn-builtin">Vec</span>&lt;(<span class="syn-keyword">i32</span>, <span class="syn-keyword">i32</span>)&gt;) {
+    <span class="syn-comment">// Secretly infers schema if not exists</span>
+    <span class="syn-comment">// Secretly converts to internal format</span>
+    <span class="syn-comment">// Secretly persists to disk</span>
+}</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Explicit operations</span>
+<span class="syn-keyword">fn</span> ensure_schema(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, schema: TupleSchema) -&gt; <span class="syn-builtin">Result</span>&lt;()&gt;
+<span class="syn-keyword">fn</span> insert_tuples(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, tuples: <span class="syn-builtin">Vec</span>&lt;Tuple&gt;) -&gt; <span class="syn-builtin">Result</span>&lt;()&gt;
+<span class="syn-keyword">fn</span> persist(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>) -&gt; <span class="syn-builtin">Result</span>&lt;()&gt;
+
+<span class="syn-comment">// Usage is clear</span>
+engine.ensure_schema(<span class="syn-string">"edge"</span>, schema![(<span class="syn-string">"from"</span>, Int64), (<span class="syn-string">"to"</span>, Int64)])?;
+engine.insert_tuples(<span class="syn-string">"edge"</span>, tuples)?;
+engine.persist()?;</code></pre>
+<hr/>
+<h3 id="6-error-messages-are-user-interface" node="[object Object]">6. Error Messages Are User Interface</h3>
+<p><strong>Errors should help users fix problems, not just report them.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Unhelpful error</span>
+<span class="syn-builtin">Err</span>(<span class="syn-string">"parse error"</span>.to_string())</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Actionable error</span>
+<span class="syn-builtin">Err</span>(<span class="syn-builtin">format</span>!(
+    "Unknown relation '{}' at line {}. Did you mean '{}'? \
+     Available relations: {}<span class="syn-string">",
+    name, line, suggestion, available.join("</span>, ")
+))</code></pre>
+<p><strong>Error message checklist</strong>:</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->What went wrong?</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Where did it happen? (file, line, column if applicable)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Why is it wrong?</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->How can the user fix it?</li>
+</ul>
+<hr/>
+<h3 id="7-composition-over-inheritance" node="[object Object]">7. Composition Over Inheritance</h3>
+<p><strong>Build complex behavior by combining simple pieces.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Deep trait hierarchies</span>
+<span class="syn-keyword">trait</span> Queryable { ... }
+<span class="syn-keyword">trait</span> Filterable: Queryable { ... }
+<span class="syn-keyword">trait</span> Joinable: Filterable { ... }
+<span class="syn-keyword">trait</span> Aggregatable: Joinable { ... }</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Composable operations</span>
+<span class="syn-keyword">struct</span> QueryPipeline {
+    stages: <span class="syn-builtin">Vec</span>&lt;Stage&gt;,
+}
+
+<span class="syn-keyword">enum</span> Stage {
+    Scan(ScanOp),
+    Filter(FilterOp),
+    Join(JoinOp),
+    Aggregate(AggregateOp),
+}
+
+<span class="syn-keyword">impl</span> QueryPipeline {
+    <span class="syn-keyword">fn</span> add_filter(<span class="syn-keyword">mut</span> <span class="syn-keyword">self</span>, predicate: Predicate) -&gt; <span class="syn-keyword">Self</span> {
+        <span class="syn-keyword">self</span>.stages.push(Stage::Filter(FilterOp { predicate }));
+        <span class="syn-keyword">self</span>
+    }
+}</code></pre>
+<hr/>
+<h2 id="code-style-guidelines" node="[object Object]">Code Style Guidelines</h2>
+<h3 id="naming-conventions" node="[object Object]">Naming Conventions</h3>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Item</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Convention</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Example</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Types</td><td class="border px-4 py-2" node="[object Object]">PascalCase</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">TupleSchema</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">IRNode</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Functions</td><td class="border px-4 py-2" node="[object Object]">snake_case</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parse_statement</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">build_ir</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Constants</td><td class="border px-4 py-2" node="[object Object]">SCREAMING_SNAKE</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">MAX_RECURSION_DEPTH</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Modules</td><td class="border px-4 py-2" node="[object Object]">snake_case</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">code_generator</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">ir_builder</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Type parameters</td><td class="border px-4 py-2" node="[object Object]">Single uppercase</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">T</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">E</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">F</code></td></tr></tbody></table></div>
+<p><strong>Naming principles</strong>:</p>
+<ul>
+<li>Be descriptive: <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parse_meta_command</code> not <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">pmc</code></li>
+<li>Be consistent: if one function is <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parse_X</code>, all similar functions are <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parse_Y</code></li>
+<li>Avoid abbreviations unless universal: <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">id</code> ok, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">idx</code> ok, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">rel</code> not ok (use <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">relation</code>)</li>
+</ul>
+<h3 id="function-size" node="[object Object]">Function Size</h3>
+<p><strong>Functions should fit on one screen (~50 lines max).</strong></p>
+<p>If a function is longer:</p>
+<ol>
+<li>Extract helper functions</li>
+<li>Use early returns to reduce nesting</li>
+<li>Consider if it&#x27;s doing too many things</li>
+</ol>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Too long, deeply nested</span>
+<span class="syn-keyword">fn</span> execute(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, program: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>) -&gt; <span class="syn-builtin">Result</span>&lt;<span class="syn-builtin">Vec</span>&lt;Tuple&gt;&gt; {
+    <span class="syn-comment">// 200 lines of code with 5 levels of nesting</span>
+}
+
+<span class="syn-comment">// GOOD: Composed of helpers</span>
+<span class="syn-keyword">fn</span> execute(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, program: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>) -&gt; <span class="syn-builtin">Result</span>&lt;<span class="syn-builtin">Vec</span>&lt;Tuple&gt;&gt; {
+    <span class="syn-keyword">let</span> compiled = <span class="syn-keyword">self</span>.compile(program)?;
+    <span class="syn-keyword">let</span> context = <span class="syn-keyword">self</span>.prepare_context()?;
+    <span class="syn-keyword">self</span>.execute_rules(<span class="syn-operator">&amp;</span>compiled, <span class="syn-operator">&amp;</span>context)
+}</code></pre>
+<h3 id="comments" node="[object Object]">Comments</h3>
+<p><strong>Code should be self-documenting. Use comments for &quot;why&quot;, not &quot;what&quot;.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Restating the code</span>
+<span class="syn-comment">// Increment counter by 1</span>
+counter += <span class="syn-number">1</span>;
+
+<span class="syn-comment">// BAD: Explaining obvious code</span>
+<span class="syn-comment">// Check if the relation exists in the schema</span>
+<span class="syn-keyword">if</span> schema.contains(relation) { ... }</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// GOOD: Explaining non-obvious decisions</span>
+<span class="syn-comment">// We use a BTreeMap instead of HashMap here because we need deterministic</span>
+<span class="syn-comment">// iteration order for reproducible query results across runs.</span>
+<span class="syn-keyword">let</span> relations: <span class="syn-builtin">BTreeMap</span>&lt;<span class="syn-builtin">String</span>, Schema&gt; = ...;
+
+<span class="syn-comment">// GOOD: Explaining edge cases</span>
+<span class="syn-comment">// Empty body means this is a fact, not a rule. Facts are handled specially</span>
+<span class="syn-comment">// because they don't need fixpoint iteration.</span>
+<span class="syn-keyword">if</span> rule.body.is_empty() {
+    <span class="syn-keyword">return</span> <span class="syn-keyword">self</span>.handle_fact(rule);
+}</code></pre>
+<h3 id="documentation" node="[object Object]">Documentation</h3>
+<p><strong>All public items must have doc comments.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">/// Parse a Datalog statement from source text.</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// # Arguments</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// * `input` - The source text to parse</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// # Returns</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// The parsed statement, or an error if parsing fails.</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// # Examples</span>
+<span class="syn-comment">///</span>
+<span class="syn-comment">/// ```</span>
+<span class="syn-comment">/// let stmt = parse_statement("+edge(1, 2).")?;</span>
+<span class="syn-comment">/// assert!(matches!(stmt, Statement::Insert(_)));</span>
+<span class="syn-comment">/// ```</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> parse_statement(input: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>) -&gt; <span class="syn-builtin">Result</span>&lt;Statement, ParseError&gt; {
+    <span class="syn-comment">// ...</span>
+}</code></pre>
+<h3 id="error-handling" node="[object Object]">Error Handling</h3>
+<p><strong>Use <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">Result</code> and <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">?</code> operator. Avoid <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">.unwrap()</code> except in tests.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Panics on error</span>
+<span class="syn-keyword">let</span> schema = catalog.get(relation).unwrap();
+
+<span class="syn-comment">// BAD: Ignores error</span>
+<span class="syn-keyword">let</span> _ = persist_to_disk();
+
+<span class="syn-comment">// GOOD: Propagates error with context</span>
+<span class="syn-keyword">let</span> schema = catalog.get(relation)
+    .ok_or_else(|| SchemaError::UnknownRelation(relation.to_string()))?;
+
+<span class="syn-comment">// GOOD: Handles error explicitly</span>
+<span class="syn-keyword">match</span> persist_to_disk() {
+    <span class="syn-builtin">Ok</span>(()) =&gt; log::info!(<span class="syn-string">"Persisted successfully"</span>),
+    <span class="syn-builtin">Err</span>(e) =&gt; log::warn!(<span class="syn-string">"Failed to persist: {}"</span>, e),
+}</code></pre>
+<hr/>
+<h2 id="module-organization" node="[object Object]">Module Organization</h2>
+<h3 id="directory-structure" node="[object Object]">Directory Structure</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/
++-- lib.rs                    # DatalogEngine, public API
++-- main.rs                   # Server binary
++-- config.rs                 # TOML configuration
++-- catalog.rs                # System catalog
++-- ast/                      # Abstract Syntax Tree
+|   +-- mod.rs                # AST types, BuiltinFunc, AggregateFunc, Display
++-- ir/                       # Intermediate Representation
+|   +-- mod.rs                # IRNode, IRExpression, BuiltinFunction
++-- ir_builder/               # AST to IR conversion
+|   +-- mod.rs
++-- parser/                   # Datalog parser
+|   +-- mod.rs                # Lexer + recursive descent parser
++-- statement/                # Statement parsing
+|   +-- mod.rs                # Statement enum
+|   +-- parser.rs             # Statement-level parsing
+|   +-- meta.rs               # Meta command parsing (.kg, .rule, .index)
+|   +-- schema.rs             # Schema declaration parsing
+|   +-- data.rs               # Insert/Delete operations
+|   +-- serialize.rs          # JSON serialization types
+|   +-- types.rs              # Statement-related types
++-- optimizer/                # Query optimization passes
+|   +-- mod.rs
++-- join_planning/            # Join order optimization
+|   +-- mod.rs
++-- sip_rewriting/            # Sideways Information Passing
+|   +-- mod.rs
++-- subplan_sharing/          # Common subexpression detection
+|   +-- mod.rs
++-- boolean_specialization/   # Set/bag semantics analysis
+|   +-- mod.rs
++-- code_generator/           # IR to DD execution
+|   +-- mod.rs
++-- storage_engine/           # Multi-KG storage
+|   +-- mod.rs                # StorageEngine, KnowledgeGraph
+|   +-- snapshot.rs           # KnowledgeGraphSnapshot
++-- storage/                  # Persistence layer
+|   +-- ...                   # FilePersist, WAL, Parquet batches
++-- schema/                   # Schema management
+|   +-- mod.rs
+|   +-- catalog.rs            # SchemaCatalog (per-KG)
+|   +-- validator.rs
++-- value/                    # Value types and tuples
+|   +-- mod.rs                # Value, Tuple, Abomonation
+|   +-- arrow_convert.rs      # Arrow/Parquet conversion
++-- protocol/                 # HTTP/API handler
+|   +-- handler.rs
++-- dd_computation.rs         # DDComputation, DDCommand
++-- derived_relations.rs      # DerivedRelationsManager
++-- rule_catalog.rs           # RuleCatalog, validation
++-- recursion.rs              # Recursion detection/handling
++-- vector_ops.rs             # Vector, quantization, LSH functions
++-- temporal_ops.rs           # Temporal functions
++-- hnsw_index.rs             # HNSW index implementation
++-- index_manager.rs          # Per-KG index management
++-- pipeline_trace.rs         # Pipeline tracing/debugging
+</code></pre>
+<h3 id="module-dependencies" node="[object Object]">Module Dependencies</h3>
+<p><strong>Dependencies should flow downward. Lower modules should not depend on higher ones.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">          lib.rs (public API)
+              |
+    +---------+---------+
+    |         |         |
+    v         v         v
+statement  optimizer  code_generator
+    |         |         |
+    +----&gt; ir/ast &lt;-----+
+              |
+           types/
+              |
+           value/
+</code></pre>
+<p><strong>Forbidden</strong>:</p>
+<ul>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">types/</code> depending on <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">ast/</code></li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">value/</code> depending on <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">ir/</code></li>
+<li>Circular dependencies of any kind</li>
+</ul>
+<hr/>
+<h2 id="testing-standards" node="[object Object]">Testing Standards</h2>
+<h3 id="test-organization" node="[object Object]">Test Organization</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">tests/
++-- integration/        # Full pipeline tests
++-- snapshots/          # Golden file tests
++-- unit/               # Module-specific tests (or inline in src/)
+</code></pre>
+<h3 id="test-naming" node="[object Object]">Test Naming</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-meta">#[test]</span>
+<span class="syn-keyword">fn</span> test_&lt;module&gt;_&lt;scenario&gt;_&lt;expected_outcome&gt;() {
+    <span class="syn-comment">// ...</span>
+}
+
+<span class="syn-comment">// Examples:</span>
+<span class="syn-keyword">fn</span> test_parser_empty_input_returns_error() { ... }
+<span class="syn-keyword">fn</span> test_join_two_relations_produces_cartesian_product() { ... }
+<span class="syn-keyword">fn</span> test_aggregation_empty_group_returns_zero() { ... }</code></pre>
+<h3 id="test-coverage-requirements" node="[object Object]">Test Coverage Requirements</h3>
+<ul>
+<li>All public functions must have at least one test</li>
+<li>All error paths should be tested</li>
+<li>Edge cases: empty input, single element, max values</li>
+</ul>
+<h3 id="snapshot-tests" node="[object Object]">Snapshot Tests</h3>
+<p><strong>Use for complex output that&#x27;s hard to assert programmatically.</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">examples/datalog/
++-- 01_basics/
+|   +-- 01_simple_query.idl      # Input
+|   +-- 01_simple_query.idl.out  # Expected output
+</code></pre>
+<p>Update snapshots with:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm">./scripts/run_snapshot_tests.sh <span class="syn-meta">--update</span></code></pre>
+<hr/>
+<h2 id="performance-guidelines" node="[object Object]">Performance Guidelines</h2>
+<h3 id="avoid-unnecessary-allocations" node="[object Object]">Avoid Unnecessary Allocations</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Creates intermediate String</span>
+<span class="syn-keyword">let</span> name = <span class="syn-builtin">format</span>!(<span class="syn-string">"{}"</span>, relation);
+<span class="syn-keyword">if</span> catalog.contains(<span class="syn-operator">&amp;</span>name) { ... }
+
+<span class="syn-comment">// GOOD: Works with &amp;str directly</span>
+<span class="syn-keyword">if</span> catalog.contains(relation) { ... }</code></pre>
+<h3 id="use-iterators-instead-of-collecting" node="[object Object]">Use Iterators Instead of Collecting</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Allocates intermediate Vec</span>
+<span class="syn-keyword">let</span> filtered: <span class="syn-builtin">Vec</span>&lt;_&gt; = items.iter().filter(|x| x.valid).collect();
+<span class="syn-keyword">let</span> result: <span class="syn-builtin">Vec</span>&lt;_&gt; = filtered.iter().map(|x| x.value).collect();
+
+<span class="syn-comment">// GOOD: Lazy evaluation</span>
+<span class="syn-keyword">let</span> result: <span class="syn-builtin">Vec</span>&lt;_&gt; = items.iter()
+    .filter(|x| x.valid)
+    .map(|x| x.value)
+    .collect();</code></pre>
+<h3 id="clone-consciously" node="[object Object]">Clone Consciously</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// BAD: Cloning when not needed</span>
+<span class="syn-keyword">fn</span> process(data: <span class="syn-builtin">Vec</span>&lt;Tuple&gt;) {
+    <span class="syn-keyword">let</span> copy = data.clone();  <span class="syn-comment">// Why?</span>
+    <span class="syn-comment">// ...</span>
+}
+
+<span class="syn-comment">// GOOD: Take ownership or borrow</span>
+<span class="syn-keyword">fn</span> process(data: <span class="syn-builtin">Vec</span>&lt;Tuple&gt;) { ... }  <span class="syn-comment">// Takes ownership</span>
+<span class="syn-keyword">fn</span> process(data: <span class="syn-operator">&amp;</span>[Tuple]) { ... }    <span class="syn-comment">// Borrows</span></code></pre>
+<hr/>
+<h2 id="git-workflow" node="[object Object]">Git Workflow</h2>
+<h3 id="commit-messages" node="[object Object]">Commit Messages</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">&lt;type&gt;: &lt;short description&gt;
+
+&lt;optional longer description&gt;
+
+&lt;optional footer&gt;
+</code></pre>
+<p><strong>Types</strong>:</p>
+<ul>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">feat</code>: New feature</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">fix</code>: Bug fix</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">refactor</code>: Code change that neither fixes a bug nor adds a feature</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">docs</code>: Documentation only</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">test</code>: Adding or updating tests</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">chore</code>: Build, CI, dependencies</li>
+</ul>
+<p><strong>Examples</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">feat: add TopK aggregate function
+
+Implements top-k selection with ordering column support
+Syntax: top_k&lt;10, name, score:desc&gt;
+
+refactor: split statement.rs into focused modules
+
+Improves maintainability by separating concerns:
+- meta.rs: .kg, .rule, .load commands
+- schema.rs: type declarations
+- data.rs: insert/delete/update
+</code></pre>
+<h3 id="branch-naming" node="[object Object]">Branch Naming</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">&lt;type&gt;/&lt;short-description&gt;
+
+feat/topk-aggregate
+fix/parser-empty-input
+refactor/split-statement-module
+</code></pre>
+<h3 id="pull-request-checklist" node="[object Object]">Pull Request Checklist</h3>
+<p>Before merging:</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->All tests pass (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo test</code>)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Snapshot tests pass (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">./scripts/run_snapshot_tests.sh</code>)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->No clippy warnings (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo clippy -- -D warnings</code>)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Code is formatted (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo fmt</code>)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Public APIs are documented</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Complex logic has comments explaining &quot;why&quot;</li>
+</ul>
+<hr/>
+<h2 id="anti-patterns-to-avoid" node="[object Object]">Anti-Patterns to Avoid</h2>
+<h3 id="1-the-god-module" node="[object Object]">1. The God Module</h3>
+<p><strong>Don&#x27;t</strong>: Put everything in one file because &quot;it&#x27;s easier&quot;.
+<strong>Do</strong>: Split into focused modules from the start.</p>
+<h3 id="2-stringly-typed-apis" node="[object Object]">2. Stringly Typed APIs</h3>
+<p><strong>Don&#x27;t</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">fn</span> execute(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, operation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, target: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, data: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>) -&gt; <span class="syn-builtin">String</span></code></pre>
+<p><strong>Do</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">fn</span> execute(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>, op: Operation) -&gt; <span class="syn-builtin">Result</span>&lt;ExecutionResult&gt;</code></pre>
+<h3 id="3-boolean-parameters" node="[object Object]">3. Boolean Parameters</h3>
+<p><strong>Don&#x27;t</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">fn</span> parse(input: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, strict: <span class="syn-keyword">bool</span>, allow_empty: <span class="syn-keyword">bool</span>, normalize: <span class="syn-keyword">bool</span>)</code></pre>
+<p><strong>Do</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">struct</span> ParseOptions {
+    strict: <span class="syn-keyword">bool</span>,
+    allow_empty: <span class="syn-keyword">bool</span>,
+    normalize: <span class="syn-keyword">bool</span>,
+}
+
+<span class="syn-keyword">fn</span> parse(input: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>, options: ParseOptions)</code></pre>
+<h3 id="4-defensive-cloning" node="[object Object]">4. Defensive Cloning</h3>
+<p><strong>Don&#x27;t</strong>: Clone &quot;just to be safe&quot; without understanding ownership.
+<strong>Do</strong>: Understand borrowing and clone only when necessary.</p>
+<h3 id="5-comment-driven-development" node="[object Object]">5. Comment-Driven Development</h3>
+<p><strong>Don&#x27;t</strong>:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-comment">// TODO: fix this later</span>
+<span class="syn-comment">// HACK: this works but is ugly</span>
+<span class="syn-comment">// XXX: not sure why this is needed</span></code></pre>
+<p><strong>Do</strong>: Fix it now or create a tracked issue.</p>
+<hr/>
+<h2 id="checklist-for-new-code" node="[object Object]">Checklist for New Code</h2>
+<p>Before submitting code, verify:</p>
+<ul class="contains-task-list">
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Single responsibility: each function/module does one thing</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->No duplicate type definitions</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Types flow through the pipeline (not lost after parsing)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Errors are descriptive and actionable</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Public items are documented</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Tests cover happy path and error cases</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->No <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">.unwrap()</code> outside of tests</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->No unnecessary clones</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Code is formatted (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo fmt</code>)</li>
+<li class="task-list-item"><input type="checkbox" disabled=""/> <!-- -->Clippy is happy (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo clippy</code>)</li>
+</ul>
+<hr/>
+<h2 id="quick-reference" node="[object Object]">Quick Reference</h2>
+<h3 id="adding-a-new-aggregate-function" node="[object Object]">Adding a New Aggregate Function</h3>
+<ol>
+<li>Add variant to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">AggregateFunc</code> enum in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ast/mod.rs</code></li>
+<li>Add IR variant to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">AggregateFunction</code> in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ir/mod.rs</code></li>
+<li>Add conversion in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ir_builder/mod.rs</code></li>
+<li>Add code generation in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/code_generator/mod.rs</code></li>
+<li>Add tests in appropriate test file</li>
+<li>Add snapshot test in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">examples/datalog/</code></li>
+</ol>
+<h3 id="adding-a-new-built-in-function" node="[object Object]">Adding a New Built-in Function</h3>
+<ol>
+<li>Add variant to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">BuiltinFunc</code> enum in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ast/mod.rs</code></li>
+<li>Implement <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parse()</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">arity()</code>, <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">as_str()</code> in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ast/mod.rs</code></li>
+<li>Add IR variant to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">BuiltinFunction</code> in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ir/mod.rs</code></li>
+<li>Add conversion in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/ir_builder/mod.rs</code></li>
+<li>Add evaluation in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/code_generator/mod.rs</code></li>
+<li>Implement function logic in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/vector_ops.rs</code> or <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/temporal_ops.rs</code></li>
+<li>Add tests and update <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">docs/reference/functions.md</code></li>
+</ol>
+<h3 id="adding-a-new-statement-type" node="[object Object]">Adding a New Statement Type</h3>
+<ol>
+<li>Add variant to <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/statement/mod.rs::Statement</code></li>
+<li>Add parsing in appropriate <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/statement/*.rs</code> file</li>
+<li>Add handling in <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">src/protocol/handler.rs</code></li>
+<li>Add tests and snapshot tests</li>
+</ol>
+<hr/>
+<h2 id="getting-help" node="[object Object]">Getting Help</h2>
+<ul>
+<li><strong>Architecture questions</strong>: Read <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">docs/internals/architecture.md</code></li>
+<li><strong>API questions</strong>: Check doc comments with <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">cargo doc --open</code></li>
+<li><strong>Debugging</strong>: Use <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">IL_TRACE_LEVEL=debug cargo run</code> for verbose output</li>
+<li><strong>Tests failing</strong>: Run <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">./scripts/run_snapshot_tests.sh -v</code> for diffs</li>
+</ul></article></div><div class="hidden lg:block w-48 shrink-0 border-l border-border/50"><div class="sticky top-0 p-4"><p class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">On this page</p><nav class="space-y-1"><a href="#core-principles" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Core Principles</a><a href="#1-single-source-of-truth" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">1. Single Source of Truth</a><a href="#2-no-legacy-compatibility-code" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">2. No Legacy Compatibility Code</a><a href="#3-types-flow-through-the-pipeline" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">3. Types Flow Through the Pipeline</a><a href="#4-small-focused-modules" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">4. Small, Focused Modules</a><a href="#5-explicit-over-implicit" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">5. Explicit Over Implicit</a><a href="#6-error-messages-are-user-interface" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">6. Error Messages Are User Interface</a><a href="#7-composition-over-inheritance" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">7. Composition Over Inheritance</a><a href="#code-style-guidelines" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Code Style Guidelines</a><a href="#naming-conventions" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Naming Conventions</a><a href="#function-size" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Function Size</a><a href="#comments" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Comments</a><a href="#documentation" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Documentation</a><a href="#error-handling" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Error Handling</a><a href="#module-organization" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Module Organization</a><a href="#directory-structure" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Directory Structure</a><a href="#module-dependencies" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Module Dependencies</a><a href="#testing-standards" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Testing Standards</a><a href="#test-organization" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Test Organization</a><a href="#test-naming" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Test Naming</a><a href="#test-coverage-requirements" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Test Coverage Requirements</a><a href="#snapshot-tests" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Snapshot Tests</a><a href="#performance-guidelines" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Performance Guidelines</a><a href="#avoid-unnecessary-allocations" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Avoid Unnecessary Allocations</a><a href="#use-iterators-instead-of-collecting" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Use Iterators Instead of Collecting</a><a href="#clone-consciously" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Clone Consciously</a><a href="#git-workflow" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Git Workflow</a><a href="#commit-messages" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Commit Messages</a><a href="#branch-naming" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Branch Naming</a><a href="#pull-request-checklist" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Pull Request Checklist</a><a href="#anti-patterns-to-avoid" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Anti-Patterns to Avoid</a><a href="#1-the-god-module" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">1. The God Module</a><a href="#2-stringly-typed-apis" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">2. Stringly Typed APIs</a><a href="#3-boolean-parameters" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">3. Boolean Parameters</a><a href="#4-defensive-cloning" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">4. Defensive Cloning</a><a href="#5-comment-driven-development" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">5. Comment-Driven Development</a><a href="#checklist-for-new-code" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Checklist for New Code</a><a href="#quick-reference" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Quick Reference</a><a href="#adding-a-new-aggregate-function" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Adding a New Aggregate Function</a><a href="#adding-a-new-built-in-function" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Adding a New Built-in Function</a><a href="#adding-a-new-statement-type" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Adding a New Statement Type</a><a href="#getting-help" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Getting Help</a></nav></div></div></div></div></div></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[1942,[\"177\",\"static/chunks/app/layout-7e9963bf811be36b.js\"],\"ThemeProvider\"]\n3:I[7121,[],\"\"]\n4:I[4581,[],\"\"]\n6:I[484,[],\"OutletBoundary\"]\n7:\"$Sreact.suspense\"\n9:I[484,[],\"ViewportBoundary\"]\nb:I[484,[],\"MetadataBoundary\"]\nd:I[7123,[],\"\"]\n:HL[\"/_next/static/media/4cf2300e9c8272f7-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/93f479601ee12b01-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/4bd7a24b7976d4e6.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"05bjYGyiAumoEMBrfWHih\",\"c\":[\"\",\"docs\",\"internals\",\"coding-standards\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"docs\",{\"children\":[[\"slug\",\"internals/coding-standards\",\"oc\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/4bd7a24b7976d4e6.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_188709 __variable_9a8899 font-sans antialiased\",\"children\":[\"$\",\"$L2\",null,{\"attribute\":\"class\",\"defaultTheme\":\"dark\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L5\",null,[\"$\",\"$L6\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@8\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$L9\",null,{\"children\":\"$@a\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lb\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.Metadata\",\"children\":\"$@c\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$d\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"e:I[8428,[\"758\",\"static/chunks/758-3cb69ce377cde046.js\",\"121\",\"static/chunks/121-aece4f809b101dc1.js\",\"502\",\"static/chunks/502-e809071f8789437b.js\",\"689\",\"static/chunks/689-4fcf9680fdc90283.js\",\"870\",\"static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js\"],\"DocsPageClient\"]\nf:T4508,"])</script><script>self.__next_f.push([1,"# InputLayer Coding Standards \u0026 Principles\n\n\u003e **Project Status**: Production-Ready\n\u003e\n\u003e The architecture is complete and tested (~3,107 unit tests + ~1,121 snapshot tests = ~4,228 total). This means:\n\u003e - APIs are stable but may evolve with clear migration paths\n\u003e - Breaking changes require justification and documentation\n\u003e - Deprecated code should be removed promptly after migration period\n\n---\n\n## Core Principles\n\n### 1. Single Source of Truth\n\n**Every concept should have exactly one canonical definition.**\n\n```rust\n// BAD: Same concept defined multiple times\n// ast/mod.rs\npub enum AggregateFunc { Count, Sum, ... }\n\n// ir/mod.rs\npub enum AggregateFunction { Count, Sum, ... }  // Different name!\n\n// statement.rs\npub enum SerializableAggregateFunc { Count, Sum, ... }  // Third copy!\n```\n\n```rust\n// GOOD: Single definition, re-exported where needed\n// types/aggregates.rs\n#[derive(Debug, Clone, Serialize, Deserialize)]\npub enum Aggregate { Count, Sum, ... }\n\n// ast/mod.rs\npub use crate::types::Aggregate;\n\n// ir/mod.rs\npub use crate::types::Aggregate;\n```\n\n**Why**: Prevents drift between definitions, eliminates conversion boilerplate, makes adding new variants trivial.\n\n---\n\n### 2. No Legacy Compatibility Code\n\n**Delete deprecated code immediately. We have no users to break.**\n\n```rust\n// BAD: Keeping old code \"just in case\" (Tuple2 was REMOVED - this is the old pattern)\npub type OldFormat = (i32, i32);   // Legacy - DON'T DO THIS\npub struct Tuple(Vec\u003cValue\u003e);      // New\n\nfn execute_old(...) -\u003e Vec\u003cOldFormat\u003e { ... }  // Keep for compatibility?\nfn execute_new(...) -\u003e Vec\u003cTuple\u003e { ... }      // The real one\n```\n\n```rust\n// GOOD: One way to do things (Tuple is now the ONLY data format)\npub struct Tuple(Vec\u003cValue\u003e);\n\nfn execute(...) -\u003e Vec\u003cTuple\u003e { ... }\n```\n\n**Why**: Duplicate code paths double maintenance burden, confuse new developers, and create subtle bugs when they diverge.\n\n---\n\n### 3. Types Flow Through the Pipeline\n\n**Type information should be available at every stage, not just parsing.**\n\n```rust\n// BAD: Losing type info\nstruct IRNode {\n    Scan { relation: String, schema: Vec\u003cString\u003e }  // Only names, no types!\n}\n\n// Later in code generator:\nfn generate_filter(...) {\n    // Can't validate types here because we don't have them\n}\n```\n\n```rust\n// GOOD: Types preserved\nstruct IRNode {\n    Scan { relation: String, schema: TupleSchema }  // Full type info!\n}\n\nfn generate_filter(schema: \u0026TupleSchema, predicate: \u0026Predicate) {\n    let col_type = schema.field_type(predicate.column());\n    assert!(col_type.is_comparable(), \"Invalid comparison on {:?}\", col_type);\n}\n```\n\n**Why**: Enables better error messages, catches bugs earlier, allows type-aware optimizations.\n\n---\n\n### 4. Small, Focused Modules\n\n**Each file should have a single, clear purpose. If you can't describe it in one sentence, split it.**\n\n```rust\n// BAD: Monolithic file\n// statement.rs (2,860 lines)\n// - Meta command parsing\n// - Schema parsing\n// - Data operation parsing\n// - Serialization types\n// - Conversion functions\n// - Query parsing\n```\n\n```rust\n// GOOD: Focused modules\n// statement/\n//   mod.rs          - Re-exports and Statement enum\n//   meta.rs         - Meta command parsing (.kg, .rule, .load)\n//   schema.rs       - Schema declaration parsing\n//   data.rs         - Insert/Delete/Update operations\n//   serialize.rs    - JSON serialization types\n//   parser.rs       - Core parsing utilities\n```\n\n**Guidelines**:\n- Maximum 500 lines per file (prefer 200-300)\n- One `pub struct` or `pub enum` as the primary export\n- Helper functions should be private unless needed elsewhere\n\n---\n\n### 5. Explicit Over Implicit\n\n**Be explicit about behavior. Avoid magic and hidden side effects.**\n\n```rust\n// BAD: Hidden behavior\nfn add_fact(\u0026mut self, relation: \u0026str, data: Vec\u003c(i32, i32)\u003e) {\n    // Secretly infers schema if not exists\n    // Secretly converts to internal format\n    // Secretly persists to disk\n}\n```\n\n```rust\n// GOOD: Explicit operations\nfn ensure_schema(\u0026mut self, relation: \u0026str, schema: TupleSchema) -\u003e Result\u003c()\u003e\nfn insert_tuples(\u0026mut self, relation: \u0026str, tuples: Vec\u003cTuple\u003e) -\u003e Result\u003c()\u003e\nfn persist(\u0026mut self) -\u003e Result\u003c()\u003e\n\n// Usage is clear\nengine.ensure_schema(\"edge\", schema![(\"from\", Int64), (\"to\", Int64)])?;\nengine.insert_tuples(\"edge\", tuples)?;\nengine.persist()?;\n```\n\n---\n\n### 6. Error Messages Are User Interface\n\n**Errors should help users fix problems, not just report them.**\n\n```rust\n// BAD: Unhelpful error\nErr(\"parse error\".to_string())\n```\n\n```rust\n// GOOD: Actionable error\nErr(format!(\n    \"Unknown relation '{}' at line {}. Did you mean '{}'? \\\n     Available relations: {}\",\n    name, line, suggestion, available.join(\", \")\n))\n```\n\n**Error message checklist**:\n- [ ] What went wrong?\n- [ ] Where did it happen? (file, line, column if applicable)\n- [ ] Why is it wrong?\n- [ ] How can the user fix it?\n\n---\n\n### 7. Composition Over Inheritance\n\n**Build complex behavior by combining simple pieces.**\n\n```rust\n// BAD: Deep trait hierarchies\ntrait Queryable { ... }\ntrait Filterable: Queryable { ... }\ntrait Joinable: Filterable { ... }\ntrait Aggregatable: Joinable { ... }\n```\n\n```rust\n// GOOD: Composable operations\nstruct QueryPipeline {\n    stages: Vec\u003cStage\u003e,\n}\n\nenum Stage {\n    Scan(ScanOp),\n    Filter(FilterOp),\n    Join(JoinOp),\n    Aggregate(AggregateOp),\n}\n\nimpl QueryPipeline {\n    fn add_filter(mut self, predicate: Predicate) -\u003e Self {\n        self.stages.push(Stage::Filter(FilterOp { predicate }));\n        self\n    }\n}\n```\n\n---\n\n## Code Style Guidelines\n\n### Naming Conventions\n\n| Item | Convention | Example |\n|------|------------|---------|\n| Types | PascalCase | `TupleSchema`, `IRNode` |\n| Functions | snake_case | `parse_statement`, `build_ir` |\n| Constants | SCREAMING_SNAKE | `MAX_RECURSION_DEPTH` |\n| Modules | snake_case | `code_generator`, `ir_builder` |\n| Type parameters | Single uppercase | `T`, `E`, `F` |\n\n**Naming principles**:\n- Be descriptive: `parse_meta_command` not `pmc`\n- Be consistent: if one function is `parse_X`, all similar functions are `parse_Y`\n- Avoid abbreviations unless universal: `id` ok, `idx` ok, `rel` not ok (use `relation`)\n\n### Function Size\n\n**Functions should fit on one screen (~50 lines max).**\n\nIf a function is longer:\n1. Extract helper functions\n2. Use early returns to reduce nesting\n3. Consider if it's doing too many things\n\n```rust\n// BAD: Too long, deeply nested\nfn execute(\u0026mut self, program: \u0026str) -\u003e Result\u003cVec\u003cTuple\u003e\u003e {\n    // 200 lines of code with 5 levels of nesting\n}\n\n// GOOD: Composed of helpers\nfn execute(\u0026mut self, program: \u0026str) -\u003e Result\u003cVec\u003cTuple\u003e\u003e {\n    let compiled = self.compile(program)?;\n    let context = self.prepare_context()?;\n    self.execute_rules(\u0026compiled, \u0026context)\n}\n```\n\n### Comments\n\n**Code should be self-documenting. Use comments for \"why\", not \"what\".**\n\n```rust\n// BAD: Restating the code\n// Increment counter by 1\ncounter += 1;\n\n// BAD: Explaining obvious code\n// Check if the relation exists in the schema\nif schema.contains(relation) { ... }\n```\n\n```rust\n// GOOD: Explaining non-obvious decisions\n// We use a BTreeMap instead of HashMap here because we need deterministic\n// iteration order for reproducible query results across runs.\nlet relations: BTreeMap\u003cString, Schema\u003e = ...;\n\n// GOOD: Explaining edge cases\n// Empty body means this is a fact, not a rule. Facts are handled specially\n// because they don't need fixpoint iteration.\nif rule.body.is_empty() {\n    return self.handle_fact(rule);\n}\n```\n\n### Documentation\n\n**All public items must have doc comments.**\n\n```rust\n/// Parse a Datalog statement from source text.\n///\n/// # Arguments\n///\n/// * `input` - The source text to parse\n///\n/// # Returns\n///\n/// The parsed statement, or an error if parsing fails.\n///\n/// # Examples\n///\n/// ```\n/// let stmt = parse_statement(\"+edge(1, 2).\")?;\n/// assert!(matches!(stmt, Statement::Insert(_)));\n/// ```\npub fn parse_statement(input: \u0026str) -\u003e Result\u003cStatement, ParseError\u003e {\n    // ...\n}\n```\n\n### Error Handling\n\n**Use `Result` and `?` operator. Avoid `.unwrap()` except in tests.**\n\n```rust\n// BAD: Panics on error\nlet schema = catalog.get(relation).unwrap();\n\n// BAD: Ignores error\nlet _ = persist_to_disk();\n\n// GOOD: Propagates error with context\nlet schema = catalog.get(relation)\n    .ok_or_else(|| SchemaError::UnknownRelation(relation.to_string()))?;\n\n// GOOD: Handles error explicitly\nmatch persist_to_disk() {\n    Ok(()) =\u003e log::info!(\"Persisted successfully\"),\n    Err(e) =\u003e log::warn!(\"Failed to persist: {}\", e),\n}\n```\n\n---\n\n## Module Organization\n\n### Directory Structure\n\n```\nsrc/\n+-- lib.rs                    # DatalogEngine, public API\n+-- main.rs                   # Server binary\n+-- config.rs                 # TOML configuration\n+-- catalog.rs                # System catalog\n+-- ast/                      # Abstract Syntax Tree\n|   +-- mod.rs                # AST types, BuiltinFunc, AggregateFunc, Display\n+-- ir/                       # Intermediate Representation\n|   +-- mod.rs                # IRNode, IRExpression, BuiltinFunction\n+-- ir_builder/               # AST to IR conversion\n|   +-- mod.rs\n+-- parser/                   # Datalog parser\n|   +-- mod.rs                # Lexer + recursive descent parser\n+-- statement/                # Statement parsing\n|   +-- mod.rs                # Statement enum\n|   +-- parser.rs             # Statement-level parsing\n|   +-- meta.rs               # Meta command parsing (.kg, .rule, .index)\n|   +-- schema.rs             # Schema declaration parsing\n|   +-- data.rs               # Insert/Delete operations\n|   +-- serialize.rs          # JSON serialization types\n|   +-- types.rs              # Statement-related types\n+-- optimizer/                # Query optimization passes\n|   +-- mod.rs\n+-- join_planning/            # Join order optimization\n|   +-- mod.rs\n+-- sip_rewriting/            # Sideways Information Passing\n|   +-- mod.rs\n+-- subplan_sharing/          # Common subexpression detection\n|   +-- mod.rs\n+-- boolean_specialization/   # Set/bag semantics analysis\n|   +-- mod.rs\n+-- code_generator/           # IR to DD execution\n|   +-- mod.rs\n+-- storage_engine/           # Multi-KG storage\n|   +-- mod.rs                # StorageEngine, KnowledgeGraph\n|   +-- snapshot.rs           # KnowledgeGraphSnapshot\n+-- storage/                  # Persistence layer\n|   +-- ...                   # FilePersist, WAL, Parquet batches\n+-- schema/                   # Schema management\n|   +-- mod.rs\n|   +-- catalog.rs            # SchemaCatalog (per-KG)\n|   +-- validator.rs\n+-- value/                    # Value types and tuples\n|   +-- mod.rs                # Value, Tuple, Abomonation\n|   +-- arrow_convert.rs      # Arrow/Parquet conversion\n+-- protocol/                 # HTTP/API handler\n|   +-- handler.rs\n+-- dd_computation.rs         # DDComputation, DDCommand\n+-- derived_relations.rs      # DerivedRelationsManager\n+-- rule_catalog.rs           # RuleCatalog, validation\n+-- recursion.rs              # Recursion detection/handling\n+-- vector_ops.rs             # Vector, quantization, LSH functions\n+-- temporal_ops.rs           # Temporal functions\n+-- hnsw_index.rs             # HNSW index implementation\n+-- index_manager.rs          # Per-KG index management\n+-- pipeline_trace.rs         # Pipeline tracing/debugging\n```\n\n### Module Dependencies\n\n**Dependencies should flow downward. Lower modules should not depend on higher ones.**\n\n```\n          lib.rs (public API)\n              |\n    +---------+---------+\n    |         |         |\n    v         v         v\nstatement  optimizer  code_generator\n    |         |         |\n    +----\u003e ir/ast \u003c-----+\n              |\n           types/\n              |\n           value/\n```\n\n**Forbidden**:\n- `types/` depending on `ast/`\n- `value/` depending on `ir/`\n- Circular dependencies of any kind\n\n---\n\n## Testing Standards\n\n### Test Organization\n\n```\ntests/\n+-- integration/        # Full pipeline tests\n+-- snapshots/          # Golden file tests\n+-- unit/               # Module-specific tests (or inline in src/)\n```\n\n### Test Naming\n\n```rust\n#[test]\nfn test_\u003cmodule\u003e_\u003cscenario\u003e_\u003cexpected_outcome\u003e() {\n    // ...\n}\n\n// Examples:\nfn test_parser_empty_input_returns_error() { ... }\nfn test_join_two_relations_produces_cartesian_product() { ... }\nfn test_aggregation_empty_group_returns_zero() { ... }\n```\n\n### Test Coverage Requirements\n\n- All public functions must have at least one test\n- All error paths should be tested\n- Edge cases: empty input, single element, max values\n\n### Snapshot Tests\n\n**Use for complex output that's hard to assert programmatically.**\n\n```\nexamples/datalog/\n+-- 01_basics/\n|   +-- 01_simple_query.idl      # Input\n|   +-- 01_simple_query.idl.out  # Expected output\n```\n\nUpdate snapshots with:\n```bash\n./scripts/run_snapshot_tests.sh --update\n```\n\n---\n\n## Performance Guidelines\n\n### Avoid Unnecessary Allocations\n\n```rust\n// BAD: Creates intermediate String\nlet name = format!(\"{}\", relation);\nif catalog.contains(\u0026name) { ... }\n\n// GOOD: Works with \u0026str directly\nif catalog.contains(relation) { ... }\n```\n\n### Use Iterators Instead of Collecting\n\n```rust\n// BAD: Allocates intermediate Vec\nlet filtered: Vec\u003c_\u003e = items.iter().filter(|x| x.valid).collect();\nlet result: Vec\u003c_\u003e = filtered.iter().map(|x| x.value).collect();\n\n// GOOD: Lazy evaluation\nlet result: Vec\u003c_\u003e = items.iter()\n    .filter(|x| x.valid)\n    .map(|x| x.value)\n    .collect();\n```\n\n### Clone Consciously\n\n```rust\n// BAD: Cloning when not needed\nfn process(data: Vec\u003cTuple\u003e) {\n    let copy = data.clone();  // Why?\n    // ...\n}\n\n// GOOD: Take ownership or borrow\nfn process(data: Vec\u003cTuple\u003e) { ... }  // Takes ownership\nfn process(data: \u0026[Tuple]) { ... }    // Borrows\n```\n\n---\n\n## Git Workflow\n\n### Commit Messages\n\n```\n\u003ctype\u003e: \u003cshort description\u003e\n\n\u003coptional longer description\u003e\n\n\u003coptional footer\u003e\n```\n\n**Types**:\n- `feat`: New feature\n- `fix`: Bug fix\n- `refactor`: Code change that neither fixes a bug nor adds a feature\n- `docs`: Documentation only\n- `test`: Adding or updating tests\n- `chore`: Build, CI, dependencies\n\n**Examples**:\n```\nfeat: add TopK aggregate function\n\nImplements top-k selection with ordering column support\nSyntax: top_k\u003c10, name, score:desc\u003e\n\nrefactor: split statement.rs into focused modules\n\nImproves maintainability by separating concerns:\n- meta.rs: .kg, .rule, .load commands\n- schema.rs: type declarations\n- data.rs: insert/delete/update\n```\n\n### Branch Naming\n\n```\n\u003ctype\u003e/\u003cshort-description\u003e\n\nfeat/topk-aggregate\nfix/parser-empty-input\nrefactor/split-statement-module\n```\n\n### Pull Request Checklist\n\nBefore merging:\n- [ ] All tests pass (`cargo test`)\n- [ ] Snapshot tests pass (`./scripts/run_snapshot_tests.sh`)\n- [ ] No clippy warnings (`cargo clippy -- -D warnings`)\n- [ ] Code is formatted (`cargo fmt`)\n- [ ] Public APIs are documented\n- [ ] Complex logic has comments explaining \"why\"\n\n---\n\n## Anti-Patterns to Avoid\n\n### 1. The God Module\n\n**Don't**: Put everything in one file because \"it's easier\".\n**Do**: Split into focused modules from the start.\n\n### 2. Stringly Typed APIs\n\n**Don't**:\n```rust\nfn execute(\u0026mut self, operation: \u0026str, target: \u0026str, data: \u0026str) -\u003e String\n```\n\n**Do**:\n```rust\nfn execute(\u0026mut self, op: Operation) -\u003e Result\u003cExecutionResult\u003e\n```\n\n### 3. Boolean Parameters\n\n**Don't**:\n```rust\nfn parse(input: \u0026str, strict: bool, allow_empty: bool, normalize: bool)\n```\n\n**Do**:\n```rust\nstruct ParseOptions {\n    strict: bool,\n    allow_empty: bool,\n    normalize: bool,\n}\n\nfn parse(input: \u0026str, options: ParseOptions)\n```\n\n### 4. Defensive Cloning\n\n**Don't**: Clone \"just to be safe\" without understanding ownership.\n**Do**: Understand borrowing and clone only when necessary.\n\n### 5. Comment-Driven Development\n\n**Don't**:\n```rust\n// TODO: fix this later\n// HACK: this works but is ugly\n// XXX: not sure why this is needed\n```\n\n**Do**: Fix it now or create a tracked issue.\n\n---\n\n## Checklist for New Code\n\nBefore submitting code, verify:\n\n- [ ] Single responsibility: each function/module does one thing\n- [ ] No duplicate type definitions\n- [ ] Types flow through the pipeline (not lost after parsing)\n- [ ] Errors are descriptive and actionable\n- [ ] Public items are documented\n- [ ] Tests cover happy path and error cases\n- [ ] No `.unwrap()` outside of tests\n- [ ] No unnecessary clones\n- [ ] Code is formatted (`cargo fmt`)\n- [ ] Clippy is happy (`cargo clippy`)\n\n---\n\n## Quick Reference\n\n### Adding a New Aggregate Function\n\n1. Add variant to `AggregateFunc` enum in `src/ast/mod.rs`\n2. Add IR variant to `AggregateFunction` in `src/ir/mod.rs`\n3. Add conversion in `src/ir_builder/mod.rs`\n4. Add code generation in `src/code_generator/mod.rs`\n5. Add tests in appropriate test file\n6. Add snapshot test in `examples/datalog/`\n\n### Adding a New Built-in Function\n\n1. Add variant to `BuiltinFunc` enum in `src/ast/mod.rs`\n2. Implement `parse()`, `arity()`, `as_str()` in `src/ast/mod.rs`\n3. Add IR variant to `BuiltinFunction` in `src/ir/mod.rs`\n4. Add conversion in `src/ir_builder/mod.rs`\n5. Add evaluation in `src/code_generator/mod.rs`\n6. Implement function logic in `src/vector_ops.rs` or `src/temporal_ops.rs`\n7. Add tests and update `docs/reference/functions.md`\n\n### Adding a New Statement Type\n\n1. Add variant to `src/statement/mod.rs::Statement`\n2. Add parsing in appropriate `src/statement/*.rs` file\n3. Add handling in `src/protocol/handler.rs`\n4. Add tests and snapshot tests\n\n---\n\n## Getting Help\n\n- **Architecture questions**: Read `docs/internals/architecture.md`\n- **API questions**: Check doc comments with `cargo doc --open`\n- **Debugging**: Use `IL_TRACE_LEVEL=debug cargo run` for verbose output\n- **Tests failing**: Run `./scripts/run_snapshot_tests.sh -v` for diffs"])</script><script>self.__next_f.push([1,"5:[\"$\",\"$Le\",null,{\"page\":{\"title\":\"InputLayer Coding Standards \u0026 Principles\",\"content\":\"$f\",\"toc\":[{\"level\":2,\"text\":\"Core Principles\",\"id\":\"core-principles\"},{\"level\":3,\"text\":\"1. Single Source of Truth\",\"id\":\"1-single-source-of-truth\"},{\"level\":3,\"text\":\"2. No Legacy Compatibility Code\",\"id\":\"2-no-legacy-compatibility-code\"},{\"level\":3,\"text\":\"3. Types Flow Through the Pipeline\",\"id\":\"3-types-flow-through-the-pipeline\"},{\"level\":3,\"text\":\"4. Small, Focused Modules\",\"id\":\"4-small-focused-modules\"},{\"level\":3,\"text\":\"5. Explicit Over Implicit\",\"id\":\"5-explicit-over-implicit\"},{\"level\":3,\"text\":\"6. Error Messages Are User Interface\",\"id\":\"6-error-messages-are-user-interface\"},{\"level\":3,\"text\":\"7. Composition Over Inheritance\",\"id\":\"7-composition-over-inheritance\"},{\"level\":2,\"text\":\"Code Style Guidelines\",\"id\":\"code-style-guidelines\"},{\"level\":3,\"text\":\"Naming Conventions\",\"id\":\"naming-conventions\"},{\"level\":3,\"text\":\"Function Size\",\"id\":\"function-size\"},{\"level\":3,\"text\":\"Comments\",\"id\":\"comments\"},{\"level\":3,\"text\":\"Documentation\",\"id\":\"documentation\"},{\"level\":3,\"text\":\"Error Handling\",\"id\":\"error-handling\"},{\"level\":2,\"text\":\"Module Organization\",\"id\":\"module-organization\"},{\"level\":3,\"text\":\"Directory Structure\",\"id\":\"directory-structure\"},{\"level\":3,\"text\":\"Module Dependencies\",\"id\":\"module-dependencies\"},{\"level\":2,\"text\":\"Testing Standards\",\"id\":\"testing-standards\"},{\"level\":3,\"text\":\"Test Organization\",\"id\":\"test-organization\"},{\"level\":3,\"text\":\"Test Naming\",\"id\":\"test-naming\"},{\"level\":3,\"text\":\"Test Coverage Requirements\",\"id\":\"test-coverage-requirements\"},{\"level\":3,\"text\":\"Snapshot Tests\",\"id\":\"snapshot-tests\"},{\"level\":2,\"text\":\"Performance Guidelines\",\"id\":\"performance-guidelines\"},{\"level\":3,\"text\":\"Avoid Unnecessary Allocations\",\"id\":\"avoid-unnecessary-allocations\"},{\"level\":3,\"text\":\"Use Iterators Instead of Collecting\",\"id\":\"use-iterators-instead-of-collecting\"},{\"level\":3,\"text\":\"Clone Consciously\",\"id\":\"clone-consciously\"},{\"level\":2,\"text\":\"Git Workflow\",\"id\":\"git-workflow\"},{\"level\":3,\"text\":\"Commit Messages\",\"id\":\"commit-messages\"},{\"level\":3,\"text\":\"Branch Naming\",\"id\":\"branch-naming\"},{\"level\":3,\"text\":\"Pull Request Checklist\",\"id\":\"pull-request-checklist\"},{\"level\":2,\"text\":\"Anti-Patterns to Avoid\",\"id\":\"anti-patterns-to-avoid\"},{\"level\":3,\"text\":\"1. The God Module\",\"id\":\"1-the-god-module\"},{\"level\":3,\"text\":\"2. Stringly Typed APIs\",\"id\":\"2-stringly-typed-apis\"},{\"level\":3,\"text\":\"3. Boolean Parameters\",\"id\":\"3-boolean-parameters\"},{\"level\":3,\"text\":\"4. Defensive Cloning\",\"id\":\"4-defensive-cloning\"},{\"level\":3,\"text\":\"5. Comment-Driven Development\",\"id\":\"5-comment-driven-development\"},{\"level\":2,\"text\":\"Checklist for New Code\",\"id\":\"checklist-for-new-code\"},{\"level\":2,\"text\":\"Quick Reference\",\"id\":\"quick-reference\"},{\"level\":3,\"text\":\"Adding a New Aggregate Function\",\"id\":\"adding-a-new-aggregate-function\"},{\"level\":3,\"text\":\"Adding a New Built-in Function\",\"id\":\"adding-a-new-built-in-function\"},{\"level\":3,\"text\":\"Adding a New Statement Type\",\"id\":\"adding-a-new-statement-type\"},{\"level\":2,\"text\":\"Getting Help\",\"id\":\"getting-help\"}]},\"slugKey\":\"internals/coding-standards\"}]\n"])</script><script>self.__next_f.push([1,"a:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"10:I[6869,[],\"IconMark\"]\nc:[[\"$\",\"title\",\"0\",{\"children\":\"InputLayer - A symbolic reasoning engine for AI agents\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/icon.svg\"}],[\"$\",\"$L10\",\"3\",{}]]\n8:null\n"])</script></body></html>

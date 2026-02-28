@@ -1,0 +1,329 @@
+<!DOCTYPE html><!--05bjYGyiAumoEMBrfWHih--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/4cf2300e9c8272f7-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/93f479601ee12b01-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/css/4bd7a24b7976d4e6.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js"/><script src="/_next/static/chunks/4bd1b696-deba172d32c79f82.js" async=""></script><script src="/_next/static/chunks/794-275dc9ebd3a29fbf.js" async=""></script><script src="/_next/static/chunks/main-app-1fa5b694e5d36a75.js" async=""></script><script src="/_next/static/chunks/app/layout-7e9963bf811be36b.js" async=""></script><script src="/_next/static/chunks/758-3cb69ce377cde046.js" async=""></script><script src="/_next/static/chunks/121-aece4f809b101dc1.js" async=""></script><script src="/_next/static/chunks/502-e809071f8789437b.js" async=""></script><script src="/_next/static/chunks/689-4fcf9680fdc90283.js" async=""></script><script src="/_next/static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js" async=""></script><meta name="next-size-adjust" content=""/><title>InputLayer - A symbolic reasoning engine for AI agents</title><meta name="description" content="Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."/><link rel="icon" href="/icon.svg"/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="__variable_188709 __variable_9a8899 font-sans antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","dark",null,["light","dark"],null,true,true)</script><div class="flex flex-col h-dvh"><header class="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"><div class="flex h-14 items-center px-6"><a class="mr-8" href="/"><span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg><span class="font-extrabold tracking-tight text-lg">InputLayer</span></span></a><nav class="hidden md:flex items-center gap-6 text-sm"><a class="text-muted-foreground transition-colors hover:text-foreground" href="/docs/">Docs</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/blog/">Blog</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/use-cases/">Use Cases</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/compare/">Compare</a><a href="https://demo.inputlayer.ai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link h-3 w-3"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></nav><div class="ml-auto flex items-center gap-3"><div class="inline-flex items-center gap-1.5"><a href="https://github.com/inputlayer/inputlayer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star h-3.5 w-3.5"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><span>Star</span></a><a href="https://github.com/inputlayer/inputlayer/fork" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork h-3.5 w-3.5"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path><path d="M12 12v3"></path></svg><span>Fork</span></a></div><button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 size-9 h-9 w-9"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-4 w-4"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><div class="md:hidden"><button class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" aria-label="Open menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button></div></div></div></header><div class="flex flex-1 overflow-hidden"><div class="w-64 shrink-0 border-r border-border/50 overflow-y-auto"><div class="flex flex-col h-full"><div class="p-3 border-b border-border/50"><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" placeholder="Search docs..." class="w-full h-8 pl-8 pr-3 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring" value=""/></div></div><nav class="flex-1 overflow-y-auto p-2 space-y-0.5"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" href="/docs/index/">Overview</a><div data-state="open" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-foreground font-medium" style="padding-left:12px" type="button" aria-controls="radix-_R_j6av5ubtb_" aria-expanded="true" data-state="open" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform rotate-90"><path d="m9 18 6-6-6-6"></path></svg>Guides</button><div data-state="open" id="radix-_R_j6av5ubtb_" data-slot="collapsible-content"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/quickstart/">Quick Start</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/installation/">Installation</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/first-program/">Your First Program</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/core-concepts/">Data Modeling</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/repl/">REPL Guide</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/recursion/">Recursion</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/vectors/">Vector Search</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/indexing/">Indexing</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/temporal/">Temporal Reasoning</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/persistence/">Persistence</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors bg-primary/10 text-primary font-medium" style="padding-left:24px" href="/docs/guides/configuration/">Configuration</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/rest-api/">REST API</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/python-sdk/">Python SDK</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/deployment/">Deployment</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/authentication/">Authentication</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/websocket-api/">WebSocket API</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/migrations/">Migrations</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/guides/troubleshooting/">Troubleshooting</a></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_r6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Reference</button><div data-state="closed" id="radix-_R_r6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_136av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Specification</button><div data-state="closed" id="radix-_R_136av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_1b6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Internals</button><div data-state="closed" id="radix-_R_1b6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div></nav></div></div><div class="flex flex-1 flex-col overflow-hidden"><div class="flex flex-1 overflow-hidden"><div class="flex-1 overflow-y-auto px-8 py-6 max-w-4xl mx-auto"><article class="docs-prose"><h1 id="configuration-guide" node="[object Object]">Configuration Guide</h1>
+<p>InputLayer uses a hierarchical configuration system with multiple sources:</p>
+<ol>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">config.toml</code> - Default configuration file</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">config.local.toml</code> - Local overrides (git-ignored)</li>
+<li>Environment variables (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_*</code> prefix)</li>
+</ol>
+<h2 id="configuration-file-locations" node="[object Object]">Configuration File Locations</h2>
+<p>InputLayer looks for config files in this order:</p>
+<ol>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">./config.toml</code> (current directory)</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">./config.local.toml</code> (local overrides, git-ignored)</li>
+<li><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">--config &lt;path&gt;</code> (CLI flag for custom path)</li>
+</ol>
+<p>Environment variables (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_*</code> prefix) are merged on top of file configuration.</p>
+<h2 id="complete-configuration-reference" node="[object Object]">Complete Configuration Reference</h2>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-comment"># =============================================================================</span>
+<span class="syn-comment"># STORAGE CONFIGURATION</span>
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-meta">[storage]</span>
+<span class="syn-comment"># Base directory for all knowledge graph data</span>
+<span class="syn-identifier">data_dir</span> = <span class="syn-string">"./data"</span>
+
+<span class="syn-comment"># Default knowledge graph name (created on startup)</span>
+<span class="syn-identifier">default_knowledge_graph</span> = <span class="syn-string">"default"</span>
+
+<span class="syn-comment"># Automatically create knowledge graphs when accessed</span>
+<span class="syn-identifier">auto_create_knowledge_graphs</span> = <span class="syn-keyword">false</span>
+
+<span class="syn-comment"># Maximum number of knowledge graphs (default: 1000)</span>
+<span class="syn-identifier">max_knowledge_graphs</span> = <span class="syn-number">1000</span>
+
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-comment"># Legacy Persistence Settings</span>
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-meta">[storage.persistence]</span>
+<span class="syn-comment"># Storage format: parquet, csv, bincode</span>
+<span class="syn-comment"># - parquet: Columnar format, good compression, recommended for production</span>
+<span class="syn-comment"># - csv: Human-readable, no compression, good for debugging</span>
+<span class="syn-comment"># - bincode: Binary format, Rust-specific, fast serialization</span>
+<span class="syn-identifier">format</span> = <span class="syn-string">"parquet"</span>
+
+<span class="syn-comment"># Compression: snappy, gzip, none</span>
+<span class="syn-comment"># - snappy: Fast compression/decompression, good ratio</span>
+<span class="syn-comment"># - gzip: Better compression ratio, slower</span>
+<span class="syn-comment"># - none: No compression</span>
+<span class="syn-identifier">compression</span> = <span class="syn-string">"snappy"</span>
+
+<span class="syn-comment"># Auto-save interval in seconds (0 = manual save only)</span>
+<span class="syn-identifier">auto_save_interval</span> = <span class="syn-number">0</span>
+
+<span class="syn-comment"># Enable write-ahead logging for crash recovery</span>
+<span class="syn-identifier">enable_wal</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-comment"># DD-Native Persist Layer (Recommended)</span>
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-meta">[storage.persist]</span>
+<span class="syn-comment"># Enable the DD-native persistence layer</span>
+<span class="syn-identifier">enabled</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Buffer size before flushing to disk (number of updates)</span>
+<span class="syn-identifier">buffer_size</span> = <span class="syn-number">10000</span>
+
+<span class="syn-comment"># Durability mode: immediate, batched, async</span>
+<span class="syn-comment"># - immediate: Sync to disk on each write (safest, slowest)</span>
+<span class="syn-comment"># - batched: Periodic sync (balanced performance/safety)</span>
+<span class="syn-comment"># - async: Fire-and-forget (fastest, may lose recent data on crash)</span>
+<span class="syn-identifier">durability_mode</span> = <span class="syn-string">"immediate"</span>
+
+<span class="syn-comment"># Compaction window (reserved, not yet implemented; 0 = keep all)</span>
+<span class="syn-identifier">compaction_window</span> = <span class="syn-number">0</span>
+
+<span class="syn-comment"># Maximum WAL size in bytes before forced flush (default: 64 MB)</span>
+<span class="syn-identifier">max_wal_size_bytes</span> = <span class="syn-number">67108864</span>
+
+<span class="syn-comment"># Auto-compact when a shard accumulates this many batch files (0 = disabled)</span>
+<span class="syn-identifier">auto_compact_threshold</span> = <span class="syn-number">10</span>
+
+<span class="syn-comment"># How often to check for auto-compaction, in seconds (0 = disabled)</span>
+<span class="syn-identifier">auto_compact_interval_secs</span> = <span class="syn-number">300</span>
+
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-comment"># Performance Tuning</span>
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-meta">[storage.performance]</span>
+<span class="syn-comment"># Initial capacity for in-memory collections</span>
+<span class="syn-identifier">initial_capacity</span> = <span class="syn-number">10000</span>
+
+<span class="syn-comment"># Batch size for bulk operations</span>
+<span class="syn-identifier">batch_size</span> = <span class="syn-number">1000</span>
+
+<span class="syn-comment"># Enable async I/O operations</span>
+<span class="syn-identifier">async_io</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Number of worker threads (0 = use all CPU cores)</span>
+<span class="syn-identifier">num_threads</span> = <span class="syn-number">0</span>
+
+<span class="syn-comment"># Query timeout in milliseconds (0 = no timeout)</span>
+<span class="syn-identifier">query_timeout_ms</span> = <span class="syn-number">30000</span>
+
+<span class="syn-comment"># Maximum query text size in bytes</span>
+<span class="syn-identifier">max_query_size_bytes</span> = <span class="syn-number">1048576</span>
+
+<span class="syn-comment"># Maximum tuples per single insert</span>
+<span class="syn-identifier">max_insert_tuples</span> = <span class="syn-number">10000</span>
+
+<span class="syn-comment"># Maximum string value size in bytes</span>
+<span class="syn-identifier">max_string_value_bytes</span> = <span class="syn-number">65536</span>
+
+<span class="syn-comment"># Maximum rows returned per query result (0 = unlimited)</span>
+<span class="syn-identifier">max_result_rows</span> = <span class="syn-number">100000</span>
+
+<span class="syn-comment"># Log queries slower than this (ms, 0 = disabled)</span>
+<span class="syn-identifier">slow_query_log_ms</span> = <span class="syn-number">5000</span>
+
+<span class="syn-comment"># Maximum query cost budget (0 = unlimited)</span>
+<span class="syn-identifier">max_query_cost</span> = <span class="syn-number">0</span>
+
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-comment"># QUERY OPTIMIZATION</span>
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-meta">[optimization]</span>
+<span class="syn-comment"># Enable join order planning</span>
+<span class="syn-identifier">enable_join_planning</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Enable SIP (Sideways Information Passing) rewriting</span>
+<span class="syn-identifier">enable_sip_rewriting</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Enable subplan sharing across rules</span>
+<span class="syn-identifier">enable_subplan_sharing</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Enable boolean specialization optimizations</span>
+<span class="syn-identifier">enable_boolean_specialization</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Enable Magic Sets demand-driven rewriting for recursive queries</span>
+<span class="syn-identifier">enable_magic_sets</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-comment"># LOGGING</span>
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-meta">[logging]</span>
+<span class="syn-comment"># Log level: trace, debug, info, warn, error</span>
+<span class="syn-identifier">level</span> = <span class="syn-string">"info"</span>
+
+<span class="syn-comment"># Log format: text, json</span>
+<span class="syn-identifier">format</span> = <span class="syn-string">"text"</span>
+
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-comment"># HTTP SERVER (WebSocket API)</span>
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-meta">[http]</span>
+<span class="syn-comment"># Enable HTTP server for WebSocket API access</span>
+<span class="syn-identifier">enabled</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Bind address</span>
+<span class="syn-identifier">host</span> = <span class="syn-string">"127.0.0.1"</span>
+
+<span class="syn-comment"># Port number</span>
+<span class="syn-identifier">port</span> = <span class="syn-number">8080</span>
+
+<span class="syn-comment"># CORS allowed origins (empty = same-origin only, unless cors_allow_all is true)</span>
+<span class="syn-identifier">cors_origins</span> = []
+
+<span class="syn-comment"># Allow all CORS origins (use only in development)</span>
+<span class="syn-identifier">cors_allow_all</span> = <span class="syn-keyword">false</span>
+
+<span class="syn-comment"># WebSocket idle timeout in milliseconds (default: 5 minutes)</span>
+<span class="syn-identifier">ws_idle_timeout_ms</span> = <span class="syn-number">300000</span>
+
+<span class="syn-comment"># Graceful shutdown timeout in seconds (default: 30)</span>
+<span class="syn-identifier">shutdown_timeout_secs</span> = <span class="syn-number">30</span>
+
+<span class="syn-comment"># Stats endpoint timeout in seconds (default: 5)</span>
+<span class="syn-identifier">stats_timeout_secs</span> = <span class="syn-number">5</span>
+
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-comment"># Web GUI Dashboard</span>
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-meta">[http.gui]</span>
+<span class="syn-comment"># Enable web-based GUI dashboard</span>
+<span class="syn-identifier">enabled</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-comment"># Directory containing GUI static files</span>
+<span class="syn-identifier">static_dir</span> = <span class="syn-string">"./gui/dist"</span>
+
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-comment"># Authentication (always enabled)</span>
+<span class="syn-comment"># -----------------------------------------------------------------------------</span>
+<span class="syn-meta">[http.auth]</span>
+<span class="syn-comment"># On first boot, an admin user and bootstrap API key are created.</span>
+<span class="syn-comment"># Set a known password, or omit to auto-generate one (printed to stderr).</span>
+<span class="syn-comment"># bootstrap_admin_password = "your-secure-password"</span>
+
+<span class="syn-comment"># Session timeout in seconds (default: 24 hours)</span>
+<span class="syn-identifier">session_timeout_secs</span> = <span class="syn-number">86400</span>
+
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-comment"># RATE LIMITING</span>
+<span class="syn-comment"># =============================================================================</span>
+<span class="syn-meta">[http.rate_limit]</span>
+<span class="syn-comment"># Maximum total connections (0 = unlimited)</span>
+<span class="syn-identifier">max_connections</span> = <span class="syn-number">10000</span>
+
+<span class="syn-comment"># Maximum WebSocket connections (0 = unlimited)</span>
+<span class="syn-identifier">max_ws_connections</span> = <span class="syn-number">5000</span>
+
+<span class="syn-comment"># Maximum WebSocket messages per second per connection (0 = unlimited)</span>
+<span class="syn-identifier">ws_max_messages_per_sec</span> = <span class="syn-number">1000</span>
+
+<span class="syn-comment"># Maximum WebSocket connection lifetime in seconds (0 = unlimited, default: 24h)</span>
+<span class="syn-identifier">ws_max_lifetime_secs</span> = <span class="syn-number">86400</span>
+
+<span class="syn-comment"># Maximum HTTP requests per second per IP address (0 = unlimited)</span>
+<span class="syn-identifier">per_ip_max_rps</span> = <span class="syn-number">0</span>
+
+<span class="syn-comment"># Notification ring buffer size for reconnect replay</span>
+<span class="syn-identifier">notification_buffer_size</span> = <span class="syn-number">4096</span></code></pre>
+<h2 id="environment-variables" node="[object Object]">Environment Variables</h2>
+<p>All config options can be overridden with environment variables using the <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">INPUTLAYER_</code> prefix:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-bash text-sm"><span class="syn-comment"># Storage settings</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__DATA_DIR=/var/lib/inputlayer/data
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__DEFAULT_KNOWLEDGE_GRAPH=mydb
+
+<span class="syn-comment"># Persistence</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE=batched
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERSIST__BUFFER_SIZE=50000
+
+<span class="syn-comment"># HTTP Server</span>
+<span class="syn-keyword">export</span> INPUTLAYER_HTTP__ENABLED=true
+<span class="syn-keyword">export</span> INPUTLAYER_HTTP__PORT=9090
+
+<span class="syn-comment"># Authentication</span>
+<span class="syn-keyword">export</span> INPUTLAYER_ADMIN_PASSWORD=your<span class="syn-meta">-secure-password</span>   <span class="syn-comment"># Admin password (first boot only)</span>
+<span class="syn-keyword">export</span> INPUTLAYER_API_KEY=your<span class="syn-meta">-api-key</span>                  <span class="syn-comment"># CLI client authentication</span>
+
+<span class="syn-comment"># Performance limits</span>
+<span class="syn-keyword">export</span> INPUTLAYER_STORAGE__PERFORMANCE__MAX_RESULT_ROWS=50000
+
+<span class="syn-comment"># Rate limiting</span>
+<span class="syn-keyword">export</span> INPUTLAYER_HTTP__RATE_LIMIT__WS_MAX_MESSAGES_PER_SEC=500
+
+<span class="syn-comment"># Logging</span>
+<span class="syn-keyword">export</span> INPUTLAYER_LOGGING__LEVEL=debug</code></pre>
+<p><strong>Note:</strong> Use double underscores (<code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">__</code>) to separate nested config sections.</p>
+<h2 id="common-configurations" node="[object Object]">Common Configurations</h2>
+<h3 id="development-fast-iteration" node="[object Object]">Development (Fast Iteration)</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-meta">[storage]</span>
+<span class="syn-identifier">data_dir</span> = <span class="syn-string">"./dev-data"</span>
+
+<span class="syn-meta">[storage.persist]</span>
+<span class="syn-identifier">durability_mode</span> = <span class="syn-string">"async"</span>  <span class="syn-comment"># Fast writes, less safe</span>
+
+<span class="syn-meta">[logging]</span>
+<span class="syn-identifier">level</span> = <span class="syn-string">"debug"</span></code></pre>
+<h3 id="production-safe-durable" node="[object Object]">Production (Safe &amp; Durable)</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-meta">[storage]</span>
+<span class="syn-identifier">data_dir</span> = <span class="syn-string">"/var/lib/inputlayer/data"</span>
+
+<span class="syn-meta">[storage.persistence]</span>
+<span class="syn-identifier">format</span> = <span class="syn-string">"parquet"</span>
+<span class="syn-identifier">compression</span> = <span class="syn-string">"snappy"</span>
+<span class="syn-identifier">enable_wal</span> = <span class="syn-keyword">true</span>
+
+<span class="syn-meta">[storage.persist]</span>
+<span class="syn-identifier">durability_mode</span> = <span class="syn-string">"immediate"</span>
+<span class="syn-identifier">buffer_size</span> = <span class="syn-number">10000</span>
+
+<span class="syn-meta">[storage.performance]</span>
+<span class="syn-identifier">num_threads</span> = <span class="syn-number">0</span>  <span class="syn-comment"># Use all cores</span>
+
+<span class="syn-meta">[logging]</span>
+<span class="syn-identifier">level</span> = <span class="syn-string">"warn"</span>
+<span class="syn-identifier">format</span> = <span class="syn-string">"json"</span>
+
+<span class="syn-meta">[http]</span>
+<span class="syn-identifier">host</span> = <span class="syn-string">"0.0.0.0"</span>
+<span class="syn-identifier">port</span> = <span class="syn-number">8080</span>
+
+<span class="syn-meta">[http.auth]</span>
+<span class="syn-comment"># Set a known admin password for production deployments</span>
+<span class="syn-identifier">bootstrap_admin_password</span> = <span class="syn-string">"your-secure-password-here"</span>
+
+<span class="syn-meta">[http.rate_limit]</span>
+<span class="syn-identifier">ws_max_messages_per_sec</span> = <span class="syn-number">500</span>
+<span class="syn-identifier">per_ip_max_rps</span> = <span class="syn-number">100</span></code></pre>
+<h3 id="high-throughput-ingestion" node="[object Object]">High-Throughput Ingestion</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-meta">[storage.persist]</span>
+<span class="syn-identifier">durability_mode</span> = <span class="syn-string">"batched"</span>
+<span class="syn-identifier">buffer_size</span> = <span class="syn-number">100000</span>
+
+<span class="syn-meta">[storage.performance]</span>
+<span class="syn-identifier">batch_size</span> = <span class="syn-number">10000</span>
+<span class="syn-identifier">async_io</span> = <span class="syn-keyword">true</span>
+<span class="syn-identifier">num_threads</span> = <span class="syn-number">0</span></code></pre>
+<h3 id="memory-constrained-environment" node="[object Object]">Memory-Constrained Environment</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-toml text-sm"><span class="syn-meta">[storage.performance]</span>
+<span class="syn-identifier">initial_capacity</span> = <span class="syn-number">1000</span>
+<span class="syn-identifier">batch_size</span> = <span class="syn-number">100</span>
+
+<span class="syn-meta">[storage.persist]</span>
+<span class="syn-identifier">buffer_size</span> = <span class="syn-number">1000</span></code></pre>
+<h2 id="durability-modes-explained" node="[object Object]">Durability Modes Explained</h2>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Mode</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Write Latency</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Crash Safety</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Use Case</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">immediate</code></td><td class="border px-4 py-2" node="[object Object]">High</td><td class="border px-4 py-2" node="[object Object]">Full</td><td class="border px-4 py-2" node="[object Object]">Financial data, critical records</td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">batched</code></td><td class="border px-4 py-2" node="[object Object]">Medium</td><td class="border px-4 py-2" node="[object Object]">Partial</td><td class="border px-4 py-2" node="[object Object]">Most production workloads</td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">async</code></td><td class="border px-4 py-2" node="[object Object]">Low</td><td class="border px-4 py-2" node="[object Object]">Minimal</td><td class="border px-4 py-2" node="[object Object]">Development, analytics pipelines</td></tr></tbody></table></div>
+<h3 id="immediate-mode" node="[object Object]">Immediate Mode</h3>
+<ul>
+<li>Every write syncs to disk before returning</li>
+<li>Zero data loss on crash</li>
+<li>Highest latency</li>
+</ul>
+<h3 id="batched-mode" node="[object Object]">Batched Mode</h3>
+<ul>
+<li>Writes buffer in memory</li>
+<li>Periodic sync to disk</li>
+<li>May lose last batch on crash</li>
+</ul>
+<h3 id="async-mode" node="[object Object]">Async Mode</h3>
+<ul>
+<li>Writes return immediately</li>
+<li>Background persistence</li>
+<li>May lose recent updates on crash</li>
+<li>Best for high-throughput ingestion where some loss is acceptable</li>
+</ul>
+<h2 id="storage-formats" node="[object Object]">Storage Formats</h2>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Format</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Size</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Speed</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Use Case</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">parquet</code></td><td class="border px-4 py-2" node="[object Object]">Smallest</td><td class="border px-4 py-2" node="[object Object]">Fast reads</td><td class="border px-4 py-2" node="[object Object]">Production, analytics</td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">csv</code></td><td class="border px-4 py-2" node="[object Object]">Largest</td><td class="border px-4 py-2" node="[object Object]">Slow</td><td class="border px-4 py-2" node="[object Object]">Debugging, interop</td></tr><tr><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">bincode</code></td><td class="border px-4 py-2" node="[object Object]">Small</td><td class="border px-4 py-2" node="[object Object]">Fastest</td><td class="border px-4 py-2" node="[object Object]">Rust-only deployments</td></tr></tbody></table></div>
+<h2 id="verifying-configuration" node="[object Object]">Verifying Configuration</h2>
+<p>Check your effective configuration in the REPL:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">.status
+</code></pre></article></div><div class="hidden lg:block w-48 shrink-0 border-l border-border/50"><div class="sticky top-0 p-4"><p class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">On this page</p><nav class="space-y-1"><a href="#configuration-file-locations" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Configuration File Locations</a><a href="#complete-configuration-reference" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Complete Configuration Reference</a><a href="#environment-variables" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Environment Variables</a><a href="#common-configurations" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Common Configurations</a><a href="#development-fast-iteration" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Development (Fast Iteration)</a><a href="#production-safe-durable" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Production (Safe &amp; Durable)</a><a href="#high-throughput-ingestion" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">High-Throughput Ingestion</a><a href="#memory-constrained-environment" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Memory-Constrained Environment</a><a href="#durability-modes-explained" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Durability Modes Explained</a><a href="#immediate-mode" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Immediate Mode</a><a href="#batched-mode" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Batched Mode</a><a href="#async-mode" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Async Mode</a><a href="#storage-formats" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Storage Formats</a><a href="#verifying-configuration" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Verifying Configuration</a></nav></div></div></div></div></div></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[1942,[\"177\",\"static/chunks/app/layout-7e9963bf811be36b.js\"],\"ThemeProvider\"]\n3:I[7121,[],\"\"]\n4:I[4581,[],\"\"]\n6:I[484,[],\"OutletBoundary\"]\n7:\"$Sreact.suspense\"\n9:I[484,[],\"ViewportBoundary\"]\nb:I[484,[],\"MetadataBoundary\"]\nd:I[7123,[],\"\"]\n:HL[\"/_next/static/media/4cf2300e9c8272f7-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/93f479601ee12b01-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/4bd7a24b7976d4e6.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"05bjYGyiAumoEMBrfWHih\",\"c\":[\"\",\"docs\",\"guides\",\"configuration\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"docs\",{\"children\":[[\"slug\",\"guides/configuration\",\"oc\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/4bd7a24b7976d4e6.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_188709 __variable_9a8899 font-sans antialiased\",\"children\":[\"$\",\"$L2\",null,{\"attribute\":\"class\",\"defaultTheme\":\"dark\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L5\",null,[\"$\",\"$L6\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@8\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$L9\",null,{\"children\":\"$@a\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lb\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.Metadata\",\"children\":\"$@c\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$d\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"e:I[8428,[\"758\",\"static/chunks/758-3cb69ce377cde046.js\",\"121\",\"static/chunks/121-aece4f809b101dc1.js\",\"502\",\"static/chunks/502-e809071f8789437b.js\",\"689\",\"static/chunks/689-4fcf9680fdc90283.js\",\"870\",\"static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js\"],\"DocsPageClient\"]\nf:T2796,"])</script><script>self.__next_f.push([1,"# Configuration Guide\n\nInputLayer uses a hierarchical configuration system with multiple sources:\n\n1. `config.toml` - Default configuration file\n2. `config.local.toml` - Local overrides (git-ignored)\n3. Environment variables (`INPUTLAYER_*` prefix)\n\n## Configuration File Locations\n\nInputLayer looks for config files in this order:\n1. `./config.toml` (current directory)\n2. `./config.local.toml` (local overrides, git-ignored)\n3. `--config \u003cpath\u003e` (CLI flag for custom path)\n\nEnvironment variables (`INPUTLAYER_*` prefix) are merged on top of file configuration.\n\n## Complete Configuration Reference\n\n```toml\n# =============================================================================\n# STORAGE CONFIGURATION\n# =============================================================================\n[storage]\n# Base directory for all knowledge graph data\ndata_dir = \"./data\"\n\n# Default knowledge graph name (created on startup)\ndefault_knowledge_graph = \"default\"\n\n# Automatically create knowledge graphs when accessed\nauto_create_knowledge_graphs = false\n\n# Maximum number of knowledge graphs (default: 1000)\nmax_knowledge_graphs = 1000\n\n# -----------------------------------------------------------------------------\n# Legacy Persistence Settings\n# -----------------------------------------------------------------------------\n[storage.persistence]\n# Storage format: parquet, csv, bincode\n# - parquet: Columnar format, good compression, recommended for production\n# - csv: Human-readable, no compression, good for debugging\n# - bincode: Binary format, Rust-specific, fast serialization\nformat = \"parquet\"\n\n# Compression: snappy, gzip, none\n# - snappy: Fast compression/decompression, good ratio\n# - gzip: Better compression ratio, slower\n# - none: No compression\ncompression = \"snappy\"\n\n# Auto-save interval in seconds (0 = manual save only)\nauto_save_interval = 0\n\n# Enable write-ahead logging for crash recovery\nenable_wal = true\n\n# -----------------------------------------------------------------------------\n# DD-Native Persist Layer (Recommended)\n# -----------------------------------------------------------------------------\n[storage.persist]\n# Enable the DD-native persistence layer\nenabled = true\n\n# Buffer size before flushing to disk (number of updates)\nbuffer_size = 10000\n\n# Durability mode: immediate, batched, async\n# - immediate: Sync to disk on each write (safest, slowest)\n# - batched: Periodic sync (balanced performance/safety)\n# - async: Fire-and-forget (fastest, may lose recent data on crash)\ndurability_mode = \"immediate\"\n\n# Compaction window (reserved, not yet implemented; 0 = keep all)\ncompaction_window = 0\n\n# Maximum WAL size in bytes before forced flush (default: 64 MB)\nmax_wal_size_bytes = 67108864\n\n# Auto-compact when a shard accumulates this many batch files (0 = disabled)\nauto_compact_threshold = 10\n\n# How often to check for auto-compaction, in seconds (0 = disabled)\nauto_compact_interval_secs = 300\n\n# -----------------------------------------------------------------------------\n# Performance Tuning\n# -----------------------------------------------------------------------------\n[storage.performance]\n# Initial capacity for in-memory collections\ninitial_capacity = 10000\n\n# Batch size for bulk operations\nbatch_size = 1000\n\n# Enable async I/O operations\nasync_io = true\n\n# Number of worker threads (0 = use all CPU cores)\nnum_threads = 0\n\n# Query timeout in milliseconds (0 = no timeout)\nquery_timeout_ms = 30000\n\n# Maximum query text size in bytes\nmax_query_size_bytes = 1048576\n\n# Maximum tuples per single insert\nmax_insert_tuples = 10000\n\n# Maximum string value size in bytes\nmax_string_value_bytes = 65536\n\n# Maximum rows returned per query result (0 = unlimited)\nmax_result_rows = 100000\n\n# Log queries slower than this (ms, 0 = disabled)\nslow_query_log_ms = 5000\n\n# Maximum query cost budget (0 = unlimited)\nmax_query_cost = 0\n\n# =============================================================================\n# QUERY OPTIMIZATION\n# =============================================================================\n[optimization]\n# Enable join order planning\nenable_join_planning = true\n\n# Enable SIP (Sideways Information Passing) rewriting\nenable_sip_rewriting = true\n\n# Enable subplan sharing across rules\nenable_subplan_sharing = true\n\n# Enable boolean specialization optimizations\nenable_boolean_specialization = true\n\n# Enable Magic Sets demand-driven rewriting for recursive queries\nenable_magic_sets = true\n\n# =============================================================================\n# LOGGING\n# =============================================================================\n[logging]\n# Log level: trace, debug, info, warn, error\nlevel = \"info\"\n\n# Log format: text, json\nformat = \"text\"\n\n# =============================================================================\n# HTTP SERVER (WebSocket API)\n# =============================================================================\n[http]\n# Enable HTTP server for WebSocket API access\nenabled = true\n\n# Bind address\nhost = \"127.0.0.1\"\n\n# Port number\nport = 8080\n\n# CORS allowed origins (empty = same-origin only, unless cors_allow_all is true)\ncors_origins = []\n\n# Allow all CORS origins (use only in development)\ncors_allow_all = false\n\n# WebSocket idle timeout in milliseconds (default: 5 minutes)\nws_idle_timeout_ms = 300000\n\n# Graceful shutdown timeout in seconds (default: 30)\nshutdown_timeout_secs = 30\n\n# Stats endpoint timeout in seconds (default: 5)\nstats_timeout_secs = 5\n\n# -----------------------------------------------------------------------------\n# Web GUI Dashboard\n# -----------------------------------------------------------------------------\n[http.gui]\n# Enable web-based GUI dashboard\nenabled = true\n\n# Directory containing GUI static files\nstatic_dir = \"./gui/dist\"\n\n# -----------------------------------------------------------------------------\n# Authentication (always enabled)\n# -----------------------------------------------------------------------------\n[http.auth]\n# On first boot, an admin user and bootstrap API key are created.\n# Set a known password, or omit to auto-generate one (printed to stderr).\n# bootstrap_admin_password = \"your-secure-password\"\n\n# Session timeout in seconds (default: 24 hours)\nsession_timeout_secs = 86400\n\n# =============================================================================\n# RATE LIMITING\n# =============================================================================\n[http.rate_limit]\n# Maximum total connections (0 = unlimited)\nmax_connections = 10000\n\n# Maximum WebSocket connections (0 = unlimited)\nmax_ws_connections = 5000\n\n# Maximum WebSocket messages per second per connection (0 = unlimited)\nws_max_messages_per_sec = 1000\n\n# Maximum WebSocket connection lifetime in seconds (0 = unlimited, default: 24h)\nws_max_lifetime_secs = 86400\n\n# Maximum HTTP requests per second per IP address (0 = unlimited)\nper_ip_max_rps = 0\n\n# Notification ring buffer size for reconnect replay\nnotification_buffer_size = 4096\n```\n\n## Environment Variables\n\nAll config options can be overridden with environment variables using the `INPUTLAYER_` prefix:\n\n```bash\n# Storage settings\nexport INPUTLAYER_STORAGE__DATA_DIR=/var/lib/inputlayer/data\nexport INPUTLAYER_STORAGE__DEFAULT_KNOWLEDGE_GRAPH=mydb\n\n# Persistence\nexport INPUTLAYER_STORAGE__PERSIST__DURABILITY_MODE=batched\nexport INPUTLAYER_STORAGE__PERSIST__BUFFER_SIZE=50000\n\n# HTTP Server\nexport INPUTLAYER_HTTP__ENABLED=true\nexport INPUTLAYER_HTTP__PORT=9090\n\n# Authentication\nexport INPUTLAYER_ADMIN_PASSWORD=your-secure-password   # Admin password (first boot only)\nexport INPUTLAYER_API_KEY=your-api-key                  # CLI client authentication\n\n# Performance limits\nexport INPUTLAYER_STORAGE__PERFORMANCE__MAX_RESULT_ROWS=50000\n\n# Rate limiting\nexport INPUTLAYER_HTTP__RATE_LIMIT__WS_MAX_MESSAGES_PER_SEC=500\n\n# Logging\nexport INPUTLAYER_LOGGING__LEVEL=debug\n```\n\n**Note:** Use double underscores (`__`) to separate nested config sections.\n\n## Common Configurations\n\n### Development (Fast Iteration)\n\n```toml\n[storage]\ndata_dir = \"./dev-data\"\n\n[storage.persist]\ndurability_mode = \"async\"  # Fast writes, less safe\n\n[logging]\nlevel = \"debug\"\n```\n\n### Production (Safe \u0026 Durable)\n\n```toml\n[storage]\ndata_dir = \"/var/lib/inputlayer/data\"\n\n[storage.persistence]\nformat = \"parquet\"\ncompression = \"snappy\"\nenable_wal = true\n\n[storage.persist]\ndurability_mode = \"immediate\"\nbuffer_size = 10000\n\n[storage.performance]\nnum_threads = 0  # Use all cores\n\n[logging]\nlevel = \"warn\"\nformat = \"json\"\n\n[http]\nhost = \"0.0.0.0\"\nport = 8080\n\n[http.auth]\n# Set a known admin password for production deployments\nbootstrap_admin_password = \"your-secure-password-here\"\n\n[http.rate_limit]\nws_max_messages_per_sec = 500\nper_ip_max_rps = 100\n```\n\n### High-Throughput Ingestion\n\n```toml\n[storage.persist]\ndurability_mode = \"batched\"\nbuffer_size = 100000\n\n[storage.performance]\nbatch_size = 10000\nasync_io = true\nnum_threads = 0\n```\n\n### Memory-Constrained Environment\n\n```toml\n[storage.performance]\ninitial_capacity = 1000\nbatch_size = 100\n\n[storage.persist]\nbuffer_size = 1000\n```\n\n## Durability Modes Explained\n\n| Mode | Write Latency | Crash Safety | Use Case |\n|------|--------------|--------------|----------|\n| `immediate` | High | Full | Financial data, critical records |\n| `batched` | Medium | Partial | Most production workloads |\n| `async` | Low | Minimal | Development, analytics pipelines |\n\n### Immediate Mode\n- Every write syncs to disk before returning\n- Zero data loss on crash\n- Highest latency\n\n### Batched Mode\n- Writes buffer in memory\n- Periodic sync to disk\n- May lose last batch on crash\n\n### Async Mode\n- Writes return immediately\n- Background persistence\n- May lose recent updates on crash\n- Best for high-throughput ingestion where some loss is acceptable\n\n## Storage Formats\n\n| Format | Size | Speed | Use Case |\n|--------|------|-------|----------|\n| `parquet` | Smallest | Fast reads | Production, analytics |\n| `csv` | Largest | Slow | Debugging, interop |\n| `bincode` | Small | Fastest | Rust-only deployments |\n\n## Verifying Configuration\n\nCheck your effective configuration in the REPL:\n\n```\n.status\n```"])</script><script>self.__next_f.push([1,"5:[\"$\",\"$Le\",null,{\"page\":{\"title\":\"Configuration Guide\",\"content\":\"$f\",\"toc\":[{\"level\":2,\"text\":\"Configuration File Locations\",\"id\":\"configuration-file-locations\"},{\"level\":2,\"text\":\"Complete Configuration Reference\",\"id\":\"complete-configuration-reference\"},{\"level\":2,\"text\":\"Environment Variables\",\"id\":\"environment-variables\"},{\"level\":2,\"text\":\"Common Configurations\",\"id\":\"common-configurations\"},{\"level\":3,\"text\":\"Development (Fast Iteration)\",\"id\":\"development-fast-iteration\"},{\"level\":3,\"text\":\"Production (Safe \u0026 Durable)\",\"id\":\"production-safe-durable\"},{\"level\":3,\"text\":\"High-Throughput Ingestion\",\"id\":\"high-throughput-ingestion\"},{\"level\":3,\"text\":\"Memory-Constrained Environment\",\"id\":\"memory-constrained-environment\"},{\"level\":2,\"text\":\"Durability Modes Explained\",\"id\":\"durability-modes-explained\"},{\"level\":3,\"text\":\"Immediate Mode\",\"id\":\"immediate-mode\"},{\"level\":3,\"text\":\"Batched Mode\",\"id\":\"batched-mode\"},{\"level\":3,\"text\":\"Async Mode\",\"id\":\"async-mode\"},{\"level\":2,\"text\":\"Storage Formats\",\"id\":\"storage-formats\"},{\"level\":2,\"text\":\"Verifying Configuration\",\"id\":\"verifying-configuration\"}]},\"slugKey\":\"guides/configuration\"}]\n"])</script><script>self.__next_f.push([1,"a:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"10:I[6869,[],\"IconMark\"]\nc:[[\"$\",\"title\",\"0\",{\"children\":\"InputLayer - A symbolic reasoning engine for AI agents\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/icon.svg\"}],[\"$\",\"$L10\",\"3\",{}]]\n8:null\n"])</script></body></html>

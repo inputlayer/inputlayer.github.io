@@ -1,0 +1,144 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:Tcea,# Grammar Reference
+
+This section describes the complete syntax of InputLayer's query language.
+
+## Character Encoding
+
+InputLayer programs are UTF-8 encoded text. You can use Unicode characters in string literals.
+
+## Whitespace
+
+Spaces, tabs, and newlines separate tokens. Extra whitespace is ignored:
+
+```datalog
++edge(1, 2)           // Fine
++edge( 1 , 2 )        // Also fine
++edge(1,2)            // Also fine
+```
+
+Whitespace inside strings is preserved:
+
+```datalog
++message("hello world")  // String contains space
+```
+
+## Comments
+
+Two styles of comments are supported:
+
+```datalog
+// Line comment: everything after // is ignored
+
+/* Block comment:
+   spans multiple lines
+   until closing */
+
++edge(1, 2)  // Inline comment after statement
+```
+
+Comments cannot be nested:
+```datalog
+/* outer /* inner */ still in outer? */  // Error!
+```
+
+## Statement Types
+
+| Statement | Syntax | Purpose |
+|-----------|--------|---------|
+| Insert fact | `+relation(args)` | Add data |
+| Bulk insert | `+relation[(tuple), ...]` | Add multiple facts |
+| Delete fact | `-relation(args)` | Remove data |
+| Conditional delete | `-relation(vars) <- body` | Remove matching data |
+| Persistent rule | `+head(vars) <- body` | Define saved rule |
+| Session rule | `head(vars) <- body` | Define temporary rule |
+| Query | `?pattern` | Retrieve data |
+| Schema | `+relation(col: type, ...)` | Declare structure |
+| Meta command | `.command args` | System operations |
+
+## Grammar Sections
+
+The grammar is organized into these sections:
+
+- **[Rules](rules)** - Session and persistent rules
+- **[Queries](queries)** - Querying data
+- **[Types](types)** - Integers, strings, floats, vectors
+- **[Syntax](../reference/syntax)** - Complete syntax reference
+
+## EBNF Notation
+
+This document uses EBNF notation for grammar rules:
+
+```ebnf
+symbol ::= expression ;
+```
+
+| Notation | Meaning |
+|----------|---------|
+| `"text"` | Literal text |
+| `A B` | A followed by B |
+| `A \| B` | A or B |
+| `A?` | Optional (zero or one) |
+| `A*` | Zero or more |
+| `A+` | One or more |
+| `( A B )` | Grouping |
+| `[a-z]` | Character range |
+
+## Quick Syntax Reference
+
+### Facts
+
+```ebnf
+insert_fact  ::= "+" predicate "(" term ("," term)* ")" ;
+bulk_insert  ::= "+" predicate "[" tuple ("," tuple)* "]" ;
+delete_fact  ::= "-" predicate "(" term ("," term)* ")" ;
+tuple        ::= "(" term ("," term)* ")" ;
+```
+
+### Rules
+
+```ebnf
+persistent_rule ::= "+" head "<-" body ;
+session_rule    ::= head "<-" body ;
+head            ::= predicate "(" term ("," term)* ")" ;
+body            ::= literal ("," literal)* ;
+```
+
+### Queries
+
+```ebnf
+query ::= "?" body ;
+```
+
+### Terms
+
+```ebnf
+term      ::= variable | constant | placeholder ;
+variable  ::= [A-Z] [a-zA-Z0-9_]* ;
+placeholder ::= "_" ;
+constant  ::= integer | float | string | boolean | vector ;
+```
+
+### Predicates
+
+```ebnf
+predicate ::= [a-z] [a-zA-Z0-9_]* ;
+```
+
+Predicates (relation names) must start with a lowercase letter.
+
+## Extensions
+
+InputLayer extends standard Datalog with:
+
+- **Aggregations** - count, sum, min, max, avg, top_k
+- **Vectors** - Array literals and 55 builtin functions
+- **Meta Commands** - System operations (`.kg`, `.rel`, `.rule`)
+- **Typed Schemas** - Type declarations for relations
+
+See [Reference Documentation](../reference/) for complete details.0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Grammar Reference","content":"$3","toc":[{"level":2,"text":"Character Encoding","id":"character-encoding"},{"level":2,"text":"Whitespace","id":"whitespace"},{"level":2,"text":"Comments","id":"comments"},{"level":2,"text":"Statement Types","id":"statement-types"},{"level":2,"text":"Grammar Sections","id":"grammar-sections"},{"level":2,"text":"EBNF Notation","id":"ebnf-notation"},{"level":2,"text":"Quick Syntax Reference","id":"quick-syntax-reference"},{"level":3,"text":"Facts","id":"facts"},{"level":3,"text":"Rules","id":"rules"},{"level":3,"text":"Queries","id":"queries"},{"level":3,"text":"Terms","id":"terms"},{"level":3,"text":"Predicates","id":"predicates"},{"level":2,"text":"Extensions","id":"extensions"}]},"slugKey":"spec/grammar"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

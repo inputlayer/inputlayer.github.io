@@ -1,0 +1,244 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","spec","errors",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","spec/errors","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:Teb3,# Error Reference
+
+This section documents common errors you may encounter when using InputLayer.
+
+## Syntax Errors
+
+### Invalid Statement
+
+```
+Error: Invalid statement: unexpected token
+```
+
+Check that your statement follows correct syntax.
+
+### Parse Error
+
+```
+Error: Parse error at line N
+```
+
+Common causes:
+- Unbalanced parentheses
+- Invalid characters
+
+## Relation Errors
+
+### Undefined Relation
+
+```
+Error: Undefined relation 'foo'
+```
+
+The relation doesn't exist. Insert facts or check spelling:
+
+```datalog
++foo(1, 2)        // Creates relation
+?foo(X, Y)        // Now works
+```
+
+### Arity Mismatch
+
+```
+Error: Arity mismatch for 'edge': expected 2, got 3
+```
+
+You provided the wrong number of columns:
+
+```datalog
++edge(1, 2)       // edge has 2 columns
++edge(1, 2, 3)    // ERROR: 3 values for 2-column relation
+```
+
+### Type Mismatch
+
+```
+Error: Type mismatch: expected int, got string
+```
+
+Value types don't match the schema:
+
+```datalog
++person(name: string, age: int)
++person(30, "alice")   // ERROR: reversed types
+```
+
+### Insert into View
+
+```
+Error: Cannot insert into view 'path'
+```
+
+You can't insert facts into a derived relation (view):
+
+```datalog
++path(X, Y) <- edge(X, Y)   // path is a view
++path(1, 2)                  // ERROR: can't insert into view
+```
+
+## Rule Errors
+
+### Unsafe Variable
+
+```
+Unsafe rule 'bad': Head variable(s) X not bound by any positive body atom.
+All head variables must appear in at least one positive body predicate.
+```
+
+All head variables must appear in a positive body literal:
+
+```datalog
+// BAD: X not bound in body
++bad(X) <- edge(A, B)
+
+// GOOD: X bound by edge
++good(X) <- edge(X, _)
+```
+
+### Unsafe Negation Variable
+
+```
+Unsafe negation in rule 'bad': Variable(s) X in negated atom !excluded(...)
+must be bound by a positive body atom. Range restriction violation.
+```
+
+Variables in negations must also appear in positive literals:
+
+```datalog
+// BAD: X only in negation
++bad(X) <- !excluded(X)
+
+// GOOD: X bound first
++good(X) <- items(X), !excluded(X)
+```
+
+### Unstratifiable Negation
+
+```
+Unstratified negation: Rule 'a' negates itself (!a in body). Self-negation is not supported.
+```
+
+A relation can't negatively depend on itself:
+
+```datalog
+// BAD: a depends on !a
++a(X) <- b(X), !a(X)
+
+// GOOD: negate a different relation
++a(X) <- b(X), !c(X)
+```
+
+## Arithmetic Errors
+
+### Division by Zero
+
+```
+Error: Division by zero
+```
+
+Check your data for zero divisors:
+
+```datalog
+// May error if Y = 0
++ratio(X, R) <- data(X, Y), R = X / Y
+
+// Safe: filter out zeros
++ratio(X, R) <- data(X, Y), Y != 0, R = X / Y
+```
+
+### Overflow
+
+```
+Error: Integer overflow
+```
+
+Result exceeds 64-bit integer range.
+
+## Knowledge Graph Errors
+
+### Knowledge Graph Not Found
+
+```
+Error: Knowledge graph 'foo' not found
+```
+
+The knowledge graph doesn't exist:
+
+```
+.kg create foo    // Create it first
+.kg use foo       // Then use it
+```
+
+### Cannot Drop Current
+
+```
+Error: Cannot drop current knowledge graph
+```
+
+Switch to a different knowledge graph first:
+
+```
+.kg use other     // Switch away
+.kg drop target   // Now drop works
+```
+
+## Aggregation Errors
+
+### Invalid Aggregation Variable
+
+```
+Error: Aggregation variable 'X' not found in body
+```
+
+The aggregated variable must appear in the rule body:
+
+```datalog
+// BAD: Z not in body
++bad(sum<Z>) <- data(X, Y)
+
+// GOOD: X appears in body
++good(sum<X>) <- data(X, _)
+```
+
+## Connection Errors
+
+### Server Unavailable
+
+```
+Error: Could not connect to server at http://127.0.0.1:8080
+```
+
+The InputLayer server isn't running. Start it with:
+
+```bash
+inputlayer-server
+```
+
+### Request Timeout
+
+```
+Error: Request timed out
+```
+
+The query took too long. Try:
+- Adding filters to reduce data
+- Breaking into smaller queries
+- Increasing timeout in config5:["$","$Le",null,{"page":{"title":"Error Reference","content":"$f","toc":[{"level":2,"text":"Syntax Errors","id":"syntax-errors"},{"level":3,"text":"Invalid Statement","id":"invalid-statement"},{"level":3,"text":"Parse Error","id":"parse-error"},{"level":2,"text":"Relation Errors","id":"relation-errors"},{"level":3,"text":"Undefined Relation","id":"undefined-relation"},{"level":3,"text":"Arity Mismatch","id":"arity-mismatch"},{"level":3,"text":"Type Mismatch","id":"type-mismatch"},{"level":3,"text":"Insert into View","id":"insert-into-view"},{"level":2,"text":"Rule Errors","id":"rule-errors"},{"level":3,"text":"Unsafe Variable","id":"unsafe-variable"},{"level":3,"text":"Unsafe Negation Variable","id":"unsafe-negation-variable"},{"level":3,"text":"Unstratifiable Negation","id":"unstratifiable-negation"},{"level":2,"text":"Arithmetic Errors","id":"arithmetic-errors"},{"level":3,"text":"Division by Zero","id":"division-by-zero"},{"level":3,"text":"Overflow","id":"overflow"},{"level":2,"text":"Knowledge Graph Errors","id":"knowledge-graph-errors"},{"level":3,"text":"Knowledge Graph Not Found","id":"knowledge-graph-not-found"},{"level":3,"text":"Cannot Drop Current","id":"cannot-drop-current"},{"level":2,"text":"Aggregation Errors","id":"aggregation-errors"},{"level":3,"text":"Invalid Aggregation Variable","id":"invalid-aggregation-variable"},{"level":2,"text":"Connection Errors","id":"connection-errors"},{"level":3,"text":"Server Unavailable","id":"server-unavailable"},{"level":3,"text":"Request Timeout","id":"request-timeout"}]},"slugKey":"spec/errors"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

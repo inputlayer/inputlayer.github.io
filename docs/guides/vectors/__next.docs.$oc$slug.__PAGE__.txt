@@ -1,0 +1,332 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T1b76,# Vector Search Tutorial
+
+Store embeddings alongside structured data. Query by cosine, euclidean, or dot-product similarity - no external vector DB needed.
+
+## Vector Basics
+
+### Storing Vectors
+
+Vectors are arrays of floating-point numbers, typically embeddings from ML models:
+
+```datalog
+// Store document embeddings
++document(1, "Introduction to Datalog", [0.1, 0.2, 0.3, 0.4])
++document(2, "Vector Similarity", [0.15, 0.25, 0.28, 0.42])
++document(3, "Graph Databases", [0.8, 0.1, 0.05, 0.05])
+```
+
+### Schema with Vectors
+
+Declare vector columns in your schema:
+
+```datalog
++document(id: int, title: string, embedding: vector)
+```
+
+---
+
+## Distance Functions
+
+InputLayer supports 4 distance metrics:
+
+### Euclidean Distance
+
+L2 distance - straight-line distance in vector space:
+
+```datalog
+? document(Id1, _, V1), document(Id2, _, V2),
+   Id1 < Id2,
+   Dist = euclidean(V1, V2)
+```
+
+### Cosine Distance
+
+Angular distance (1 - cosine similarity) - ignores magnitude:
+
+```datalog
+? document(Id1, _, V1), document(Id2, _, V2),
+   Id1 < Id2,
+   Dist = cosine(V1, V2)
+```
+
+**Use cosine for:** Text embeddings, normalized vectors
+
+### Dot Product
+
+Inner product - higher is more similar:
+
+```datalog
+? document(Id1, _, V1), document(Id2, _, V2),
+   Id1 < Id2,
+   Score = dot(V1, V2)
+```
+
+**Use dot product for:** When vectors have meaningful magnitude
+
+### Manhattan Distance
+
+L1 distance - sum of absolute differences:
+
+```datalog
+? document(Id1, _, V1), document(Id2, _, V2),
+   Id1 < Id2,
+   Dist = manhattan(V1, V2)
+```
+
+---
+
+## Semantic Search Example
+
+Build a document search system:
+
+```datalog
+// Store documents with embeddings
++docs[(1, "Introduction to Datalog", [0.1, 0.2, 0.3]),
+      (2, "Vector Databases", [0.12, 0.22, 0.31]),
+      (3, "Graph Theory", [0.8, 0.1, 0.05]),
+      (4, "Machine Learning", [0.15, 0.18, 0.28])]
+
+// Query vector (from your embedding model)
+query_vec([0.11, 0.21, 0.29])
+
+// Find similar documents
++similar(Id, Title, top_k<3, Dist>) <-
+    query_vec(QV),
+    docs(Id, Title, V),
+    Dist = cosine(QV, V)
+
+? similar(Id, Title, Dist)
+```
+
+**Output:**
+
+| Id | Title | Dist |
+|---|---|---|
+| 1 | "Introduction to Datalog" | 0.002 |
+| 2 | "Vector Databases" | 0.003 |
+| 4 | "Machine Learning" | 0.015 |
+
+*3 rows*
+
+---
+
+## Vector Operations
+
+### Normalize
+
+Convert to unit vector (length 1):
+
+```datalog
+? document(Id, _, V),
+   NormV = normalize(V)
+```
+
+### Get Dimension
+
+Get the number of elements:
+
+```datalog
+? document(Id, _, V),
+   Dim = vec_dim(V)
+```
+
+### Add Vectors
+
+Element-wise addition:
+
+```datalog
+? v1([1.0, 2.0, 3.0]), v2([0.5, 0.5, 0.5]),
+   Sum = vec_add(V1, V2)  // [1.5, 2.5, 3.5]
+```
+
+### Scale Vector
+
+Multiply by scalar:
+
+```datalog
+? v([1.0, 2.0, 3.0]),
+   Scaled = vec_scale(V, 2.0)  // [2.0, 4.0, 6.0]
+```
+
+---
+
+## LSH (Locality Sensitive Hashing)
+
+For approximate nearest neighbor search on large datasets:
+
+### Basic LSH Bucket
+
+Hash vectors into buckets:
+
+```datalog
+? document(Id, _, V),
+   Bucket = lsh_bucket(V, 0, 8)  // table 0, 8 hyperplanes
+```
+
+### LSH Probes
+
+Get multiple candidate buckets to check:
+
+```datalog
+? query_vec(QV),
+   Buckets = lsh_probes(QV, 0, 8, 3)  // 3 probe levels
+```
+
+### LSH Multi-Probe Search
+
+Full multi-probe search:
+
+```datalog
++candidates(Id, Dist) <-
+    query_vec(QV),
+    Probes = lsh_multi_probe(QV, 0, 8, 3),
+    member(Bucket, Probes),
+    document(Id, _, V),
+    lsh_bucket(V, 0, 8) = Bucket,
+    Dist = cosine(QV, V)
+```
+
+---
+
+## Int8 Quantization
+
+Reduce memory by 75% using 8-bit quantization:
+
+### Quantize Vectors
+
+```datalog
+// Linear quantization (uniform distribution)
++quantized(Id, quantize_linear(V)) <- document(Id, _, V)
+
+// Symmetric quantization (centered at 0)
++quantized(Id, quantize_symmetric(V)) <- document(Id, _, V)
+```
+
+### Dequantize
+
+Convert back to float:
+
+```datalog
+? quantized(Id, QV),
+   V = dequantize(QV)
+```
+
+### Int8 Distance Functions
+
+Direct computation on quantized vectors:
+
+```datalog
+? quantized(Id1, QV1), quantized(Id2, QV2),
+   Dist = euclidean_int8(QV1, QV2)
+
+// Also available: cosine_int8, dot_int8, manhattan_int8
+```
+
+---
+
+## Building a Recommendation System
+
+Complete example for item recommendations:
+
+```datalog
+// Item embeddings (from your ML model)
++items[(1, "Blue T-Shirt", [0.2, 0.8, 0.1, 0.3]),
+       (2, "Red Dress", [0.25, 0.75, 0.15, 0.35]),
+       (3, "Running Shoes", [0.9, 0.1, 0.8, 0.2]),
+       (4, "Hiking Boots", [0.85, 0.15, 0.75, 0.25]),
+       (5, "Formal Shoes", [0.4, 0.6, 0.3, 0.5])]
+
+// User purchase history (for creating user profile)
++purchases[(101, 1), (101, 2),    // User 101 bought shirts & dresses
+           (102, 3), (102, 4)]    // User 102 bought athletic footwear
+
+// Compute user profile as average of purchased item embeddings
++user_profile(UserId, avg<V>) <-
+    purchases(UserId, ItemId),
+    items(ItemId, _, V)
+
+// Recommend items similar to user profile, excluding already purchased
++recommendations(UserId, ItemId, Name, top_k<3, Dist>) <-
+    user_profile(UserId, Profile),
+    items(ItemId, Name, V),
+    !purchases(UserId, ItemId),  // Exclude already purchased
+    Dist = cosine(Profile, V)
+
+// Get recommendations for user 101
+? recommendations(101, ItemId, Name, Dist)
+```
+
+---
+
+## Performance Tips
+
+### 1. Use Appropriate Distance Metric
+
+| Embedding Type | Recommended Metric |
+|---------------|-------------------|
+| Text (BERT, etc.) | `cosine` |
+| Images | `euclidean` or `cosine` |
+| Normalized | `dot` (fastest) |
+
+### 2. Create HNSW Indexes
+
+For large datasets (>10K vectors):
+
+```
+.index create doc_idx on documents(embedding) metric cosine m 16 ef_construction 200 ef_search 50
+```
+
+### 2b. Query HNSW Indexes
+
+Use `hnsw_nearest()` in query bodies to perform fast approximate nearest-neighbor search:
+
+```datalog
+// Find 5 nearest neighbors
+? hnsw_nearest("doc_idx", [0.1, 0.2, 0.3], 5, Id, Dist)
+
+// Use with a bound query vector
+? query_vec(QV), hnsw_nearest("doc_idx", QV, 10, Id, Dist)
+
+// Override ef_search for higher recall
+? hnsw_nearest("doc_idx", [0.1, 0.2, 0.3], 5, Id, Dist, 200)
+```
+
+**Syntax:** `hnsw_nearest("index_name", QueryVec, K, IdVar, DistVar [, EfSearch])`
+- `index_name` - String literal naming the HNSW index
+- `QueryVec` - Variable bound to a vector, or a vector literal
+- `K` - Integer: number of neighbors to return
+- `IdVar` - Variable to bind result IDs
+- `DistVar` - Variable to bind distances
+- `EfSearch` - Optional integer: override ef_search for this query
+
+### 3. Use Quantization for Memory
+
+For millions of vectors, quantize to Int8:
+
+```datalog
++docs_quantized(Id, Title, quantize_symmetric(V)) <- docs(Id, Title, V)
+```
+
+### 4. Filter Before Distance Computation
+
+```datalog
+// Filter first, then compute distances
++similar(Id, Title, Dist) <-
+    query_vec(QV),
+    docs(Id, Title, V, Category),
+    Category = "technology",     // Filter first
+    Dist = cosine(QV, V)         // Then compute distance
+```
+
+---
+
+## Next Steps
+
+- [Indexing Guide](indexing) - Create HNSW indexes for fast search
+- [Temporal Functions](temporal) - Add time-decay to recommendations0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Vector Search Tutorial","content":"$3","toc":[{"level":2,"text":"Vector Basics","id":"vector-basics"},{"level":3,"text":"Storing Vectors","id":"storing-vectors"},{"level":3,"text":"Schema with Vectors","id":"schema-with-vectors"},{"level":2,"text":"Distance Functions","id":"distance-functions"},{"level":3,"text":"Euclidean Distance","id":"euclidean-distance"},{"level":3,"text":"Cosine Distance","id":"cosine-distance"},{"level":3,"text":"Dot Product","id":"dot-product"},{"level":3,"text":"Manhattan Distance","id":"manhattan-distance"},{"level":2,"text":"Semantic Search Example","id":"semantic-search-example"},{"level":2,"text":"Vector Operations","id":"vector-operations"},{"level":3,"text":"Normalize","id":"normalize"},{"level":3,"text":"Get Dimension","id":"get-dimension"},{"level":3,"text":"Add Vectors","id":"add-vectors"},{"level":3,"text":"Scale Vector","id":"scale-vector"},{"level":2,"text":"LSH (Locality Sensitive Hashing)","id":"lsh-locality-sensitive-hashing"},{"level":3,"text":"Basic LSH Bucket","id":"basic-lsh-bucket"},{"level":3,"text":"LSH Probes","id":"lsh-probes"},{"level":3,"text":"LSH Multi-Probe Search","id":"lsh-multi-probe-search"},{"level":2,"text":"Int8 Quantization","id":"int8-quantization"},{"level":3,"text":"Quantize Vectors","id":"quantize-vectors"},{"level":3,"text":"Dequantize","id":"dequantize"},{"level":3,"text":"Int8 Distance Functions","id":"int8-distance-functions"},{"level":2,"text":"Building a Recommendation System","id":"building-a-recommendation-system"},{"level":2,"text":"Performance Tips","id":"performance-tips"},{"level":3,"text":"1. Use Appropriate Distance Metric","id":"1-use-appropriate-distance-metric"},{"level":3,"text":"2. Create HNSW Indexes","id":"2-create-hnsw-indexes"},{"level":3,"text":"2b. Query HNSW Indexes","id":"2b-query-hnsw-indexes"},{"level":3,"text":"3. Use Quantization for Memory","id":"3-use-quantization-for-memory"},{"level":3,"text":"4. Filter Before Distance Computation","id":"4-filter-before-distance-computation"},{"level":2,"text":"Next Steps","id":"next-steps"}]},"slugKey":"guides/vectors"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

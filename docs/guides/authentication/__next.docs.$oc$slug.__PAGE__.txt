@@ -1,0 +1,208 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:Tf15,# Authentication
+
+InputLayer requires authentication for all connections. The server bootstraps an admin user on first start.
+
+## Bootstrap Admin
+
+On first launch, the server creates a default admin account:
+
+- **Username**: `admin`
+- **Password**: Set via `INPUTLAYER_ADMIN_PASSWORD` environment variable, or auto-generated (printed to stderr) if unset
+
+> **Important**: Always set `INPUTLAYER_ADMIN_PASSWORD` in production deployments.
+
+```bash
+INPUTLAYER_ADMIN_PASSWORD=my-secure-password inputlayer-server
+```
+
+Or in configuration:
+
+```toml
+[http.auth]
+bootstrap_admin_password = "my-secure-password"
+```
+
+## User Management
+
+Manage users via REPL commands (requires admin privileges):
+
+### Create User
+
+```
+.user create alice secretpassword viewer
+```
+
+Roles: `admin`, `editor`, `viewer`
+
+### List Users
+
+```
+.user list
+```
+
+### Delete User
+
+```
+.user drop alice
+```
+
+### Change Password
+
+```
+.user password alice new-secret
+```
+
+### Change Role
+
+```
+.user role alice editor
+```
+
+## Knowledge Graph Access Control
+
+Control which users can access which knowledge graphs.
+
+### Grant Access
+
+```
+.kg acl grant mydb alice viewer
+.kg acl grant mydb alice editor
+.kg acl grant mydb alice owner
+```
+
+### Revoke Access
+
+```
+.kg acl revoke mydb alice
+```
+
+### List ACLs
+
+```
+.kg acl list mydb
+```
+
+### Permission Levels
+
+| Level | Capabilities |
+|-------|-------------|
+| `viewer` | Query data, list relations and rules |
+| `editor` | Insert/delete facts, create/modify rules, manage indexes |
+| `owner` | Drop knowledge graphs, manage ACLs for this KG |
+
+Permissions are cumulative — `editor` includes `viewer`, `owner` includes `editor`.
+
+## WebSocket Authentication
+
+Every WebSocket connection must authenticate before sending queries.
+
+### Auth Handshake
+
+After connecting to `ws://host:port/ws`, the first message must be an auth request:
+
+```json
+{
+  "type": "login",
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+Or with an API key:
+
+```json
+{
+  "type": "authenticate",
+  "api_key": "your-api-key"
+}
+```
+
+The server responds with:
+
+```json
+{
+  "type": "authenticated",
+  "session_id": "a1b2c3d4",
+  "knowledge_graph": "default",
+  "version": "0.1.0",
+  "role": "admin"
+}
+```
+
+Or on failure:
+
+```json
+{
+  "type": "auth_error",
+  "message": "Invalid credentials"
+}
+```
+
+The server allows 30 seconds for authentication. Any non-auth message before authentication results in disconnection.
+
+## REST API Authentication
+
+REST endpoints (except health/live/ready) require a Bearer token:
+
+```bash
+curl -H "Authorization: Bearer your-api-key" http://localhost:8080/metrics
+```
+
+## API Keys
+
+API keys provide machine-to-machine authentication without passwords.
+
+### Create API Key
+
+```
+.apikey create my-service-key
+```
+
+### List API Keys
+
+```
+.apikey list
+```
+
+### Revoke API Key
+
+```
+.apikey revoke my-service-key
+```
+
+You can also set an API key for the CLI client via environment variable:
+
+```bash
+export INPUTLAYER_API_KEY=your-api-key
+inputlayer-client
+```
+
+## Python SDK Authentication
+
+```python
+from inputlayer import InputLayer
+
+# Username/password
+async with InputLayer("ws://localhost:8080/ws", username="admin", password="admin") as il:
+    ...
+
+# API key
+async with InputLayer("ws://localhost:8080/ws", api_key="your-key") as il:
+    ...
+```
+
+## Security Best Practices
+
+1. **Change the default admin password** immediately after deployment
+2. **Use TLS** via a reverse proxy (see [Deployment](deployment)) — credentials are sent in plaintext over WebSocket
+3. **Create per-user accounts** rather than sharing the admin account
+4. **Use API keys** for automated services and CI/CD pipelines
+5. **Grant minimum required permissions** — use `viewer` access for dashboards, `editor` for ETL jobs
+6. **Bind to localhost** when using a reverse proxy: set `host = "127.0.0.1"` in config
+7. **Rotate API keys** periodically and revoke unused ones0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Authentication","content":"$3","toc":[{"level":2,"text":"Bootstrap Admin","id":"bootstrap-admin"},{"level":2,"text":"User Management","id":"user-management"},{"level":3,"text":"Create User","id":"create-user"},{"level":3,"text":"List Users","id":"list-users"},{"level":3,"text":"Delete User","id":"delete-user"},{"level":3,"text":"Change Password","id":"change-password"},{"level":3,"text":"Change Role","id":"change-role"},{"level":2,"text":"Knowledge Graph Access Control","id":"knowledge-graph-access-control"},{"level":3,"text":"Grant Access","id":"grant-access"},{"level":3,"text":"Revoke Access","id":"revoke-access"},{"level":3,"text":"List ACLs","id":"list-acls"},{"level":3,"text":"Permission Levels","id":"permission-levels"},{"level":2,"text":"WebSocket Authentication","id":"websocket-authentication"},{"level":3,"text":"Auth Handshake","id":"auth-handshake"},{"level":2,"text":"REST API Authentication","id":"rest-api-authentication"},{"level":2,"text":"API Keys","id":"api-keys"},{"level":3,"text":"Create API Key","id":"create-api-key"},{"level":3,"text":"List API Keys","id":"list-api-keys"},{"level":3,"text":"Revoke API Key","id":"revoke-api-key"},{"level":2,"text":"Python SDK Authentication","id":"python-sdk-authentication"},{"level":2,"text":"Security Best Practices","id":"security-best-practices"}]},"slugKey":"guides/authentication"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

@@ -1,0 +1,220 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","guides","authentication",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","guides/authentication","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:Tf15,# Authentication
+
+InputLayer requires authentication for all connections. The server bootstraps an admin user on first start.
+
+## Bootstrap Admin
+
+On first launch, the server creates a default admin account:
+
+- **Username**: `admin`
+- **Password**: Set via `INPUTLAYER_ADMIN_PASSWORD` environment variable, or auto-generated (printed to stderr) if unset
+
+> **Important**: Always set `INPUTLAYER_ADMIN_PASSWORD` in production deployments.
+
+```bash
+INPUTLAYER_ADMIN_PASSWORD=my-secure-password inputlayer-server
+```
+
+Or in configuration:
+
+```toml
+[http.auth]
+bootstrap_admin_password = "my-secure-password"
+```
+
+## User Management
+
+Manage users via REPL commands (requires admin privileges):
+
+### Create User
+
+```
+.user create alice secretpassword viewer
+```
+
+Roles: `admin`, `editor`, `viewer`
+
+### List Users
+
+```
+.user list
+```
+
+### Delete User
+
+```
+.user drop alice
+```
+
+### Change Password
+
+```
+.user password alice new-secret
+```
+
+### Change Role
+
+```
+.user role alice editor
+```
+
+## Knowledge Graph Access Control
+
+Control which users can access which knowledge graphs.
+
+### Grant Access
+
+```
+.kg acl grant mydb alice viewer
+.kg acl grant mydb alice editor
+.kg acl grant mydb alice owner
+```
+
+### Revoke Access
+
+```
+.kg acl revoke mydb alice
+```
+
+### List ACLs
+
+```
+.kg acl list mydb
+```
+
+### Permission Levels
+
+| Level | Capabilities |
+|-------|-------------|
+| `viewer` | Query data, list relations and rules |
+| `editor` | Insert/delete facts, create/modify rules, manage indexes |
+| `owner` | Drop knowledge graphs, manage ACLs for this KG |
+
+Permissions are cumulative — `editor` includes `viewer`, `owner` includes `editor`.
+
+## WebSocket Authentication
+
+Every WebSocket connection must authenticate before sending queries.
+
+### Auth Handshake
+
+After connecting to `ws://host:port/ws`, the first message must be an auth request:
+
+```json
+{
+  "type": "login",
+  "username": "admin",
+  "password": "admin"
+}
+```
+
+Or with an API key:
+
+```json
+{
+  "type": "authenticate",
+  "api_key": "your-api-key"
+}
+```
+
+The server responds with:
+
+```json
+{
+  "type": "authenticated",
+  "session_id": "a1b2c3d4",
+  "knowledge_graph": "default",
+  "version": "0.1.0",
+  "role": "admin"
+}
+```
+
+Or on failure:
+
+```json
+{
+  "type": "auth_error",
+  "message": "Invalid credentials"
+}
+```
+
+The server allows 30 seconds for authentication. Any non-auth message before authentication results in disconnection.
+
+## REST API Authentication
+
+REST endpoints (except health/live/ready) require a Bearer token:
+
+```bash
+curl -H "Authorization: Bearer your-api-key" http://localhost:8080/metrics
+```
+
+## API Keys
+
+API keys provide machine-to-machine authentication without passwords.
+
+### Create API Key
+
+```
+.apikey create my-service-key
+```
+
+### List API Keys
+
+```
+.apikey list
+```
+
+### Revoke API Key
+
+```
+.apikey revoke my-service-key
+```
+
+You can also set an API key for the CLI client via environment variable:
+
+```bash
+export INPUTLAYER_API_KEY=your-api-key
+inputlayer-client
+```
+
+## Python SDK Authentication
+
+```python
+from inputlayer import InputLayer
+
+# Username/password
+async with InputLayer("ws://localhost:8080/ws", username="admin", password="admin") as il:
+    ...
+
+# API key
+async with InputLayer("ws://localhost:8080/ws", api_key="your-key") as il:
+    ...
+```
+
+## Security Best Practices
+
+1. **Change the default admin password** immediately after deployment
+2. **Use TLS** via a reverse proxy (see [Deployment](deployment)) — credentials are sent in plaintext over WebSocket
+3. **Create per-user accounts** rather than sharing the admin account
+4. **Use API keys** for automated services and CI/CD pipelines
+5. **Grant minimum required permissions** — use `viewer` access for dashboards, `editor` for ETL jobs
+6. **Bind to localhost** when using a reverse proxy: set `host = "127.0.0.1"` in config
+7. **Rotate API keys** periodically and revoke unused ones5:["$","$Le",null,{"page":{"title":"Authentication","content":"$f","toc":[{"level":2,"text":"Bootstrap Admin","id":"bootstrap-admin"},{"level":2,"text":"User Management","id":"user-management"},{"level":3,"text":"Create User","id":"create-user"},{"level":3,"text":"List Users","id":"list-users"},{"level":3,"text":"Delete User","id":"delete-user"},{"level":3,"text":"Change Password","id":"change-password"},{"level":3,"text":"Change Role","id":"change-role"},{"level":2,"text":"Knowledge Graph Access Control","id":"knowledge-graph-access-control"},{"level":3,"text":"Grant Access","id":"grant-access"},{"level":3,"text":"Revoke Access","id":"revoke-access"},{"level":3,"text":"List ACLs","id":"list-acls"},{"level":3,"text":"Permission Levels","id":"permission-levels"},{"level":2,"text":"WebSocket Authentication","id":"websocket-authentication"},{"level":3,"text":"Auth Handshake","id":"auth-handshake"},{"level":2,"text":"REST API Authentication","id":"rest-api-authentication"},{"level":2,"text":"API Keys","id":"api-keys"},{"level":3,"text":"Create API Key","id":"create-api-key"},{"level":3,"text":"List API Keys","id":"list-api-keys"},{"level":3,"text":"Revoke API Key","id":"revoke-api-key"},{"level":2,"text":"Python SDK Authentication","id":"python-sdk-authentication"},{"level":2,"text":"Security Best Practices","id":"security-best-practices"}]},"slugKey":"guides/authentication"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

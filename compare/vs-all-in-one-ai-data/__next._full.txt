@@ -1,0 +1,93 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","compare","vs-all-in-one-ai-data",""],"q":"","i":false,"f":[[["",{"children":["compare",{"children":[["slug","vs-all-in-one-ai-data","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8243,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-dbae36b1030f3d7c.js","689","static/chunks/689-4fcf9680fdc90283.js","874","static/chunks/app/compare/%5Bslug%5D/page-7ff994f299b35a7c.js"],"CompareClient"]
+f:T1274,
+# InputLayer + All-in-One AI Data Platforms
+
+A growing category of tools aims to be the single data layer for AI applications - combining vector search, filtering, and analytics in one system. These platforms offer fast vector search with rich filtering at competitive pricing.
+
+These platforms solve a real problem: the complexity of running separate systems for different query types. But they focus primarily on retrieval (finding data that matches criteria) rather than reasoning (deriving new conclusions from existing data). InputLayer adds the reasoning capabilities that retrieval-focused platforms don't provide.
+
+## Different problems, different tools
+
+All-in-one AI data platforms are optimized for a specific workflow: ingest vectors and metadata, query by similarity with filters, return results fast. They do this well, and they're a good fit when your queries follow this pattern.
+
+InputLayer solves a different problem: what happens when the answer isn't sitting in your data waiting to be retrieved? What if it needs to be *derived* from a chain of facts using logical rules? That's the gap InputLayer fills.
+
+| Capability | All-in-One AI Data | InputLayer |
+|---|---|---|
+| Vector similarity search | Native, optimized | Native |
+| Metadata filtering | Rich, fast | Via rules and joins |
+| Analytics (aggregation, grouping) | Growing | Via aggregation rules |
+| Rule-based inference | No | Native |
+| Recursive queries | No | Native |
+| Incremental computation | No | Native |
+| Correct retraction | No | Native |
+| Graph traversal | No | Native |
+| Knowledge graph storage | No | Native |
+
+## When retrieval isn't enough
+
+The retrieval model works great when the information you need is explicitly stored somewhere. But many real-world questions require reasoning that goes beyond retrieval.
+
+```chain
+AI agent asked: "Which enterprise customers are at risk of churning?"
+-- needs to combine
+Declining usage metrics (from analytics)
+-- with
+Negative sentiment in support tickets (from CRM)
+-- with
+Upcoming contract renewals (from billing)
+-- with
+Competitive mentions in sales calls (from call transcripts)
+=> No single document contains "churn risk" - it's a derived conclusion [highlight]
+```
+
+You tell InputLayer: "A customer is at churn risk if they're enterprise with usage declining more than 20% and a renewal within 90 days." The engine evaluates this rule across all your customer data and surfaces the ones that match.
+
+No amount of vector search will find "churn risk" as a stored concept. It's a conclusion derived from combining multiple facts through business rules.
+
+## The complementary pattern
+
+The cleanest way to think about these tools is that all-in-one AI data platforms handle the retrieval layer (finding relevant data quickly) and InputLayer handles the reasoning layer (deriving conclusions from connected facts).
+
+Your AI data platform excels at queries like "find the 50 most similar documents with metadata matching these criteria." InputLayer excels at queries like "given these facts and these rules, what can be concluded, and what changes when I update a fact?"
+
+In practice, many teams use both. The AI data platform handles the high-throughput similarity queries where raw retrieval speed matters most. InputLayer handles the reasoning queries where the answer needs to be derived from relationships and rules. Your application routes each query to the right system based on what it needs.
+
+## Incremental reasoning as a differentiator
+
+What happens when your data changes? All-in-one platforms handle updates by re-indexing vectors and metadata. That works for retrieval.
+
+But when you have derived conclusions, updates become more interesting.
+
+```steps
+Customer usage drops below threshold :: Churn risk assessment should update immediately [highlight]
+A fact is retracted :: Everything derived from it should disappear [highlight]
+A rule changes :: All affected conclusions should recompute [highlight]
+```
+
+InputLayer handles this through incremental computation. Updates propagate through the reasoning rules, recomputing only what's affected. Retractions are correct - derived facts only disappear when all supporting derivation paths are removed. This is the kind of consistency guarantee that retrieval systems don't need to provide, but reasoning systems absolutely do.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [data modeling guide](/docs/guides/core-concepts/) explains how to structure your knowledge graph, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing data stack straightforward.5:["$","$Le",null,{"page":{"slug":"vs-all-in-one-ai-data","title":"InputLayer + All-in-One AI Data Platforms","competitors":["AI Data Platforms"],"content":"$f","toc":[{"level":2,"text":"Different problems, different tools","id":"different-problems-different-tools"},{"level":2,"text":"When retrieval isn't enough","id":"when-retrieval-isnt-enough"},{"level":2,"text":"The complementary pattern","id":"the-complementary-pattern"},{"level":2,"text":"Incremental reasoning as a differentiator","id":"incremental-reasoning-as-a-differentiator"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-all-in-one-ai-data"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

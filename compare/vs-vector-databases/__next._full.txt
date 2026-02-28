@@ -1,0 +1,117 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","compare","vs-vector-databases",""],"q":"","i":false,"f":[[["",{"children":["compare",{"children":[["slug","vs-vector-databases","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8243,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-dbae36b1030f3d7c.js","689","static/chunks/689-4fcf9680fdc90283.js","874","static/chunks/app/compare/%5Bslug%5D/page-7ff994f299b35a7c.js"],"CompareClient"]
+f:T1a43,
+# InputLayer + Vector Databases
+
+If you're already using a vector database, you've probably noticed that some questions can't be answered by similarity search alone. The moment your query needs to follow a chain of relationships, enforce access policies, or derive new conclusions from existing facts, you need something more.
+
+That's where InputLayer comes in. It's not a replacement for your vector database - it's the reasoning layer that handles the things similarity search wasn't designed for.
+
+## What each system does best
+
+Your vector database excels at finding the k nearest neighbors to a query vector. It's purpose-built for that, and it does it really well. InputLayer adds a different set of capabilities on top: logical reasoning, recursive graph traversal, and incremental computation.
+
+| Capability | Vector DBs | InputLayer | Together |
+|---|---|---|---|
+| Vector similarity search | Native | Native | Use either or both |
+| HNSW indexes at billion-scale | Optimized | Supported | Vector DB for scale, InputLayer for reasoning |
+| Graph traversal | No | Native | InputLayer adds this |
+| Recursive queries | No | Native | InputLayer adds this |
+| Rule-based inference | No | Native | InputLayer adds this |
+| Incremental computation | No | Native | InputLayer adds this |
+| Correct retraction | No | Native | InputLayer adds this |
+| Access control in queries | Metadata filter | Recursive logic | InputLayer handles complex policies |
+
+## Your vector database is great - here's what to add
+
+Keep using your vector DB for similarity search. It's the right tool for "find documents that look like X." InputLayer adds the reasoning layer for the cases where looking similar isn't enough.
+
+**Multi-hop reasoning** is the most common gap. When the answer requires following chains of relationships - not just finding similar documents - similarity search can't get there. Think about tracing supply chain dependencies or connecting a patient's medication to a food interaction through an intermediate substance. These are chains of logical connections, and InputLayer follows them automatically.
+
+**Policy-aware retrieval** matters when access control is more complex than a flat metadata filter. If your permissions involve role hierarchies, transitive authorization, or organizational structures, that's a logical problem that InputLayer handles natively. It evaluates recursive permission chains as part of the search itself, so results come back already filtered for what the user is allowed to see.
+
+**Derived conclusions** become important when facts change. If someone's role changes, their permissions need to update everywhere instantly. If a fact is retracted, everything derived from it should disappear. InputLayer's incremental computation handles this automatically, so you never have stale results.
+
+**Structured memory for AI agents** fills the gap between "recall similar things" and "actually reason about what you know." When your agents need to follow chains of logic and maintain consistent state, that's what InputLayer adds.
+
+## How they work together architecturally
+
+Your vector database treats retrieval as a single operation - you give it a query vector, it returns the nearest neighbors. This is exactly the right model for "find documents similar to X."
+
+InputLayer treats retrieval as a reasoning problem. A single query can traverse graphs, evaluate recursive rules, apply vector similarity, and enforce access policies. You reach for it when the answer isn't sitting in a single document but needs to be derived from connected facts.
+
+## Simple similarity - use your vector DB
+
+```flow
+User query -> Embed -> Vector DB -> Top-k similar documents [success]
+```
+
+For straightforward similarity lookups, your vector database is the right tool. No need to change anything.
+
+## Policy-filtered retrieval - add InputLayer
+
+```chain
+VP of Engineering searches for "deployment best practices"
+-- InputLayer resolves authorization
+Walk org hierarchy: 36 people in reporting chain [primary]
+-- filter documents
+847 documents from authorized authors
+-- rank by similarity
+Top 10 results, all authorized [success]
+=> One query, one pass. No separate auth service.
+```
+
+Your vector DB can filter on flat metadata, but it can't resolve "does this person have transitive authority over this document's author?" InputLayer resolves the authorization chain recursively and combines it with vector search in one query.
+
+## Multi-hop reasoning - add InputLayer
+
+```chain
+Port disruption reported
+-- which suppliers ship through this port?
+Supplier A, Supplier C [primary]
+-- which components do they provide?
+Component X, Component Y
+-- which products use those components?
+Product Alpha, Product Beta [highlight]
+=> Supply chain risk identified through the chain of facts
+```
+
+Your vector database finds similar documents. InputLayer follows the chain of facts and derives the conclusion.
+
+## Performance
+
+For pure vector similarity at massive scale (billions of vectors), dedicated vector databases are purpose-built and optimized. Keep using them for that workload.
+
+InputLayer adds capabilities they don't have. When facts change, only affected derivations recompute - that's 1,652x faster than full recomputation on a 2,000-node graph. When you delete a fact, all derived conclusions update automatically. And when you need reasoning plus retrieval, everything runs in a single pass without round-trips between systems.
+
+## How teams use them together
+
+The most common pattern is to keep your vector DB for straightforward similarity search and add InputLayer for the reasoning-heavy queries. Your vector database handles "find similar documents." InputLayer handles "follow this chain of facts, check these access permissions, and derive this conclusion."
+
+Some teams also take advantage of InputLayer's native vector search for queries that need to combine reasoning with similarity. Instead of making separate calls to a vector DB and then running logic in application code, they run a single query that does both. This is especially useful for policy-filtered retrieval, where you want authorization and similarity in one pass.
+
+The key insight is that these tools solve different problems. Your vector database is great at what it does, and InputLayer fills in the capabilities it wasn't built to handle.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. The [vector search documentation](/docs/guides/vectors/) covers how InputLayer's native vector capabilities work, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing stack straightforward.5:["$","$Le",null,{"page":{"slug":"vs-vector-databases","title":"InputLayer + Vector Databases","competitors":["Vector Databases"],"content":"$f","toc":[{"level":2,"text":"What each system does best","id":"what-each-system-does-best"},{"level":2,"text":"Your vector database is great - here's what to add","id":"your-vector-database-is-great-heres-what-to-add"},{"level":2,"text":"How they work together architecturally","id":"how-they-work-together-architecturally"},{"level":2,"text":"Simple similarity - use your vector DB","id":"simple-similarity-use-your-vector-db"},{"level":2,"text":"Policy-filtered retrieval - add InputLayer","id":"policy-filtered-retrieval-add-inputlayer"},{"level":2,"text":"Multi-hop reasoning - add InputLayer","id":"multi-hop-reasoning-add-inputlayer"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-vector-databases"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

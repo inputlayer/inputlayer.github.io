@@ -1,0 +1,286 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+9:I[484,[],"ViewportBoundary"]
+b:I[484,[],"MetadataBoundary"]
+d:I[7123,[],""]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/4bd7a24b7976d4e6.css","style"]
+0:{"P":null,"b":"05bjYGyiAumoEMBrfWHih","c":["","docs","reference","aggregations",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","reference/aggregations","oc"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/4bd7a24b7976d4e6.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$L9",null,{"children":"$@a"}],["$","div",null,{"hidden":true,"children":["$","$Lb",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$@c"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$d",[]],"S":true}
+e:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+f:T1480,# Aggregations Reference
+
+InputLayer supports 9 aggregation functions for computing summary values over groups of data.
+
+## Basic Aggregations
+
+### `count`
+
+Count the number of results.
+
+**Syntax:**
+```datalog
+count<Variable>
+```
+
+**Example:**
+```datalog
+// Count all users
++user_count(count<Id>) <- user(Id, _)
+
+// Count users per department
++dept_count(Dept, count<Id>) <- user(Id, _, Dept)
+```
+
+**Returns:** Integer count of distinct bindings for the variable.
+
+---
+
+### `count_distinct`
+
+Count distinct values of a variable.
+
+**Syntax:**
+```datalog
+count_distinct<Variable>
+```
+
+**Example:**
+```datalog
+// Count unique departments
++unique_depts(count_distinct<Dept>) <- user(_, _, Dept)
+```
+
+**Returns:** Integer count of unique values.
+
+---
+
+### `sum`
+
+Sum numeric values.
+
+**Syntax:**
+```datalog
+sum<Variable>
+```
+
+**Example:**
+```datalog
+// Total salary per department
++dept_salary(Dept, sum<Salary>) <- employee(_, _, Dept, Salary)
+```
+
+**Returns:** Sum as Integer or Float (matches input type).
+
+---
+
+### `min`
+
+Find minimum value.
+
+**Syntax:**
+```datalog
+min<Variable>
+```
+
+**Example:**
+```datalog
+// Lowest price per category
++min_price(Category, min<Price>) <- product(_, Category, Price)
+```
+
+**Returns:** Minimum value (works with numbers and strings).
+
+---
+
+### `max`
+
+Find maximum value.
+
+**Syntax:**
+```datalog
+max<Variable>
+```
+
+**Example:**
+```datalog
+// Highest score per game
++high_score(Game, max<Score>) <- scores(_, Game, Score)
+```
+
+**Returns:** Maximum value (works with numbers and strings).
+
+---
+
+### `avg`
+
+Compute average of numeric values.
+
+**Syntax:**
+```datalog
+avg<Variable>
+```
+
+**Example:**
+```datalog
+// Average rating per product
++avg_rating(Product, avg<Rating>) <- reviews(_, Product, Rating)
+```
+
+**Returns:** Float average.
+
+---
+
+## Ranking Aggregations
+
+### `top_k`
+
+Select the top K results ordered by a variable.
+
+**Syntax:**
+```datalog
+top_k<K, OrderVariable>           // Ascending order (lowest K)
+top_k<K, OrderVariable, desc>     // Descending order (highest K)
+```
+
+**Parameters:**
+- `K` - Number of results to return (integer)
+- `OrderVariable` - Variable to order by
+- `desc` - Optional: use descending order
+
+**Example:**
+```datalog
+// Top 10 highest scores
++top_scores(Name, top_k<10, Score, desc>) <- scores(Name, Score)
+
+// Top 5 nearest neighbors by distance
++nearest(Id, top_k<5, Dist>) <-
+    query_vec(QV),
+    vectors(Id, V),
+    Dist = euclidean(QV, V)
+```
+
+**Returns:** Up to K results with the ordering value.
+
+---
+
+### `top_k_threshold`
+
+Select top K results, but only if they meet a minimum threshold.
+
+**Syntax:**
+```datalog
+top_k_threshold<K, Threshold, OrderVariable>           // Ascending (default)
+top_k_threshold<K, Threshold, OrderVariable, desc>     // Descending
+```
+
+**Parameters:**
+- `K` - Maximum number of results (integer)
+- `Threshold` - Minimum (or maximum for desc) value to include (float)
+- `OrderVariable` - Variable to order by (with optional `:desc`/`:asc` suffix)
+
+**Example:**
+```datalog
+// Top 10 products, but only if rating >= 4.0
++top_rated(Product, top_k_threshold<10, 4.0, Rating, desc>) <-
+    reviews(Product, Rating)
+
+// Nearest 5 neighbors within distance 0.5
++near_enough(Id, top_k_threshold<5, 0.5, Dist>) <-
+    query_vec(QV),
+    vectors(Id, V),
+    Dist = euclidean(QV, V)
+```
+
+**Returns:** Up to K results that meet the threshold.
+
+---
+
+### `within_radius`
+
+Return all results within a distance threshold (range query).
+
+**Syntax:**
+```datalog
+within_radius<MaxDistance, DistanceVariable>
+```
+
+**Parameters:**
+- `MaxDistance` - Maximum distance to include (float)
+- `DistanceVariable` - Variable containing the distance (with optional `:asc`/`:desc` suffix)
+
+**Example:**
+```datalog
+// All vectors within distance 0.3
++nearby(Id, within_radius<0.3, Dist>) <-
+    query_vec(QV),
+    vectors(Id, V),
+    Dist = cosine(QV, V)
+
+// Vectors within distance 0.5
++close_vectors(Id, within_radius<0.5, D>) <-
+    query_vec(QV),
+    vectors(Id, V),
+    D = euclidean(QV, V)
+```
+
+**Returns:** All results where distance <= MaxDistance.
+
+---
+
+## Aggregation Rules
+
+### Grouping
+
+Variables in the head that are NOT aggregated become grouping keys:
+
+```datalog
+// Group by Department, aggregate Salary
++dept_stats(Dept, sum<Salary>, avg<Salary>) <-
+    employee(_, _, Dept, Salary)
+```
+
+### Multiple Aggregations
+
+Multiple aggregations can be combined in one rule:
+
+```datalog
++stats(count<Id>, min<Value>, max<Value>, avg<Value>) <-
+    data(Id, Value)
+```
+
+### With Filters
+
+Aggregations work with filter conditions:
+
+```datalog
+// Only count active users
++active_count(count<Id>) <- user(Id, Active), Active = true
+
+// Sum only positive values
++positive_sum(sum<V>) <- values(V), V > 0
+```
+
+---
+
+## Quick Reference
+
+| Function | Syntax | Returns |
+|----------|--------|---------|
+| `count` | `count<X>` | Integer count |
+| `count_distinct` | `count_distinct<X>` | Integer unique count |
+| `sum` | `sum<X>` | Sum (Int or Float) |
+| `min` | `min<X>` | Minimum value |
+| `max` | `max<X>` | Maximum value |
+| `avg` | `avg<X>` | Float average |
+| `top_k` | `top_k<K, X>` or `top_k<K, X, desc>` | Top K results |
+| `top_k_threshold` | `top_k_threshold<K, T, X>` | Top K meeting threshold |
+| `within_radius` | `within_radius<Max, D>` | All within distance |5:["$","$Le",null,{"page":{"title":"Aggregations Reference","content":"$f","toc":[{"level":2,"text":"Basic Aggregations","id":"basic-aggregations"},{"level":3,"text":"count","id":"count"},{"level":3,"text":"countdistinct","id":"countdistinct"},{"level":3,"text":"sum","id":"sum"},{"level":3,"text":"min","id":"min"},{"level":3,"text":"max","id":"max"},{"level":3,"text":"avg","id":"avg"},{"level":2,"text":"Ranking Aggregations","id":"ranking-aggregations"},{"level":3,"text":"topk","id":"topk"},{"level":3,"text":"topkthreshold","id":"topkthreshold"},{"level":3,"text":"withinradius","id":"withinradius"},{"level":2,"text":"Aggregation Rules","id":"aggregation-rules"},{"level":3,"text":"Grouping","id":"grouping"},{"level":3,"text":"Multiple Aggregations","id":"multiple-aggregations"},{"level":3,"text":"With Filters","id":"with-filters"},{"level":2,"text":"Quick Reference","id":"quick-reference"}]},"slugKey":"reference/aggregations"}]
+a:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+10:I[6869,[],"IconMark"]
+c:[["$","title","0",{"children":"InputLayer - A symbolic reasoning engine for AI agents"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/icon.svg"}],["$","$L10","3",{}]]
+8:null

@@ -1,0 +1,250 @@
+1:"$Sreact.fragment"
+2:I[7428,["758","static/chunks/758-3cb69ce377cde046.js","830","static/chunks/830-dbae36b1030f3d7c.js","402","static/chunks/app/compare/page-f90b46a8732b25b7.js"],"CompareIndexClient"]
+7:I[484,[],"OutletBoundary"]
+8:"$Sreact.suspense"
+3:T1274,
+# InputLayer + All-in-One AI Data Platforms
+
+A growing category of tools aims to be the single data layer for AI applications - combining vector search, filtering, and analytics in one system. These platforms offer fast vector search with rich filtering at competitive pricing.
+
+These platforms solve a real problem: the complexity of running separate systems for different query types. But they focus primarily on retrieval (finding data that matches criteria) rather than reasoning (deriving new conclusions from existing data). InputLayer adds the reasoning capabilities that retrieval-focused platforms don't provide.
+
+## Different problems, different tools
+
+All-in-one AI data platforms are optimized for a specific workflow: ingest vectors and metadata, query by similarity with filters, return results fast. They do this well, and they're a good fit when your queries follow this pattern.
+
+InputLayer solves a different problem: what happens when the answer isn't sitting in your data waiting to be retrieved? What if it needs to be *derived* from a chain of facts using logical rules? That's the gap InputLayer fills.
+
+| Capability | All-in-One AI Data | InputLayer |
+|---|---|---|
+| Vector similarity search | Native, optimized | Native |
+| Metadata filtering | Rich, fast | Via rules and joins |
+| Analytics (aggregation, grouping) | Growing | Via aggregation rules |
+| Rule-based inference | No | Native |
+| Recursive queries | No | Native |
+| Incremental computation | No | Native |
+| Correct retraction | No | Native |
+| Graph traversal | No | Native |
+| Knowledge graph storage | No | Native |
+
+## When retrieval isn't enough
+
+The retrieval model works great when the information you need is explicitly stored somewhere. But many real-world questions require reasoning that goes beyond retrieval.
+
+```chain
+AI agent asked: "Which enterprise customers are at risk of churning?"
+-- needs to combine
+Declining usage metrics (from analytics)
+-- with
+Negative sentiment in support tickets (from CRM)
+-- with
+Upcoming contract renewals (from billing)
+-- with
+Competitive mentions in sales calls (from call transcripts)
+=> No single document contains "churn risk" - it's a derived conclusion [highlight]
+```
+
+You tell InputLayer: "A customer is at churn risk if they're enterprise with usage declining more than 20% and a renewal within 90 days." The engine evaluates this rule across all your customer data and surfaces the ones that match.
+
+No amount of vector search will find "churn risk" as a stored concept. It's a conclusion derived from combining multiple facts through business rules.
+
+## The complementary pattern
+
+The cleanest way to think about these tools is that all-in-one AI data platforms handle the retrieval layer (finding relevant data quickly) and InputLayer handles the reasoning layer (deriving conclusions from connected facts).
+
+Your AI data platform excels at queries like "find the 50 most similar documents with metadata matching these criteria." InputLayer excels at queries like "given these facts and these rules, what can be concluded, and what changes when I update a fact?"
+
+In practice, many teams use both. The AI data platform handles the high-throughput similarity queries where raw retrieval speed matters most. InputLayer handles the reasoning queries where the answer needs to be derived from relationships and rules. Your application routes each query to the right system based on what it needs.
+
+## Incremental reasoning as a differentiator
+
+What happens when your data changes? All-in-one platforms handle updates by re-indexing vectors and metadata. That works for retrieval.
+
+But when you have derived conclusions, updates become more interesting.
+
+```steps
+Customer usage drops below threshold :: Churn risk assessment should update immediately [highlight]
+A fact is retracted :: Everything derived from it should disappear [highlight]
+A rule changes :: All affected conclusions should recompute [highlight]
+```
+
+InputLayer handles this through incremental computation. Updates propagate through the reasoning rules, recomputing only what's affected. Retractions are correct - derived facts only disappear when all supporting derivation paths are removed. This is the kind of consistency guarantee that retrieval systems don't need to provide, but reasoning systems absolutely do.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [data modeling guide](/docs/guides/core-concepts/) explains how to structure your knowledge graph, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing data stack straightforward.4:T12d6,
+# InputLayer + Graph Databases
+
+If you're using a graph database, you already understand the value of thinking about data as relationships. Graph databases are excellent at traversing known paths through connected data, and they've built mature ecosystems for visualization, querying, and administration.
+
+InputLayer adds capabilities that graph databases weren't designed to handle: rule-based inference, incremental computation, and correct retraction through recursive derivation chains. Think of it as the reasoning layer that sits alongside your graph database.
+
+## What each system does best
+
+Graph databases shine at traversing explicit relationships. Their query languages make it easy to express things like "find all friends of friends" or "what's the shortest path between these two nodes." They also offer mature tooling - browser-based explorers, administration procedures, clustering capabilities.
+
+InputLayer handles the reasoning side. It evaluates logical rules, computes recursive fixed points, maintains derived conclusions incrementally, and retracts derived data correctly when source facts change. These are capabilities that graph query languages weren't designed to express.
+
+| Capability | Graph Databases | InputLayer |
+|---|---|---|
+| Property graph storage | Native | Facts and relations |
+| Path traversal | Native | Native |
+| Pattern matching | Native | Native |
+| Rule-based inference | Limited | Native |
+| Recursive fixed-point computation | Limited | Native |
+| Incremental maintenance | No | Native |
+| Correct retraction | No | Native |
+| Vector similarity search | Plugin | Native |
+| Visualization tools | Mature | Via API |
+| Clustering | Native | Single-node |
+
+## Where graph databases reach their limits
+
+Graph databases handle path queries well, but they struggle with certain patterns that come up frequently in production.
+
+**Recursive derivation** is the big one. Graph query languages support variable-length path patterns - "find all nodes reachable through MANAGES edges." But this is pattern matching over the stored graph. It's different from deriving new relationships and then reasoning over the derived ones recursively.
+
+```tree
+Authority from two sources [primary]
+  Management chain (recursive)
+    Alice manages Bob, Bob manages Charlie
+    Therefore Alice has authority over Charlie
+  Committee membership
+    Alice sits on committee overseeing Engineering
+    Therefore Alice has authority over everyone in Engineering
+```
+
+In InputLayer, you express both sources of authority as rules, and the engine combines them into a single recursive concept. In a graph query language, you'd need to write multiple queries and stitch the results together in application code.
+
+**Incremental maintenance** is the other gap.
+
+```steps
+A relationship changes in a graph database :: Materialized views and cached results are now stale [highlight]
+Manual invalidation or full recomputation needed :: You decide what to rebuild [highlight]
+A fact changes in InputLayer :: Only affected derivations recompute automatically [success]
+A fact is deleted in InputLayer :: Derived conclusions retract, but only if no alternative path exists [success]
+```
+
+This "correct retraction" property is critical for maintaining consistent state in applications like access control, compliance, and recommendation systems.
+
+## How they work together
+
+The most natural pattern is to use your graph database for interactive exploration and visualization, and InputLayer for the reasoning-heavy queries that graph query languages can't express efficiently.
+
+Your graph database handles questions like "show me the path between these two entities" or "what does this part of the graph look like?" - the kind of queries where visual exploration and interactive querying add real value.
+
+InputLayer handles questions like "given these rules, what can be concluded?" or "if I change this fact, what else changes?" - the kind of queries where you need fixed-point computation, incremental updates, and correct retraction.
+
+Some teams also use InputLayer to compute derived relationships and then sync the results back to their graph database for visualization. This gives them the reasoning power they need with the visualization and exploration tools they already know and love.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) will get you running. If you're coming from a graph database background, the [data modeling guide](/docs/guides/core-concepts/) explains how InputLayer's fact-and-rule model relates to property graphs, and the [recursion documentation](/docs/guides/recursion/) covers the fixed-point computation that makes InputLayer's approach to recursive reasoning different from graph traversal.5:T1a43,
+# InputLayer + Vector Databases
+
+If you're already using a vector database, you've probably noticed that some questions can't be answered by similarity search alone. The moment your query needs to follow a chain of relationships, enforce access policies, or derive new conclusions from existing facts, you need something more.
+
+That's where InputLayer comes in. It's not a replacement for your vector database - it's the reasoning layer that handles the things similarity search wasn't designed for.
+
+## What each system does best
+
+Your vector database excels at finding the k nearest neighbors to a query vector. It's purpose-built for that, and it does it really well. InputLayer adds a different set of capabilities on top: logical reasoning, recursive graph traversal, and incremental computation.
+
+| Capability | Vector DBs | InputLayer | Together |
+|---|---|---|---|
+| Vector similarity search | Native | Native | Use either or both |
+| HNSW indexes at billion-scale | Optimized | Supported | Vector DB for scale, InputLayer for reasoning |
+| Graph traversal | No | Native | InputLayer adds this |
+| Recursive queries | No | Native | InputLayer adds this |
+| Rule-based inference | No | Native | InputLayer adds this |
+| Incremental computation | No | Native | InputLayer adds this |
+| Correct retraction | No | Native | InputLayer adds this |
+| Access control in queries | Metadata filter | Recursive logic | InputLayer handles complex policies |
+
+## Your vector database is great - here's what to add
+
+Keep using your vector DB for similarity search. It's the right tool for "find documents that look like X." InputLayer adds the reasoning layer for the cases where looking similar isn't enough.
+
+**Multi-hop reasoning** is the most common gap. When the answer requires following chains of relationships - not just finding similar documents - similarity search can't get there. Think about tracing supply chain dependencies or connecting a patient's medication to a food interaction through an intermediate substance. These are chains of logical connections, and InputLayer follows them automatically.
+
+**Policy-aware retrieval** matters when access control is more complex than a flat metadata filter. If your permissions involve role hierarchies, transitive authorization, or organizational structures, that's a logical problem that InputLayer handles natively. It evaluates recursive permission chains as part of the search itself, so results come back already filtered for what the user is allowed to see.
+
+**Derived conclusions** become important when facts change. If someone's role changes, their permissions need to update everywhere instantly. If a fact is retracted, everything derived from it should disappear. InputLayer's incremental computation handles this automatically, so you never have stale results.
+
+**Structured memory for AI agents** fills the gap between "recall similar things" and "actually reason about what you know." When your agents need to follow chains of logic and maintain consistent state, that's what InputLayer adds.
+
+## How they work together architecturally
+
+Your vector database treats retrieval as a single operation - you give it a query vector, it returns the nearest neighbors. This is exactly the right model for "find documents similar to X."
+
+InputLayer treats retrieval as a reasoning problem. A single query can traverse graphs, evaluate recursive rules, apply vector similarity, and enforce access policies. You reach for it when the answer isn't sitting in a single document but needs to be derived from connected facts.
+
+## Simple similarity - use your vector DB
+
+```flow
+User query -> Embed -> Vector DB -> Top-k similar documents [success]
+```
+
+For straightforward similarity lookups, your vector database is the right tool. No need to change anything.
+
+## Policy-filtered retrieval - add InputLayer
+
+```chain
+VP of Engineering searches for "deployment best practices"
+-- InputLayer resolves authorization
+Walk org hierarchy: 36 people in reporting chain [primary]
+-- filter documents
+847 documents from authorized authors
+-- rank by similarity
+Top 10 results, all authorized [success]
+=> One query, one pass. No separate auth service.
+```
+
+Your vector DB can filter on flat metadata, but it can't resolve "does this person have transitive authority over this document's author?" InputLayer resolves the authorization chain recursively and combines it with vector search in one query.
+
+## Multi-hop reasoning - add InputLayer
+
+```chain
+Port disruption reported
+-- which suppliers ship through this port?
+Supplier A, Supplier C [primary]
+-- which components do they provide?
+Component X, Component Y
+-- which products use those components?
+Product Alpha, Product Beta [highlight]
+=> Supply chain risk identified through the chain of facts
+```
+
+Your vector database finds similar documents. InputLayer follows the chain of facts and derives the conclusion.
+
+## Performance
+
+For pure vector similarity at massive scale (billions of vectors), dedicated vector databases are purpose-built and optimized. Keep using them for that workload.
+
+InputLayer adds capabilities they don't have. When facts change, only affected derivations recompute - that's 1,652x faster than full recomputation on a 2,000-node graph. When you delete a fact, all derived conclusions update automatically. And when you need reasoning plus retrieval, everything runs in a single pass without round-trips between systems.
+
+## How teams use them together
+
+The most common pattern is to keep your vector DB for straightforward similarity search and add InputLayer for the reasoning-heavy queries. Your vector database handles "find similar documents." InputLayer handles "follow this chain of facts, check these access permissions, and derive this conclusion."
+
+Some teams also take advantage of InputLayer's native vector search for queries that need to combine reasoning with similarity. Instead of making separate calls to a vector DB and then running logic in application code, they run a single query that does both. This is especially useful for policy-filtered retrieval, where you want authorization and similarity in one pass.
+
+The key insight is that these tools solve different problems. Your vector database is great at what it does, and InputLayer fills in the capabilities it wasn't built to handle.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. The [vector search documentation](/docs/guides/vectors/) covers how InputLayer's native vector capabilities work, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing stack straightforward.0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"pages":[{"slug":"vs-all-in-one-ai-data","title":"InputLayer + All-in-One AI Data Platforms","competitors":["AI Data Platforms"],"content":"$3","toc":[{"level":2,"text":"Different problems, different tools","id":"different-problems-different-tools"},{"level":2,"text":"When retrieval isn't enough","id":"when-retrieval-isnt-enough"},{"level":2,"text":"The complementary pattern","id":"the-complementary-pattern"},{"level":2,"text":"Incremental reasoning as a differentiator","id":"incremental-reasoning-as-a-differentiator"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"vs-graph-databases","title":"InputLayer + Graph Databases","competitors":["Graph Databases"],"content":"$4","toc":[{"level":2,"text":"What each system does best","id":"what-each-system-does-best"},{"level":2,"text":"Where graph databases reach their limits","id":"where-graph-databases-reach-their-limits"},{"level":2,"text":"How they work together","id":"how-they-work-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"vs-vector-databases","title":"InputLayer + Vector Databases","competitors":["Vector Databases"],"content":"$5","toc":[{"level":2,"text":"What each system does best","id":"what-each-system-does-best"},{"level":2,"text":"Your vector database is great - here's what to add","id":"your-vector-database-is-great-heres-what-to-add"},{"level":2,"text":"How they work together architecturally","id":"how-they-work-together-architecturally"},{"level":2,"text":"Simple similarity - use your vector DB","id":"simple-similarity-use-your-vector-db"},{"level":2,"text":"Policy-filtered retrieval - add InputLayer","id":"policy-filtered-retrieval-add-inputlayer"},{"level":2,"text":"Multi-hop reasoning - add InputLayer","id":"multi-hop-reasoning-add-inputlayer"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]}]}],null,"$L6"]}],"loading":null,"isPartial":false}
+6:["$","$L7",null,{"children":["$","$8",null,{"name":"Next.MetadataOutlet","children":"$@9"}]}]
+9:null

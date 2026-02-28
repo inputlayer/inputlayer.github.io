@@ -1,0 +1,550 @@
+<!DOCTYPE html><!--05bjYGyiAumoEMBrfWHih--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="preload" href="/_next/static/media/4cf2300e9c8272f7-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="preload" href="/_next/static/media/93f479601ee12b01-s.p.woff2" as="font" crossorigin="" type="font/woff2"/><link rel="stylesheet" href="/_next/static/css/4bd7a24b7976d4e6.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js"/><script src="/_next/static/chunks/4bd1b696-deba172d32c79f82.js" async=""></script><script src="/_next/static/chunks/794-275dc9ebd3a29fbf.js" async=""></script><script src="/_next/static/chunks/main-app-1fa5b694e5d36a75.js" async=""></script><script src="/_next/static/chunks/app/layout-7e9963bf811be36b.js" async=""></script><script src="/_next/static/chunks/758-3cb69ce377cde046.js" async=""></script><script src="/_next/static/chunks/121-aece4f809b101dc1.js" async=""></script><script src="/_next/static/chunks/502-e809071f8789437b.js" async=""></script><script src="/_next/static/chunks/689-4fcf9680fdc90283.js" async=""></script><script src="/_next/static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js" async=""></script><meta name="next-size-adjust" content=""/><title>InputLayer - A symbolic reasoning engine for AI agents</title><meta name="description" content="Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."/><link rel="icon" href="/icon.svg"/><script src="/_next/static/chunks/polyfills-42372ed130431b0a.js" noModule=""></script></head><body class="__variable_188709 __variable_9a8899 font-sans antialiased"><div hidden=""><!--$--><!--/$--></div><script>((a,b,c,d,e,f,g,h)=>{let i=document.documentElement,j=["light","dark"];function k(b){var c;(Array.isArray(a)?a:[a]).forEach(a=>{let c="class"===a,d=c&&f?e.map(a=>f[a]||a):e;c?(i.classList.remove(...d),i.classList.add(f&&f[b]?f[b]:b)):i.setAttribute(a,b)}),c=b,h&&j.includes(c)&&(i.style.colorScheme=c)}if(d)k(d);else try{let a=localStorage.getItem(b)||c,d=g&&"system"===a?window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light":a;k(d)}catch(a){}})("class","theme","dark",null,["light","dark"],null,true,true)</script><div class="flex flex-col h-dvh"><header class="sticky top-0 z-50 w-full border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"><div class="flex h-14 items-center px-6"><a class="mr-8" href="/"><span class="inline-flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg><span class="font-extrabold tracking-tight text-lg">InputLayer</span></span></a><nav class="hidden md:flex items-center gap-6 text-sm"><a class="text-muted-foreground transition-colors hover:text-foreground" href="/docs/">Docs</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/blog/">Blog</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/use-cases/">Use Cases</a><a class="text-muted-foreground transition-colors hover:text-foreground" href="/compare/">Compare</a><a href="https://demo.inputlayer.ai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground">Demo<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-external-link h-3 w-3"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg></a></nav><div class="ml-auto flex items-center gap-3"><div class="inline-flex items-center gap-1.5"><a href="https://github.com/inputlayer/inputlayer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star h-3.5 w-3.5"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><span>Star</span></a><a href="https://github.com/inputlayer/inputlayer/fork" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-md border border-border bg-secondary/50 px-2.5 py-1 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork h-3.5 w-3.5"><circle cx="12" cy="18" r="3"></circle><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"></path><path d="M12 12v3"></path></svg><span>Fork</span></a></div><button data-slot="button" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg:not([class*=&#x27;size-&#x27;])]:size-4 shrink-0 [&amp;_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50 size-9 h-9 w-9"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun h-4 w-4"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg></button><div class="md:hidden"><button class="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" aria-label="Open menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu h-5 w-5"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button></div></div></div></header><div class="flex flex-1 overflow-hidden"><div class="w-64 shrink-0 border-r border-border/50 overflow-y-auto"><div class="flex flex-col h-full"><div class="p-3 border-b border-border/50"><div class="relative"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="text" placeholder="Search docs..." class="w-full h-8 pl-8 pr-3 text-sm rounded-md border border-border bg-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring" value=""/></div></div><nav class="flex-1 overflow-y-auto p-2 space-y-0.5"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" href="/docs/index/">Overview</a><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_j6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Guides</button><div data-state="closed" id="radix-_R_j6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_r6av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Reference</button><div data-state="closed" id="radix-_R_r6av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="closed" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:12px" type="button" aria-controls="radix-_R_136av5ubtb_" aria-expanded="false" data-state="closed" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform"><path d="m9 18 6-6-6-6"></path></svg>Specification</button><div data-state="closed" id="radix-_R_136av5ubtb_" hidden="" data-slot="collapsible-content"></div></div><div data-state="open" data-slot="collapsible"><button class="w-full flex items-center w-full py-1.5 px-3 text-sm rounded-md transition-colors text-foreground font-medium" style="padding-left:12px" type="button" aria-controls="radix-_R_1b6av5ubtb_" aria-expanded="true" data-state="open" data-slot="collapsible-trigger"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right h-3.5 w-3.5 mr-1 shrink-0 transition-transform rotate-90"><path d="m9 18 6-6-6-6"></path></svg>Internals</button><div data-state="open" id="radix-_R_1b6av5ubtb_" data-slot="collapsible-content"><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/index/">Overview</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/architecture/">Architecture</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/coding-standards/">Coding Standards</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/type-system/">Type System</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors bg-primary/10 text-primary font-medium" style="padding-left:24px" href="/docs/internals/validation/">Validation</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/record-syntax/">Record Syntax</a><a class="block py-1.5 px-3 text-sm rounded-md transition-colors text-muted-foreground hover:bg-muted hover:text-foreground" style="padding-left:24px" href="/docs/internals/roadmap/">Roadmap</a></div></div></nav></div></div><div class="flex flex-1 flex-col overflow-hidden"><div class="flex flex-1 overflow-hidden"><div class="flex-1 overflow-y-auto px-8 py-6 max-w-4xl mx-auto"><article class="docs-prose"><h1 id="pre-dataflow-validation-layer" node="[object Object]">Pre-Dataflow Validation Layer</h1>
+<blockquote class="border-l-4 border-primary/30 pl-4 italic text-muted-foreground my-4" node="[object Object]">
+<p>Status: Planned Architecture - The design below is not yet implemented. It describes the target validation system.</p>
+</blockquote>
+<h2 id="problem-statement" node="[object Object]">Problem Statement</h2>
+<p>Differential Dataflow (DD) operates on streaming deltas with multiplicities. It has no native concept of type enforcement. Once data enters DD, it flows through computation - &quot;rejecting&quot; invalid data would require expensive rollback.</p>
+<p><strong>Solution:</strong> Validate data types <em>before</em> they enter the dataflow. Create a validation gate that enforces schemas at the boundary.</p>
+<p><strong>Scope:</strong> Type validation only.</p>
+<h2 id="architecture-overview" node="[object Object]">Architecture Overview</h2>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">                    +-------------------------------------+
+                    |         VALIDATION LAYER            |
+                    |                                     |
+  +user(1, &quot;alice&quot;) |  +----------+      +----------+    |
+  -----------------&gt;|  |  Schema  |-----&gt;|   Type   |    |
+                    |  |  Lookup  |      |  Checker |    |
+                    |  +----------+      +----------+    |
+                    |                          |         |
+                    |                          v         |
+                    |        Ok(tuple) or Err(type error)|
+                    +----------------------+-------------+
+                                           |
+                         +-----------------+--------------+
+                         |                                |
+                         v                                v
+                    +---------+                      +---------+
+                    |   DD    |                      |  Error  |
+                    | Ingest  |                      | Response|
+                    +---------+                      +---------+
+</code></pre>
+<h2 id="what-we-validate" node="[object Object]">What We Validate</h2>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Check</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Example</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">When</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Arity</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">user</code> expects 2 columns, got 3</td><td class="border px-4 py-2" node="[object Object]">Insert</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Type match</td><td class="border px-4 py-2" node="[object Object]">Column 1 expects <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">int</code>, got <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">&quot;alice&quot;</code></td><td class="border px-4 py-2" node="[object Object]">Insert</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Type compatibility</td><td class="border px-4 py-2" node="[object Object]">Existing data matches new schema</td><td class="border px-4 py-2" node="[object Object]">Schema registration</td></tr></tbody></table></div>
+<h2 id="components" node="[object Object]">Components</h2>
+<h3 id="1-schema-registry" node="[object Object]">1. Schema Registry</h3>
+<p>Stores relation schemas with type information.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> SchemaRegistry {
+    <span class="syn-comment">/// Persistent schemas (loaded from disk, saved on change)</span>
+    persistent: <span class="syn-builtin">HashMap</span>&lt;<span class="syn-builtin">String</span>, RelationSchema&gt;,
+
+    <span class="syn-comment">/// Session schemas (memory only, cleared on disconnect)</span>
+    session: <span class="syn-builtin">HashMap</span>&lt;<span class="syn-builtin">String</span>, RelationSchema&gt;,
+}
+
+<span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> RelationSchema {
+    <span class="syn-keyword">pub</span> name: <span class="syn-builtin">String</span>,
+    <span class="syn-keyword">pub</span> columns: <span class="syn-builtin">Vec</span>&lt;ColumnDef&gt;,
+}
+
+<span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> ColumnDef {
+    <span class="syn-keyword">pub</span> name: <span class="syn-builtin">String</span>,
+    <span class="syn-keyword">pub</span> dtype: DataType,
+}
+
+<span class="syn-meta">#[derive(Clone, Debug, PartialEq)]</span>
+<span class="syn-keyword">pub</span> <span class="syn-keyword">enum</span> DataType {
+    Int,
+    Float,
+    <span class="syn-builtin">String</span>,
+    Bool,
+    Vector(<span class="syn-keyword">usize</span>),  <span class="syn-comment">// dimensionality</span>
+}
+
+<span class="syn-keyword">impl</span> SchemaRegistry {
+    <span class="syn-comment">/// Get effective schema for a relation.</span>
+    <span class="syn-comment">/// Session schema shadows persistent if both exist.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> get(<span class="syn-operator">&amp;</span><span class="syn-keyword">self</span>, relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>) -&gt; <span class="syn-builtin">Option</span>&lt;<span class="syn-operator">&amp;</span>RelationSchema&gt; {
+        <span class="syn-keyword">self</span>.session.get(relation)
+            .or_else(|| <span class="syn-keyword">self</span>.persistent.get(relation))
+    }
+
+    <span class="syn-comment">/// Register a persistent schema.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> register_persistent(
+        <span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>,
+        schema: RelationSchema,
+        existing_data: <span class="syn-builtin">Option</span>&lt;<span class="syn-operator">&amp;</span>[<span class="syn-builtin">Vec</span>&lt;Value&gt;]&gt;,
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), SchemaError&gt; {
+        <span class="syn-comment">// If data exists, validate it matches the schema</span>
+        <span class="syn-keyword">if</span> <span class="syn-keyword">let</span> <span class="syn-builtin">Some</span>(tuples) = existing_data {
+            <span class="syn-keyword">for</span> tuple <span class="syn-keyword">in</span> tuples {
+                TypeChecker::check(<span class="syn-operator">&amp;</span>schema, tuple)?;
+            }
+        }
+
+        <span class="syn-keyword">self</span>.persistent.insert(schema.name.clone(), schema);
+        <span class="syn-keyword">self</span>.persist_to_disk()?;
+        <span class="syn-builtin">Ok</span>(())
+    }
+
+    <span class="syn-comment">/// Register a session schema.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> register_session(
+        <span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>,
+        schema: RelationSchema,
+        existing_data: <span class="syn-builtin">Option</span>&lt;<span class="syn-operator">&amp;</span>[<span class="syn-builtin">Vec</span>&lt;Value&gt;]&gt;,
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), SchemaError&gt; {
+        <span class="syn-comment">// Same validation as persistent</span>
+        <span class="syn-keyword">if</span> <span class="syn-keyword">let</span> <span class="syn-builtin">Some</span>(tuples) = existing_data {
+            <span class="syn-keyword">for</span> tuple <span class="syn-keyword">in</span> tuples {
+                TypeChecker::check(<span class="syn-operator">&amp;</span>schema, tuple)?;
+            }
+        }
+
+        <span class="syn-keyword">self</span>.session.insert(schema.name.clone(), schema);
+        <span class="syn-builtin">Ok</span>(())
+    }
+
+    <span class="syn-comment">/// Clear session schemas (on disconnect).</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> clear_session(<span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>) {
+        <span class="syn-keyword">self</span>.session.clear();
+    }
+}</code></pre>
+<h3 id="2-type-checker" node="[object Object]">2. Type Checker</h3>
+<p>Validates that values match declared types.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> TypeChecker;
+
+<span class="syn-keyword">impl</span> TypeChecker {
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> check(
+        schema: <span class="syn-operator">&amp;</span>RelationSchema,
+        tuple: <span class="syn-operator">&amp;</span>[Value],
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), TypeError&gt; {
+        <span class="syn-comment">// Arity check</span>
+        <span class="syn-keyword">if</span> tuple.len() != schema.columns.len() {
+            <span class="syn-keyword">return</span> <span class="syn-builtin">Err</span>(TypeError::ArityMismatch {
+                relation: schema.name.clone(),
+                expected: schema.columns.len(),
+                got: tuple.len(),
+            });
+        }
+
+        <span class="syn-comment">// Type check each column</span>
+        <span class="syn-keyword">for</span> (i, (value, col)) <span class="syn-keyword">in</span> tuple.iter().zip(<span class="syn-operator">&amp;</span>schema.columns).enumerate() {
+            <span class="syn-keyword">if</span> !value.matches_type(<span class="syn-operator">&amp;</span>col.dtype) {
+                <span class="syn-keyword">return</span> <span class="syn-builtin">Err</span>(TypeError::TypeMismatch {
+                    relation: schema.name.clone(),
+                    column: col.name.clone(),
+                    column_index: i,
+                    expected: col.dtype.clone(),
+                    got: value.type_name(),
+                    value: value.clone(),
+                });
+            }
+        }
+
+        <span class="syn-builtin">Ok</span>(())
+    }
+}
+
+<span class="syn-keyword">impl</span> Value {
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> matches_type(<span class="syn-operator">&amp;</span><span class="syn-keyword">self</span>, dtype: <span class="syn-operator">&amp;</span>DataType) -&gt; <span class="syn-keyword">bool</span> {
+        <span class="syn-keyword">match</span> (<span class="syn-keyword">self</span>, dtype) {
+            (Value::Int(_), DataType::Int) =&gt; <span class="syn-number">true</span>,
+            (Value::Float(_), DataType::Float) =&gt; <span class="syn-number">true</span>,
+            (Value::<span class="syn-builtin">String</span>(_), DataType::<span class="syn-builtin">String</span>) =&gt; <span class="syn-number">true</span>,
+            (Value::Bool(_), DataType::Bool) =&gt; <span class="syn-number">true</span>,
+            (Value::Vector(v), DataType::Vector(dim)) =&gt; v.len() == *dim,
+            <span class="syn-comment">// Int can widen to Float</span>
+            (Value::Int(_), DataType::Float) =&gt; <span class="syn-number">true</span>,
+            _ =&gt; <span class="syn-number">false</span>,
+        }
+    }
+
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> type_name(<span class="syn-operator">&amp;</span><span class="syn-keyword">self</span>) -&gt; <span class="syn-operator">&amp;</span><span class="syn-operator">'static</span> <span class="syn-keyword">str</span> {
+        <span class="syn-keyword">match</span> <span class="syn-keyword">self</span> {
+            Value::Int(_) =&gt; <span class="syn-string">"int"</span>,
+            Value::Float(_) =&gt; <span class="syn-string">"float"</span>,
+            Value::<span class="syn-builtin">String</span>(_) =&gt; <span class="syn-string">"string"</span>,
+            Value::Bool(_) =&gt; <span class="syn-string">"bool"</span>,
+            Value::Vector(v) =&gt; <span class="syn-string">"vector"</span>,
+        }
+    }
+}</code></pre>
+<h3 id="3-validation-layer" node="[object Object]">3. Validation Layer</h3>
+<p>Orchestrates validation for all operations.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">pub</span> <span class="syn-keyword">struct</span> ValidationLayer {
+    schema_registry: SchemaRegistry,
+}
+
+<span class="syn-keyword">impl</span> ValidationLayer {
+    <span class="syn-comment">/// Validate an insert operation. Called before DD ingest.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> validate_insert(
+        <span class="syn-operator">&amp;</span><span class="syn-keyword">self</span>,
+        relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>,
+        tuple: <span class="syn-operator">&amp;</span>[Value],
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), ValidationError&gt; {
+        <span class="syn-comment">// If no schema, allow anything (schema-less mode)</span>
+        <span class="syn-keyword">let</span> <span class="syn-builtin">Some</span>(schema) = <span class="syn-keyword">self</span>.schema_registry.get(relation) <span class="syn-keyword">else</span> {
+            <span class="syn-keyword">return</span> <span class="syn-builtin">Ok</span>(());
+        };
+
+        <span class="syn-comment">// Type check</span>
+        TypeChecker::check(schema, tuple)?;
+
+        <span class="syn-builtin">Ok</span>(())
+    }
+
+    <span class="syn-comment">/// Validate a batch insert.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> validate_batch(
+        <span class="syn-operator">&amp;</span><span class="syn-keyword">self</span>,
+        relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>,
+        tuples: <span class="syn-operator">&amp;</span>[<span class="syn-builtin">Vec</span>&lt;Value&gt;],
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), ValidationError&gt; {
+        <span class="syn-keyword">let</span> <span class="syn-builtin">Some</span>(schema) = <span class="syn-keyword">self</span>.schema_registry.get(relation) <span class="syn-keyword">else</span> {
+            <span class="syn-keyword">return</span> <span class="syn-builtin">Ok</span>(());
+        };
+
+        <span class="syn-keyword">for</span> tuple <span class="syn-keyword">in</span> tuples {
+            TypeChecker::check(schema, tuple)?;
+        }
+
+        <span class="syn-builtin">Ok</span>(())
+    }
+
+    <span class="syn-comment">/// Register a schema, validating against existing data.</span>
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> register_schema(
+        <span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>,
+        schema: RelationSchema,
+        persistent: <span class="syn-keyword">bool</span>,
+        existing_data: <span class="syn-builtin">Option</span>&lt;<span class="syn-operator">&amp;</span>[<span class="syn-builtin">Vec</span>&lt;Value&gt;]&gt;,
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), SchemaError&gt; {
+        <span class="syn-keyword">if</span> persistent {
+            <span class="syn-keyword">self</span>.schema_registry.register_persistent(schema, existing_data)
+        } <span class="syn-keyword">else</span> {
+            <span class="syn-keyword">self</span>.schema_registry.register_session(schema, existing_data)
+        }
+    }
+}</code></pre>
+<h2 id="schema-persistence" node="[object Object]">Schema Persistence</h2>
+<p>Schemas follow the same session vs persistent pattern as rules:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-comment">// Persistent schema - saved with knowledge graph</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Session schema - temporary, current connection only</span>
+<span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+</code></pre>
+<h3 id="lifecycle-comparison" node="[object Object]">Lifecycle Comparison</h3>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Aspect</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Session Schema</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Persistent Schema</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Syntax</td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">rel(col: type)</code></td><td class="border px-4 py-2" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">+rel(col: type)</code></td></tr><tr><td class="border px-4 py-2" node="[object Object]">Storage</td><td class="border px-4 py-2" node="[object Object]">Memory only</td><td class="border px-4 py-2" node="[object Object]">Persisted to disk</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Lifetime</td><td class="border px-4 py-2" node="[object Object]">Until disconnect</td><td class="border px-4 py-2" node="[object Object]">Survives restart</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Use case</td><td class="border px-4 py-2" node="[object Object]">Scripts, testing</td><td class="border px-4 py-2" node="[object Object]">Production data</td></tr></tbody></table></div>
+<h2 id="ingestion-modes" node="[object Object]">Ingestion Modes</h2>
+<p>InputLayer supports two ingestion patterns: schema-first (traditional) and data-first (exploratory).</p>
+<h3 id="schema-first-ingestion" node="[object Object]">Schema-First Ingestion</h3>
+<p>Define the schema before inserting data. All inserts are validated immediately.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-meta">.kg create</span> <span class="syn-identifier">mydb</span>
+<span class="syn-meta">.kg use</span> <span class="syn-identifier">mydb</span>
+
+<span class="syn-comment">// 1. Define schema</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">email</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">active</span><span class="syn-punct">:</span> <span class="syn-keyword">bool</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// 2. Insert data - each insert is validated</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"alice@x.com"</span><span class="syn-punct">,</span> <span class="syn-keyword">true</span><span class="syn-punct">)</span>        <span class="syn-comment">// OK</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">2</span><span class="syn-punct">,</span> <span class="syn-string">"bob@x.com"</span><span class="syn-punct">,</span> <span class="syn-keyword">false</span><span class="syn-punct">)</span>         <span class="syn-comment">// OK</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-string">"bad"</span><span class="syn-punct">,</span> <span class="syn-string">"charlie@x.com"</span><span class="syn-punct">,</span> <span class="syn-keyword">true</span><span class="syn-punct">)</span>  <span class="syn-comment">// ERROR: "bad" is not int</span>
+</code></pre>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Catch type errors immediately at insert time</li>
+<li>Clear contract for what data looks like</li>
+<li>Better for production systems</li>
+</ul>
+<p><strong>Bulk loading with schema-first:</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-arith">+</span><span class="syn-identifier">product</span><span class="syn-punct">(</span><span class="syn-identifier">sku</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">price</span><span class="syn-punct">:</span> <span class="syn-keyword">float</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Bulk insert - all tuples validated before any are inserted</span>
+<span class="syn-arith">+</span><span class="syn-identifier">product</span><span class="syn-punct">[</span>
+    <span class="syn-punct">(</span><span class="syn-string">"SKU001"</span><span class="syn-punct">,</span> <span class="syn-string">"Widget"</span><span class="syn-punct">,</span> <span class="syn-number">9.99</span><span class="syn-punct">)</span><span class="syn-punct">,</span>
+    <span class="syn-punct">(</span><span class="syn-string">"SKU002"</span><span class="syn-punct">,</span> <span class="syn-string">"Gadget"</span><span class="syn-punct">,</span> <span class="syn-number">19.99</span><span class="syn-punct">)</span><span class="syn-punct">,</span>
+    <span class="syn-punct">(</span><span class="syn-string">"SKU003"</span><span class="syn-punct">,</span> <span class="syn-string">"Gizmo"</span><span class="syn-punct">,</span> <span class="syn-number">29.99</span><span class="syn-punct">)</span>
+<span class="syn-punct">]</span>
+</code></pre>
+<p><strong>File loading with schema-first:</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-arith">+</span><span class="syn-identifier">sensor_reading</span><span class="syn-punct">(</span><span class="syn-keyword">timestamp</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">sensor_id</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">value</span><span class="syn-punct">:</span> <span class="syn-keyword">float</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Load validates each row against schema</span>
+<span class="syn-meta">.load</span> <span class="syn-identifier">sensors</span><span class="syn-meta">.</span><span class="syn-identifier">idl</span>
+</code></pre>
+<h3 id="data-first-ingestion" node="[object Object]">Data-First Ingestion</h3>
+<p>Insert data without a schema (schema-less mode), then optionally add a schema later.</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-meta">.kg use</span> <span class="syn-identifier">mydb</span>
+
+<span class="syn-comment">// 1. Insert data freely - no validation</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"alice@x.com"</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">2</span><span class="syn-punct">,</span> <span class="syn-string">"bob@x.com"</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">3</span><span class="syn-punct">,</span> <span class="syn-string">"charlie@x.com"</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// 2. Later, add schema - validates existing data</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">email</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+<span class="syn-comment">// Success: all existing data matches schema</span>
+</code></pre>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>Quick prototyping and exploration</li>
+<li>Import data first, figure out types later</li>
+<li>Flexible for ad-hoc analysis</li>
+</ul>
+<p><strong>Schema-less behavior:</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-comment">// Without schema, anything goes</span>
+<span class="syn-arith">+</span><span class="syn-identifier">mixed</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"text"</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">mixed</span><span class="syn-punct">(</span><span class="syn-string">"also text"</span><span class="syn-punct">,</span> <span class="syn-number">42</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">mixed</span><span class="syn-punct">(</span><span class="syn-keyword">true</span><span class="syn-punct">,</span> <span class="syn-punct">[</span><span class="syn-number">1.0</span><span class="syn-punct">,</span> <span class="syn-number">2.0</span><span class="syn-punct">,</span> <span class="syn-number">3.0</span><span class="syn-punct">]</span><span class="syn-punct">)</span>
+<span class="syn-comment">// All accepted - no type enforcement</span>
+</code></pre>
+<p><strong>Adding schema to existing data:</strong></p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-comment">// Existing data</span>
+<span class="syn-arith">+</span><span class="syn-identifier">event</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"click"</span><span class="syn-punct">,</span> <span class="syn-number">1704067200</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">event</span><span class="syn-punct">(</span><span class="syn-number">2</span><span class="syn-punct">,</span> <span class="syn-string">"view"</span><span class="syn-punct">,</span> <span class="syn-number">1704067260</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Try to add schema</span>
+<span class="syn-arith">+</span><span class="syn-identifier">event</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-keyword">type</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-keyword">timestamp</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">)</span>
+<span class="syn-comment">// Success: existing data matches</span>
+
+<span class="syn-comment">// But if data doesn't match...</span>
+<span class="syn-arith">+</span><span class="syn-builtin">log</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"info"</span><span class="syn-punct">,</span> <span class="syn-string">"message"</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-builtin">log</span><span class="syn-punct">(</span><span class="syn-string">"bad"</span><span class="syn-punct">,</span> <span class="syn-string">"error"</span><span class="syn-punct">,</span> <span class="syn-string">"another"</span><span class="syn-punct">)</span>  <span class="syn-comment">// String in first column</span>
+
+<span class="syn-arith">+</span><span class="syn-builtin">log</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">level</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">msg</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+<span class="syn-comment">// ERROR: Existing data violates schema</span>
+<span class="syn-comment">//   Row ("bad", "error", "another"): column 'id' expected int, got string</span>
+</code></pre>
+<h3 id="schema-rejection-on-type-mismatch" node="[object Object]">Schema Rejection on Type Mismatch</h3>
+<p>If existing data doesn&#x27;t match the proposed schema, the schema definition is <strong>rejected</strong> (not the data):</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"alice"</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-string">"not-an-int"</span><span class="syn-punct">,</span> <span class="syn-string">"bob"</span><span class="syn-punct">)</span>     <span class="syn-comment">// String in first column - allowed without schema</span>
+
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+<span class="syn-comment">// Error: Cannot register schema for 'user'</span>
+<span class="syn-comment">//   Existing data violates type requirements</span>
+<span class="syn-comment">//   Row ("not-an-int", "bob"): column 'id' expected int, got string "abc"</span>
+<span class="syn-comment">//   Fix the data before registering the schema</span>
+</code></pre>
+<p>The user must fix the data first:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-arith">-</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-string">"not-an-int"</span><span class="syn-punct">,</span> <span class="syn-string">"bob"</span><span class="syn-punct">)</span>     <span class="syn-comment">// Remove bad row</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>   <span class="syn-comment">// Now schema can be registered</span>
+</code></pre>
+<h3 id="mixed-workflow" node="[object Object]">Mixed Workflow</h3>
+<p>You can switch between modes as needed:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-comment">// Start schema-less for exploration</span>
+<span class="syn-arith">+</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"trial-a"</span><span class="syn-punct">,</span> <span class="syn-number">0.5</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-number">2</span><span class="syn-punct">,</span> <span class="syn-string">"trial-b"</span><span class="syn-punct">,</span> <span class="syn-number">0.7</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Query and analyze</span>
+<span class="syn-query">?</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-variable">Id</span><span class="syn-punct">,</span> <span class="syn-variable">Name</span><span class="syn-punct">,</span> <span class="syn-variable">Score</span><span class="syn-punct">)</span><span class="syn-punct">,</span> <span class="syn-variable">Score</span> <span class="syn-comparison">&gt;</span> <span class="syn-number">0.6</span>
+
+<span class="syn-comment">// Happy with structure? Lock it down with persistent schema</span>
+<span class="syn-arith">+</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">score</span><span class="syn-punct">:</span> <span class="syn-keyword">float</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Future inserts are now validated</span>
+<span class="syn-arith">+</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-number">3</span><span class="syn-punct">,</span> <span class="syn-string">"trial-c"</span><span class="syn-punct">,</span> <span class="syn-number">0.8</span><span class="syn-punct">)</span>     <span class="syn-comment">// OK</span>
+<span class="syn-arith">+</span><span class="syn-identifier">experiment</span><span class="syn-punct">(</span><span class="syn-string">"bad"</span><span class="syn-punct">,</span> <span class="syn-string">"trial-d"</span><span class="syn-punct">,</span> <span class="syn-number">0.9</span><span class="syn-punct">)</span> <span class="syn-comment">// ERROR</span>
+</code></pre>
+<h3 id="session-schema-for-testing" node="[object Object]">Session Schema for Testing</h3>
+<p>Use session schemas to temporarily validate without persisting:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-comment">// Production has no schema (legacy data)</span>
+<span class="syn-comment">// But you want to validate a batch before inserting</span>
+
+<span class="syn-comment">// Define session schema (not persisted)</span>
+<span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">email</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">)</span>
+
+<span class="syn-comment">// Test your data</span>
+<span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-number">1</span><span class="syn-punct">,</span> <span class="syn-string">"test@x.com"</span><span class="syn-punct">)</span>  <span class="syn-comment">// Validated against session schema</span>
+
+<span class="syn-comment">// Clear session when done</span>
+<span class="syn-meta">.session clear</span>
+</code></pre>
+<h3 id="implementation-flow" node="[object Object]">Implementation Flow</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">Insert Request
+      |
+      v
++-----------------+
+| Schema exists?  |
++--------+--------+
+         |
+    +----+----+
+    |         |
+    v         v
+   Yes        No
+    |         |
+    v         |
++--------+    |
+|Validate|    |
+| types  |    |
++---+----+    |
+    |         |
+    v         v
+  Pass?    Insert
+    |      (no validation)
+  +-+-+
+  |   |
+  v   v
+ Yes  No
+  |   |
+  v   v
+Insert Error
+
+
+Schema Registration Request
+           |
+           v
+  +-----------------+
+  | Data exists for |
+  | this relation?  |
+  +--------+--------+
+           |
+      +----+----+
+      |         |
+      v         v
+     Yes        No
+      |         |
+      v         |
++-----------+   |
+| Validate  |   |
+| all rows  |   |
++-----+-----+   |
+      |         |
+      v         v
+   All pass?  Register
+      |       schema
+    +-+-+
+    |   |
+    v   v
+   Yes  No
+    |   |
+    v   v
+Register Reject
+schema   schema
+</code></pre>
+<h2 id="integration" node="[object Object]">Integration</h2>
+<h3 id="statement-executor" node="[object Object]">Statement Executor</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">impl</span> StatementExecutor {
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> execute_insert(
+        <span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>,
+        relation: <span class="syn-operator">&amp;</span><span class="syn-keyword">str</span>,
+        tuples: <span class="syn-builtin">Vec</span>&lt;<span class="syn-builtin">Vec</span>&lt;Value&gt;&gt;,
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;InsertResult, ExecuteError&gt; {
+        <span class="syn-comment">// Validate all tuples first</span>
+        <span class="syn-keyword">self</span>.validation.validate_batch(relation, <span class="syn-operator">&amp;</span>tuples)?;
+
+        <span class="syn-comment">// Insert into DD</span>
+        <span class="syn-keyword">self</span>.dataflow.insert(relation, <span class="syn-operator">&amp;</span>tuples)?;
+
+        <span class="syn-builtin">Ok</span>(InsertResult { count: tuples.len() })
+    }
+
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> execute_schema(
+        <span class="syn-operator">&amp;mut</span> <span class="syn-keyword">self</span>,
+        schema: RelationSchema,
+        persistent: <span class="syn-keyword">bool</span>,
+    ) -&gt; <span class="syn-builtin">Result</span>&lt;(), ExecuteError&gt; {
+        <span class="syn-comment">// Get existing data for this relation</span>
+        <span class="syn-keyword">let</span> existing = <span class="syn-keyword">self</span>.dataflow.scan(<span class="syn-operator">&amp;</span>schema.name)?;
+        <span class="syn-keyword">let</span> existing_ref: <span class="syn-builtin">Option</span>&lt;<span class="syn-operator">&amp;</span>[<span class="syn-builtin">Vec</span>&lt;Value&gt;]&gt; = <span class="syn-keyword">if</span> existing.is_empty() {
+            <span class="syn-builtin">None</span>
+        } <span class="syn-keyword">else</span> {
+            <span class="syn-builtin">Some</span>(<span class="syn-operator">&amp;</span>existing)
+        };
+
+        <span class="syn-comment">// Register schema (validates existing data)</span>
+        <span class="syn-keyword">self</span>.validation.register_schema(schema, persistent, existing_ref)?;
+
+        <span class="syn-builtin">Ok</span>(())
+    }
+}</code></pre>
+<h3 id="database-load" node="[object Object]">Database Load</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-rust text-sm"><span class="syn-keyword">impl</span> Database {
+    <span class="syn-keyword">pub</span> <span class="syn-keyword">fn</span> open(path: <span class="syn-operator">&amp;</span>Path) -&gt; <span class="syn-builtin">Result</span>&lt;<span class="syn-keyword">Self</span>, DbError&gt; {
+        <span class="syn-comment">// 1. Load persistent schemas</span>
+        <span class="syn-keyword">let</span> schemas = SchemaRegistry::load_from_disk(path)?;
+
+        <span class="syn-comment">// 2. Initialize validation layer</span>
+        <span class="syn-keyword">let</span> validation = ValidationLayer::new(schemas);
+
+        <span class="syn-comment">// 3. Load data into DD</span>
+        <span class="syn-keyword">let</span> dataflow = Dataflow::load_from_disk(path)?;
+
+        <span class="syn-comment">// Note: No constraint index rebuilding needed!</span>
+
+        <span class="syn-builtin">Ok</span>(Database { dataflow, validation })
+    }
+}</code></pre>
+<h3 id="storage-format" node="[object Object]">Storage Format</h3>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">data/
+  mydb/
+    rules/                  # Persistent rule definitions
+      catalog.json          # Rule catalog
+  persist/
+    shards/                 # Shard metadata
+    batches/                # Compacted batch files (Parquet)
+    wal/                    # Write-ahead log
+  metadata/                 # System metadata
+</code></pre>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-json text-sm">{
+  <span class="syn-identifier">"version"</span>: <span class="syn-number">1</span>,
+  <span class="syn-identifier">"schemas"</span>: {
+    <span class="syn-identifier">"user"</span>: {
+      <span class="syn-identifier">"columns"</span>: [
+        {<span class="syn-identifier">"name"</span>: <span class="syn-string">"id"</span>, <span class="syn-identifier">"type"</span>: <span class="syn-string">"int"</span>},
+        {<span class="syn-identifier">"name"</span>: <span class="syn-string">"email"</span>, <span class="syn-identifier">"type"</span>: <span class="syn-string">"string"</span>}
+      ]
+    },
+    <span class="syn-identifier">"embedding"</span>: {
+      <span class="syn-identifier">"columns"</span>: [
+        {<span class="syn-identifier">"name"</span>: <span class="syn-string">"id"</span>, <span class="syn-identifier">"type"</span>: <span class="syn-string">"int"</span>},
+        {<span class="syn-identifier">"name"</span>: <span class="syn-string">"vec"</span>, <span class="syn-identifier">"type"</span>: {<span class="syn-identifier">"vector"</span>: <span class="syn-number">128</span>}}
+      ]
+    }
+  }
+}</code></pre>
+<h2 id="syntax" node="[object Object]">Syntax</h2>
+<p>The schema syntax:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-ebnf text-sm">schema      <span class="syn-operator">::=</span> prefix? predicate <span class="syn-string">"("</span> column_list <span class="syn-string">")"</span> <span class="syn-string">"."</span> <span class="syn-operator">;</span>
+prefix      <span class="syn-operator">::=</span> <span class="syn-string">"+"</span> <span class="syn-operator">;</span>
+column_list <span class="syn-operator">::=</span> column <span class="syn-punct">(</span><span class="syn-string">","</span> column<span class="syn-punct">)</span>* <span class="syn-operator">;</span>
+column      <span class="syn-operator">::=</span> name <span class="syn-string">":"</span> type <span class="syn-operator">;</span>
+type        <span class="syn-operator">::=</span> <span class="syn-string">"int"</span> <span class="syn-operator">|</span> <span class="syn-string">"float"</span> <span class="syn-operator">|</span> <span class="syn-string">"string"</span> <span class="syn-operator">|</span> <span class="syn-string">"bool"</span> <span class="syn-operator">|</span> vector_type <span class="syn-operator">;</span>
+vector_type <span class="syn-operator">::=</span> <span class="syn-string">"vector"</span> <span class="syn-string">"["</span> integer <span class="syn-string">"]"</span> <span class="syn-operator">;</span></code></pre>
+<p>Examples:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="language-datalog text-sm"><span class="syn-arith">+</span><span class="syn-identifier">user</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">name</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">active</span><span class="syn-punct">:</span> <span class="syn-keyword">bool</span><span class="syn-punct">)</span>
+<span class="syn-arith">+</span><span class="syn-identifier">embedding</span><span class="syn-punct">(</span><span class="syn-identifier">id</span><span class="syn-punct">:</span> <span class="syn-keyword">int</span><span class="syn-punct">,</span> <span class="syn-identifier">vec</span><span class="syn-punct">:</span> <span class="syn-keyword">vector</span><span class="syn-punct">[</span><span class="syn-number">128</span><span class="syn-punct">]</span><span class="syn-punct">)</span>
+<span class="syn-identifier">product</span><span class="syn-punct">(</span><span class="syn-identifier">sku</span><span class="syn-punct">:</span> <span class="syn-keyword">string</span><span class="syn-punct">,</span> <span class="syn-identifier">price</span><span class="syn-punct">:</span> <span class="syn-keyword">float</span><span class="syn-punct">)</span>  <span class="syn-comment">// Session schema</span>
+</code></pre>
+<h2 id="error-messages" node="[object Object]">Error Messages</h2>
+<p>Clear, actionable error messages:</p>
+<pre class="rounded-lg bg-[var(--code-bg)] p-4 overflow-x-auto mb-4 text-sm font-mono" node="[object Object]"><code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">Error: Type mismatch in relation &#x27;user&#x27;
+  Column &#x27;id&#x27; (index 0): expected int, got string
+  Value: &quot;not-a-number&quot;
+
+Error: Arity mismatch in relation &#x27;user&#x27;
+  Expected 2 columns, got 3
+  Schema: user(id: int, name: string)
+
+Error: Cannot register schema for &#x27;user&#x27;
+  Existing data violates type requirements
+  Row 5: column &#x27;id&#x27; expected int, got string &quot;abc&quot;
+  Fix the data before registering the schema
+</code></pre>
+<h2 id="migration-path" node="[object Object]">Migration Path</h2>
+<h3 id="type-validation" node="[object Object]">Type Validation</h3>
+<ul>
+<li>Implement <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">SchemaRegistry</code> and <code class="bg-muted rounded px-1.5 py-0.5 font-mono text-sm" node="[object Object]">TypeChecker</code></li>
+<li>Validate types on insert</li>
+<li>Schema persistence</li>
+</ul>
+<h3 id="derived-data-types" node="[object Object]">Derived Data Types</h3>
+<ul>
+<li>Infer output types for rules</li>
+<li>Warn when rule output doesn&#x27;t match view schema</li>
+</ul>
+<h3 id="type-inference-optional" node="[object Object]">Type Inference (Optional)</h3>
+<ul>
+<li>Infer schemas from data patterns</li>
+<li>Suggest schemas based on inserted data</li>
+</ul>
+<h2 id="summary" node="[object Object]">Summary</h2>
+<div class="my-4 overflow-x-auto"><table class="w-full border-collapse" node="[object Object]"><thead><tr><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Feature</th><th class="border px-4 py-2 text-left font-semibold bg-muted/50" node="[object Object]">Status</th></tr></thead><tbody><tr><td class="border px-4 py-2" node="[object Object]">Type validation (int, float, string, bool, vector)</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Arity checking</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Session vs persistent schemas</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Schema-first workflow</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Data-first workflow</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr><tr><td class="border px-4 py-2" node="[object Object]">Reject schema if data violates types</td><td class="border px-4 py-2" node="[object Object]">Included</td></tr></tbody></table></div>
+<p>This keeps the system simple and DD-friendly while providing useful type safety.</p></article></div><div class="hidden lg:block w-48 shrink-0 border-l border-border/50"><div class="sticky top-0 p-4"><p class="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">On this page</p><nav class="space-y-1"><a href="#problem-statement" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Problem Statement</a><a href="#architecture-overview" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Architecture Overview</a><a href="#what-we-validate" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">What We Validate</a><a href="#components" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Components</a><a href="#1-schema-registry" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">1. Schema Registry</a><a href="#2-type-checker" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">2. Type Checker</a><a href="#3-validation-layer" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">3. Validation Layer</a><a href="#schema-persistence" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Schema Persistence</a><a href="#lifecycle-comparison" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Lifecycle Comparison</a><a href="#ingestion-modes" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Ingestion Modes</a><a href="#schema-first-ingestion" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Schema-First Ingestion</a><a href="#data-first-ingestion" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Data-First Ingestion</a><a href="#schema-rejection-on-type-mismatch" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Schema Rejection on Type Mismatch</a><a href="#mixed-workflow" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Mixed Workflow</a><a href="#session-schema-for-testing" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Session Schema for Testing</a><a href="#implementation-flow" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Implementation Flow</a><a href="#integration" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Integration</a><a href="#statement-executor" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Statement Executor</a><a href="#database-load" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Database Load</a><a href="#storage-format" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Storage Format</a><a href="#syntax" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Syntax</a><a href="#error-messages" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Error Messages</a><a href="#migration-path" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Migration Path</a><a href="#type-validation" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Type Validation</a><a href="#derived-data-types" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Derived Data Types</a><a href="#type-inference-optional" class="block text-xs py-0.5 transition-colors hover:text-foreground pl-3 text-muted-foreground">Type Inference (Optional)</a><a href="#summary" class="block text-xs py-0.5 transition-colors hover:text-foreground text-muted-foreground">Summary</a></nav></div></div></div></div></div></div><!--$--><!--/$--><script src="/_next/static/chunks/webpack-bd6546b43ab2ecbf.js" id="_R_" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"1:\"$Sreact.fragment\"\n2:I[1942,[\"177\",\"static/chunks/app/layout-7e9963bf811be36b.js\"],\"ThemeProvider\"]\n3:I[7121,[],\"\"]\n4:I[4581,[],\"\"]\n6:I[484,[],\"OutletBoundary\"]\n7:\"$Sreact.suspense\"\n9:I[484,[],\"ViewportBoundary\"]\nb:I[484,[],\"MetadataBoundary\"]\nd:I[7123,[],\"\"]\n:HL[\"/_next/static/media/4cf2300e9c8272f7-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/media/93f479601ee12b01-s.p.woff2\",\"font\",{\"crossOrigin\":\"\",\"type\":\"font/woff2\"}]\n:HL[\"/_next/static/css/4bd7a24b7976d4e6.css\",\"style\"]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":null,\"b\":\"05bjYGyiAumoEMBrfWHih\",\"c\":[\"\",\"docs\",\"internals\",\"validation\",\"\"],\"q\":\"\",\"i\":false,\"f\":[[[\"\",{\"children\":[\"docs\",{\"children\":[[\"slug\",\"internals/validation\",\"oc\"],{\"children\":[\"__PAGE__\",{}]}]}]},\"$undefined\",\"$undefined\",true],[[\"$\",\"$1\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/css/4bd7a24b7976d4e6.css\",\"precedence\":\"next\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"}]],[\"$\",\"html\",null,{\"lang\":\"en\",\"suppressHydrationWarning\":true,\"children\":[\"$\",\"body\",null,{\"className\":\"__variable_188709 __variable_9a8899 font-sans antialiased\",\"children\":[\"$\",\"$L2\",null,{\"attribute\":\"class\",\"defaultTheme\":\"dark\",\"enableSystem\":true,\"disableTransitionOnChange\":true,\"children\":[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"}],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}}],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404}],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be found.\"}]}]]}]}]],[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]}]}]}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[null,[\"$\",\"$L3\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L4\",null,{}],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$undefined\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"}]]}],{\"children\":[[\"$\",\"$1\",\"c\",{\"children\":[\"$L5\",null,[\"$\",\"$L6\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.MetadataOutlet\",\"children\":\"$@8\"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],[\"$\",\"$1\",\"h\",{\"children\":[null,[\"$\",\"$L9\",null,{\"children\":\"$@a\"}],[\"$\",\"div\",null,{\"hidden\":true,\"children\":[\"$\",\"$Lb\",null,{\"children\":[\"$\",\"$7\",null,{\"name\":\"Next.Metadata\",\"children\":\"$@c\"}]}]}],[\"$\",\"meta\",null,{\"name\":\"next-size-adjust\",\"content\":\"\"}]]}],false]],\"m\":\"$undefined\",\"G\":[\"$d\",[]],\"S\":true}\n"])</script><script>self.__next_f.push([1,"e:I[8428,[\"758\",\"static/chunks/758-3cb69ce377cde046.js\",\"121\",\"static/chunks/121-aece4f809b101dc1.js\",\"502\",\"static/chunks/502-e809071f8789437b.js\",\"689\",\"static/chunks/689-4fcf9680fdc90283.js\",\"870\",\"static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js\"],\"DocsPageClient\"]\nf:T4141,"])</script><script>self.__next_f.push([1,"# Pre-Dataflow Validation Layer\n\n\u003e Status: Planned Architecture - The design below is not yet implemented. It describes the target validation system.\n\n## Problem Statement\n\nDifferential Dataflow (DD) operates on streaming deltas with multiplicities. It has no native concept of type enforcement. Once data enters DD, it flows through computation - \"rejecting\" invalid data would require expensive rollback.\n\n**Solution:** Validate data types *before* they enter the dataflow. Create a validation gate that enforces schemas at the boundary.\n\n**Scope:** Type validation only.\n\n## Architecture Overview\n\n```\n                    +-------------------------------------+\n                    |         VALIDATION LAYER            |\n                    |                                     |\n  +user(1, \"alice\") |  +----------+      +----------+    |\n  -----------------\u003e|  |  Schema  |-----\u003e|   Type   |    |\n                    |  |  Lookup  |      |  Checker |    |\n                    |  +----------+      +----------+    |\n                    |                          |         |\n                    |                          v         |\n                    |        Ok(tuple) or Err(type error)|\n                    +----------------------+-------------+\n                                           |\n                         +-----------------+--------------+\n                         |                                |\n                         v                                v\n                    +---------+                      +---------+\n                    |   DD    |                      |  Error  |\n                    | Ingest  |                      | Response|\n                    +---------+                      +---------+\n```\n\n## What We Validate\n\n| Check | Example | When |\n|-------|---------|------|\n| Arity | `user` expects 2 columns, got 3 | Insert |\n| Type match | Column 1 expects `int`, got `\"alice\"` | Insert |\n| Type compatibility | Existing data matches new schema | Schema registration |\n\n## Components\n\n### 1. Schema Registry\n\nStores relation schemas with type information.\n\n```rust\npub struct SchemaRegistry {\n    /// Persistent schemas (loaded from disk, saved on change)\n    persistent: HashMap\u003cString, RelationSchema\u003e,\n\n    /// Session schemas (memory only, cleared on disconnect)\n    session: HashMap\u003cString, RelationSchema\u003e,\n}\n\npub struct RelationSchema {\n    pub name: String,\n    pub columns: Vec\u003cColumnDef\u003e,\n}\n\npub struct ColumnDef {\n    pub name: String,\n    pub dtype: DataType,\n}\n\n#[derive(Clone, Debug, PartialEq)]\npub enum DataType {\n    Int,\n    Float,\n    String,\n    Bool,\n    Vector(usize),  // dimensionality\n}\n\nimpl SchemaRegistry {\n    /// Get effective schema for a relation.\n    /// Session schema shadows persistent if both exist.\n    pub fn get(\u0026self, relation: \u0026str) -\u003e Option\u003c\u0026RelationSchema\u003e {\n        self.session.get(relation)\n            .or_else(|| self.persistent.get(relation))\n    }\n\n    /// Register a persistent schema.\n    pub fn register_persistent(\n        \u0026mut self,\n        schema: RelationSchema,\n        existing_data: Option\u003c\u0026[Vec\u003cValue\u003e]\u003e,\n    ) -\u003e Result\u003c(), SchemaError\u003e {\n        // If data exists, validate it matches the schema\n        if let Some(tuples) = existing_data {\n            for tuple in tuples {\n                TypeChecker::check(\u0026schema, tuple)?;\n            }\n        }\n\n        self.persistent.insert(schema.name.clone(), schema);\n        self.persist_to_disk()?;\n        Ok(())\n    }\n\n    /// Register a session schema.\n    pub fn register_session(\n        \u0026mut self,\n        schema: RelationSchema,\n        existing_data: Option\u003c\u0026[Vec\u003cValue\u003e]\u003e,\n    ) -\u003e Result\u003c(), SchemaError\u003e {\n        // Same validation as persistent\n        if let Some(tuples) = existing_data {\n            for tuple in tuples {\n                TypeChecker::check(\u0026schema, tuple)?;\n            }\n        }\n\n        self.session.insert(schema.name.clone(), schema);\n        Ok(())\n    }\n\n    /// Clear session schemas (on disconnect).\n    pub fn clear_session(\u0026mut self) {\n        self.session.clear();\n    }\n}\n```\n\n### 2. Type Checker\n\nValidates that values match declared types.\n\n```rust\npub struct TypeChecker;\n\nimpl TypeChecker {\n    pub fn check(\n        schema: \u0026RelationSchema,\n        tuple: \u0026[Value],\n    ) -\u003e Result\u003c(), TypeError\u003e {\n        // Arity check\n        if tuple.len() != schema.columns.len() {\n            return Err(TypeError::ArityMismatch {\n                relation: schema.name.clone(),\n                expected: schema.columns.len(),\n                got: tuple.len(),\n            });\n        }\n\n        // Type check each column\n        for (i, (value, col)) in tuple.iter().zip(\u0026schema.columns).enumerate() {\n            if !value.matches_type(\u0026col.dtype) {\n                return Err(TypeError::TypeMismatch {\n                    relation: schema.name.clone(),\n                    column: col.name.clone(),\n                    column_index: i,\n                    expected: col.dtype.clone(),\n                    got: value.type_name(),\n                    value: value.clone(),\n                });\n            }\n        }\n\n        Ok(())\n    }\n}\n\nimpl Value {\n    pub fn matches_type(\u0026self, dtype: \u0026DataType) -\u003e bool {\n        match (self, dtype) {\n            (Value::Int(_), DataType::Int) =\u003e true,\n            (Value::Float(_), DataType::Float) =\u003e true,\n            (Value::String(_), DataType::String) =\u003e true,\n            (Value::Bool(_), DataType::Bool) =\u003e true,\n            (Value::Vector(v), DataType::Vector(dim)) =\u003e v.len() == *dim,\n            // Int can widen to Float\n            (Value::Int(_), DataType::Float) =\u003e true,\n            _ =\u003e false,\n        }\n    }\n\n    pub fn type_name(\u0026self) -\u003e \u0026'static str {\n        match self {\n            Value::Int(_) =\u003e \"int\",\n            Value::Float(_) =\u003e \"float\",\n            Value::String(_) =\u003e \"string\",\n            Value::Bool(_) =\u003e \"bool\",\n            Value::Vector(v) =\u003e \"vector\",\n        }\n    }\n}\n```\n\n### 3. Validation Layer\n\nOrchestrates validation for all operations.\n\n```rust\npub struct ValidationLayer {\n    schema_registry: SchemaRegistry,\n}\n\nimpl ValidationLayer {\n    /// Validate an insert operation. Called before DD ingest.\n    pub fn validate_insert(\n        \u0026self,\n        relation: \u0026str,\n        tuple: \u0026[Value],\n    ) -\u003e Result\u003c(), ValidationError\u003e {\n        // If no schema, allow anything (schema-less mode)\n        let Some(schema) = self.schema_registry.get(relation) else {\n            return Ok(());\n        };\n\n        // Type check\n        TypeChecker::check(schema, tuple)?;\n\n        Ok(())\n    }\n\n    /// Validate a batch insert.\n    pub fn validate_batch(\n        \u0026self,\n        relation: \u0026str,\n        tuples: \u0026[Vec\u003cValue\u003e],\n    ) -\u003e Result\u003c(), ValidationError\u003e {\n        let Some(schema) = self.schema_registry.get(relation) else {\n            return Ok(());\n        };\n\n        for tuple in tuples {\n            TypeChecker::check(schema, tuple)?;\n        }\n\n        Ok(())\n    }\n\n    /// Register a schema, validating against existing data.\n    pub fn register_schema(\n        \u0026mut self,\n        schema: RelationSchema,\n        persistent: bool,\n        existing_data: Option\u003c\u0026[Vec\u003cValue\u003e]\u003e,\n    ) -\u003e Result\u003c(), SchemaError\u003e {\n        if persistent {\n            self.schema_registry.register_persistent(schema, existing_data)\n        } else {\n            self.schema_registry.register_session(schema, existing_data)\n        }\n    }\n}\n```\n\n## Schema Persistence\n\nSchemas follow the same session vs persistent pattern as rules:\n\n```datalog\n// Persistent schema - saved with knowledge graph\n+user(id: int, name: string)\n\n// Session schema - temporary, current connection only\nuser(id: int, name: string)\n```\n\n### Lifecycle Comparison\n\n| Aspect | Session Schema | Persistent Schema |\n|--------|---------------|-------------------|\n| Syntax | `rel(col: type)` | `+rel(col: type)` |\n| Storage | Memory only | Persisted to disk |\n| Lifetime | Until disconnect | Survives restart |\n| Use case | Scripts, testing | Production data |\n\n## Ingestion Modes\n\nInputLayer supports two ingestion patterns: schema-first (traditional) and data-first (exploratory).\n\n### Schema-First Ingestion\n\nDefine the schema before inserting data. All inserts are validated immediately.\n\n```datalog\n.kg create mydb\n.kg use mydb\n\n// 1. Define schema\n+user(id: int, email: string, active: bool)\n\n// 2. Insert data - each insert is validated\n+user(1, \"alice@x.com\", true)        // OK\n+user(2, \"bob@x.com\", false)         // OK\n+user(\"bad\", \"charlie@x.com\", true)  // ERROR: \"bad\" is not int\n```\n\n**Advantages:**\n- Catch type errors immediately at insert time\n- Clear contract for what data looks like\n- Better for production systems\n\n**Bulk loading with schema-first:**\n```datalog\n+product(sku: string, name: string, price: float)\n\n// Bulk insert - all tuples validated before any are inserted\n+product[\n    (\"SKU001\", \"Widget\", 9.99),\n    (\"SKU002\", \"Gadget\", 19.99),\n    (\"SKU003\", \"Gizmo\", 29.99)\n]\n```\n\n**File loading with schema-first:**\n```datalog\n+sensor_reading(timestamp: int, sensor_id: string, value: float)\n\n// Load validates each row against schema\n.load sensors.idl\n```\n\n### Data-First Ingestion\n\nInsert data without a schema (schema-less mode), then optionally add a schema later.\n\n```datalog\n.kg use mydb\n\n// 1. Insert data freely - no validation\n+user(1, \"alice@x.com\")\n+user(2, \"bob@x.com\")\n+user(3, \"charlie@x.com\")\n\n// 2. Later, add schema - validates existing data\n+user(id: int, email: string)\n// Success: all existing data matches schema\n```\n\n**Advantages:**\n- Quick prototyping and exploration\n- Import data first, figure out types later\n- Flexible for ad-hoc analysis\n\n**Schema-less behavior:**\n```datalog\n// Without schema, anything goes\n+mixed(1, \"text\")\n+mixed(\"also text\", 42)\n+mixed(true, [1.0, 2.0, 3.0])\n// All accepted - no type enforcement\n```\n\n**Adding schema to existing data:**\n```datalog\n// Existing data\n+event(1, \"click\", 1704067200)\n+event(2, \"view\", 1704067260)\n\n// Try to add schema\n+event(id: int, type: string, timestamp: int)\n// Success: existing data matches\n\n// But if data doesn't match...\n+log(1, \"info\", \"message\")\n+log(\"bad\", \"error\", \"another\")  // String in first column\n\n+log(id: int, level: string, msg: string)\n// ERROR: Existing data violates schema\n//   Row (\"bad\", \"error\", \"another\"): column 'id' expected int, got string\n```\n\n### Schema Rejection on Type Mismatch\n\nIf existing data doesn't match the proposed schema, the schema definition is **rejected** (not the data):\n\n```datalog\n+user(1, \"alice\")\n+user(\"not-an-int\", \"bob\")     // String in first column - allowed without schema\n\n+user(id: int, name: string)\n// Error: Cannot register schema for 'user'\n//   Existing data violates type requirements\n//   Row (\"not-an-int\", \"bob\"): column 'id' expected int, got string \"abc\"\n//   Fix the data before registering the schema\n```\n\nThe user must fix the data first:\n\n```datalog\n-user(\"not-an-int\", \"bob\")     // Remove bad row\n+user(id: int, name: string)   // Now schema can be registered\n```\n\n### Mixed Workflow\n\nYou can switch between modes as needed:\n\n```datalog\n// Start schema-less for exploration\n+experiment(1, \"trial-a\", 0.5)\n+experiment(2, \"trial-b\", 0.7)\n\n// Query and analyze\n?experiment(Id, Name, Score), Score \u003e 0.6\n\n// Happy with structure? Lock it down with persistent schema\n+experiment(id: int, name: string, score: float)\n\n// Future inserts are now validated\n+experiment(3, \"trial-c\", 0.8)     // OK\n+experiment(\"bad\", \"trial-d\", 0.9) // ERROR\n```\n\n### Session Schema for Testing\n\nUse session schemas to temporarily validate without persisting:\n\n```datalog\n// Production has no schema (legacy data)\n// But you want to validate a batch before inserting\n\n// Define session schema (not persisted)\nuser(id: int, email: string)\n\n// Test your data\n+user(1, \"test@x.com\")  // Validated against session schema\n\n// Clear session when done\n.session clear\n```\n\n### Implementation Flow\n\n```\nInsert Request\n      |\n      v\n+-----------------+\n| Schema exists?  |\n+--------+--------+\n         |\n    +----+----+\n    |         |\n    v         v\n   Yes        No\n    |         |\n    v         |\n+--------+    |\n|Validate|    |\n| types  |    |\n+---+----+    |\n    |         |\n    v         v\n  Pass?    Insert\n    |      (no validation)\n  +-+-+\n  |   |\n  v   v\n Yes  No\n  |   |\n  v   v\nInsert Error\n\n\nSchema Registration Request\n           |\n           v\n  +-----------------+\n  | Data exists for |\n  | this relation?  |\n  +--------+--------+\n           |\n      +----+----+\n      |         |\n      v         v\n     Yes        No\n      |         |\n      v         |\n+-----------+   |\n| Validate  |   |\n| all rows  |   |\n+-----+-----+   |\n      |         |\n      v         v\n   All pass?  Register\n      |       schema\n    +-+-+\n    |   |\n    v   v\n   Yes  No\n    |   |\n    v   v\nRegister Reject\nschema   schema\n```\n\n## Integration\n\n### Statement Executor\n\n```rust\nimpl StatementExecutor {\n    pub fn execute_insert(\n        \u0026mut self,\n        relation: \u0026str,\n        tuples: Vec\u003cVec\u003cValue\u003e\u003e,\n    ) -\u003e Result\u003cInsertResult, ExecuteError\u003e {\n        // Validate all tuples first\n        self.validation.validate_batch(relation, \u0026tuples)?;\n\n        // Insert into DD\n        self.dataflow.insert(relation, \u0026tuples)?;\n\n        Ok(InsertResult { count: tuples.len() })\n    }\n\n    pub fn execute_schema(\n        \u0026mut self,\n        schema: RelationSchema,\n        persistent: bool,\n    ) -\u003e Result\u003c(), ExecuteError\u003e {\n        // Get existing data for this relation\n        let existing = self.dataflow.scan(\u0026schema.name)?;\n        let existing_ref: Option\u003c\u0026[Vec\u003cValue\u003e]\u003e = if existing.is_empty() {\n            None\n        } else {\n            Some(\u0026existing)\n        };\n\n        // Register schema (validates existing data)\n        self.validation.register_schema(schema, persistent, existing_ref)?;\n\n        Ok(())\n    }\n}\n```\n\n### Database Load\n\n```rust\nimpl Database {\n    pub fn open(path: \u0026Path) -\u003e Result\u003cSelf, DbError\u003e {\n        // 1. Load persistent schemas\n        let schemas = SchemaRegistry::load_from_disk(path)?;\n\n        // 2. Initialize validation layer\n        let validation = ValidationLayer::new(schemas);\n\n        // 3. Load data into DD\n        let dataflow = Dataflow::load_from_disk(path)?;\n\n        // Note: No constraint index rebuilding needed!\n\n        Ok(Database { dataflow, validation })\n    }\n}\n```\n\n### Storage Format\n\n```\ndata/\n  mydb/\n    rules/                  # Persistent rule definitions\n      catalog.json          # Rule catalog\n  persist/\n    shards/                 # Shard metadata\n    batches/                # Compacted batch files (Parquet)\n    wal/                    # Write-ahead log\n  metadata/                 # System metadata\n```\n\n```json\n{\n  \"version\": 1,\n  \"schemas\": {\n    \"user\": {\n      \"columns\": [\n        {\"name\": \"id\", \"type\": \"int\"},\n        {\"name\": \"email\", \"type\": \"string\"}\n      ]\n    },\n    \"embedding\": {\n      \"columns\": [\n        {\"name\": \"id\", \"type\": \"int\"},\n        {\"name\": \"vec\", \"type\": {\"vector\": 128}}\n      ]\n    }\n  }\n}\n```\n\n## Syntax\n\nThe schema syntax:\n\n```ebnf\nschema      ::= prefix? predicate \"(\" column_list \")\" \".\" ;\nprefix      ::= \"+\" ;\ncolumn_list ::= column (\",\" column)* ;\ncolumn      ::= name \":\" type ;\ntype        ::= \"int\" | \"float\" | \"string\" | \"bool\" | vector_type ;\nvector_type ::= \"vector\" \"[\" integer \"]\" ;\n```\n\nExamples:\n```datalog\n+user(id: int, name: string, active: bool)\n+embedding(id: int, vec: vector[128])\nproduct(sku: string, price: float)  // Session schema\n```\n\n## Error Messages\n\nClear, actionable error messages:\n\n```\nError: Type mismatch in relation 'user'\n  Column 'id' (index 0): expected int, got string\n  Value: \"not-a-number\"\n\nError: Arity mismatch in relation 'user'\n  Expected 2 columns, got 3\n  Schema: user(id: int, name: string)\n\nError: Cannot register schema for 'user'\n  Existing data violates type requirements\n  Row 5: column 'id' expected int, got string \"abc\"\n  Fix the data before registering the schema\n```\n\n## Migration Path\n\n### Type Validation\n- Implement `SchemaRegistry` and `TypeChecker`\n- Validate types on insert\n- Schema persistence\n\n### Derived Data Types\n- Infer output types for rules\n- Warn when rule output doesn't match view schema\n\n### Type Inference (Optional)\n- Infer schemas from data patterns\n- Suggest schemas based on inserted data\n\n## Summary\n\n| Feature | Status |\n|---------|--------|\n| Type validation (int, float, string, bool, vector) | Included |\n| Arity checking | Included |\n| Session vs persistent schemas | Included |\n| Schema-first workflow | Included |\n| Data-first workflow | Included |\n| Reject schema if data violates types | Included |\n\nThis keeps the system simple and DD-friendly while providing useful type safety."])</script><script>self.__next_f.push([1,"5:[\"$\",\"$Le\",null,{\"page\":{\"title\":\"Pre-Dataflow Validation Layer\",\"content\":\"$f\",\"toc\":[{\"level\":2,\"text\":\"Problem Statement\",\"id\":\"problem-statement\"},{\"level\":2,\"text\":\"Architecture Overview\",\"id\":\"architecture-overview\"},{\"level\":2,\"text\":\"What We Validate\",\"id\":\"what-we-validate\"},{\"level\":2,\"text\":\"Components\",\"id\":\"components\"},{\"level\":3,\"text\":\"1. Schema Registry\",\"id\":\"1-schema-registry\"},{\"level\":3,\"text\":\"2. Type Checker\",\"id\":\"2-type-checker\"},{\"level\":3,\"text\":\"3. Validation Layer\",\"id\":\"3-validation-layer\"},{\"level\":2,\"text\":\"Schema Persistence\",\"id\":\"schema-persistence\"},{\"level\":3,\"text\":\"Lifecycle Comparison\",\"id\":\"lifecycle-comparison\"},{\"level\":2,\"text\":\"Ingestion Modes\",\"id\":\"ingestion-modes\"},{\"level\":3,\"text\":\"Schema-First Ingestion\",\"id\":\"schema-first-ingestion\"},{\"level\":3,\"text\":\"Data-First Ingestion\",\"id\":\"data-first-ingestion\"},{\"level\":3,\"text\":\"Schema Rejection on Type Mismatch\",\"id\":\"schema-rejection-on-type-mismatch\"},{\"level\":3,\"text\":\"Mixed Workflow\",\"id\":\"mixed-workflow\"},{\"level\":3,\"text\":\"Session Schema for Testing\",\"id\":\"session-schema-for-testing\"},{\"level\":3,\"text\":\"Implementation Flow\",\"id\":\"implementation-flow\"},{\"level\":2,\"text\":\"Integration\",\"id\":\"integration\"},{\"level\":3,\"text\":\"Statement Executor\",\"id\":\"statement-executor\"},{\"level\":3,\"text\":\"Database Load\",\"id\":\"database-load\"},{\"level\":3,\"text\":\"Storage Format\",\"id\":\"storage-format\"},{\"level\":2,\"text\":\"Syntax\",\"id\":\"syntax\"},{\"level\":2,\"text\":\"Error Messages\",\"id\":\"error-messages\"},{\"level\":2,\"text\":\"Migration Path\",\"id\":\"migration-path\"},{\"level\":3,\"text\":\"Type Validation\",\"id\":\"type-validation\"},{\"level\":3,\"text\":\"Derived Data Types\",\"id\":\"derived-data-types\"},{\"level\":3,\"text\":\"Type Inference (Optional)\",\"id\":\"type-inference-optional\"},{\"level\":2,\"text\":\"Summary\",\"id\":\"summary\"}]},\"slugKey\":\"internals/validation\"}]\n"])</script><script>self.__next_f.push([1,"a:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"}],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"}]]\n"])</script><script>self.__next_f.push([1,"10:I[6869,[],\"IconMark\"]\nc:[[\"$\",\"title\",\"0\",{\"children\":\"InputLayer - A symbolic reasoning engine for AI agents\"}],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system.\"}],[\"$\",\"link\",\"2\",{\"rel\":\"icon\",\"href\":\"/icon.svg\"}],[\"$\",\"$L10\",\"3\",{}]]\n8:null\n"])</script></body></html>

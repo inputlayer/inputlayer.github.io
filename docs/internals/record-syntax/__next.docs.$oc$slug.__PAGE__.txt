@@ -1,0 +1,154 @@
+1:"$Sreact.fragment"
+2:I[8428,["758","static/chunks/758-3cb69ce377cde046.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-e809071f8789437b.js","689","static/chunks/689-4fcf9680fdc90283.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-004ec69e3c86920a.js"],"DocsPageClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:Tbc2,# Record Syntax and Desugaring
+
+This document specifies the record-related syntactic sugar in InputLayer and their desugaring rules.
+
+## Overview
+
+InputLayer supports record types as a way to document the structure of data. Record types serve as documentation; the desugaring features described here are planned for future implementation.
+
+## 1. Type Declarations
+
+### 1.1 Simple Type Aliases
+
+```datalog
+type Email: string
+type UserId: int
+type Score: int
+```
+
+These declare type aliases that can be used in schema declarations for documentation.
+
+### 1.2 Record Types
+
+```datalog
+type User: {
+    id:      int,
+    name:    string,
+    email:   string
+}
+```
+
+A **record type** `{ f1 : t1, ..., fn : tn }` documents the structure of a relation.
+
+## 2. Schema Declarations
+
+Schemas are declared using the `+` prefix with typed columns:
+
+```datalog
++user(id: int, name: string, email: string)
+```
+
+This declares a 3-ary relation with typed columns. The schema enables:
+- Column name documentation
+- Type validation (when implemented)
+- Constraint declarations
+
+### 2.1 Schema with Type References
+
+You can reference declared types in schemas:
+
+```datalog
+type Email: string
+type UserId: int
+
++user(id: UserId, name: string, email: Email)
+```
+
+## 3. Working with Data
+
+### 3.1 Inserting Facts
+
+```datalog
+// Single fact
++user(1, "Alice", "alice@example.com")
+
+// Bulk insert
++user[(1, "Alice", "alice@example.com"), (2, "Bob", "bob@example.com")]
+```
+
+### 3.2 Persistent Rules
+
+```datalog
++admin_email(Email) <-
+    user(_, _, Email),
+    admin(Email)
+```
+
+### 3.3 Queries
+
+```datalog
+?user(Id, Name, Email)
+?user(1, Name, _)
+```
+
+## 4. Planned Features (Not Yet Implemented)
+
+The following features are documented for future implementation:
+
+### 4.1 Record-Based Schema Sugar
+
+**Planned syntax** (not yet implemented):
+
+```datalog
+type User: { id: int, name: string, email: string }
+
+// Would desugar to: +user(id: int, name: string, email: string).
++user: User
+```
+
+### 4.2 Named-Field Atoms
+
+**Planned syntax** (not yet implemented):
+
+```datalog
++user(id = 1, name = "Alice", email = "alice@example.com")
+```
+
+Would desugar to positional form based on schema order.
+
+### 4.3 Record Literal Atoms
+
+**Planned syntax** (not yet implemented):
+
+```datalog
++user({ id = 1, name = "Alice", email = "alice@example.com" })
+```
+
+### 4.4 Record Destructuring Patterns
+
+**Planned syntax** (not yet implemented):
+
+```datalog
+admin_email(e) <-
+    user({ id: _, name: _, email: e }),
+    admin(e)
+```
+
+## 5. Style Guidelines
+
+### 5.1 Naming Conventions
+
+- **Types**: Capitalized (`Email`, `User`, `Purchase`)
+- **Variables**: Lowercase or capitalized (`e`, `Email`, `user_id`)
+- **Relations**: Lowercase (`user`, `purchase`, `admin_email`)
+
+### 5.2 Current Best Practices
+
+Use explicit positional schemas and facts:
+
+```datalog
+// Declare schema
++user(id: int, name: string, email: string)
+
+// Insert facts positionally
++user[(1, "Alice", "alice@example.com")]
+
+// Query with positional variables
+?user(Id, Name, Email)
+```0:{"buildId":"05bjYGyiAumoEMBrfWHih","rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Record Syntax and Desugaring","content":"$3","toc":[{"level":2,"text":"Overview","id":"overview"},{"level":2,"text":"1. Type Declarations","id":"1-type-declarations"},{"level":3,"text":"1.1 Simple Type Aliases","id":"11-simple-type-aliases"},{"level":3,"text":"1.2 Record Types","id":"12-record-types"},{"level":2,"text":"2. Schema Declarations","id":"2-schema-declarations"},{"level":3,"text":"2.1 Schema with Type References","id":"21-schema-with-type-references"},{"level":2,"text":"3. Working with Data","id":"3-working-with-data"},{"level":3,"text":"3.1 Inserting Facts","id":"31-inserting-facts"},{"level":3,"text":"3.2 Persistent Rules","id":"32-persistent-rules"},{"level":3,"text":"3.3 Queries","id":"33-queries"},{"level":2,"text":"4. Planned Features (Not Yet Implemented)","id":"4-planned-features-not-yet-implemented"},{"level":3,"text":"4.1 Record-Based Schema Sugar","id":"41-record-based-schema-sugar"},{"level":3,"text":"4.2 Named-Field Atoms","id":"42-named-field-atoms"},{"level":3,"text":"4.3 Record Literal Atoms","id":"43-record-literal-atoms"},{"level":3,"text":"4.4 Record Destructuring Patterns","id":"44-record-destructuring-patterns"},{"level":2,"text":"5. Style Guidelines","id":"5-style-guidelines"},{"level":3,"text":"5.1 Naming Conventions","id":"51-naming-conventions"},{"level":3,"text":"5.2 Current Best Practices","id":"52-current-best-practices"}]},"slugKey":"internals/record-syntax"}],null,"$L4"]}],"loading":null,"isPartial":false}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null
