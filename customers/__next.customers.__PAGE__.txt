@@ -1,0 +1,107 @@
+1:"$Sreact.fragment"
+2:I[3384,["661","static/chunks/661-bf4fce185509def8.js","830","static/chunks/830-7bb96fb112090fec.js","812","static/chunks/app/customers/page-e693c29f99bf625b.js"],"CustomersIndexClient"]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+3:T11f0,
+# Semantic Image Knowledge Graph
+
+A European photo company manages one of the largest stock photo libraries on the continent - millions of images. They wanted customers to discover images through the *relationships* between what's in them, not just visual similarity or keyword tags.
+
+They added InputLayer to combine vector similarity (finding visually similar images) with structural queries (understanding what's *in* the images and how those things relate to each other) in a single search.
+
+## The challenge
+
+Stock photo libraries have traditionally relied on manual tagging. This approach has two well-known limitations.
+
+```steps
+Tagging is expensive and inconsistent :: Different editors tag the same image differently. Volume makes thorough tagging impossible.
+Keyword search misses conceptual relationships :: A customer searching "business meeting diversity" won't find images unless that exact phrase was tagged. The concept exists in the image, but not in the metadata.
+```
+
+The company had already implemented vector search using image embeddings, which helped with visual similarity. You could find images that *looked like* a reference image. But they wanted to go further - they wanted customers to search by the *concepts and relationships* within images.
+
+## The solution
+
+InputLayer was added alongside their existing image processing pipeline. The pipeline extracts structured information from images using computer vision models - detected objects, scenes, colors, compositions, people attributes. These structured outputs are stored as facts in InputLayer's knowledge graph.
+
+So for each image, InputLayer knows things like: "this image contains a person and a laptop and a coffee cup," "the scene is an office," "there's a woman in her 30s who appears to be typing." Each of these is a structured fact, not a free-text tag. Because they're structured, the engine can query across them - not just "find images with a laptop" but "find images where multiple people are interacting with a shared object in an office setting."
+
+## Combining vector search with structural queries
+
+The real power comes from combining these two approaches in a single query.
+
+```tree
+Query: "images with warm lighting showing collaborative work" [primary]
+  Vector similarity
+    Finds images with similar visual style (warm lighting, professional) [success]
+  Structural query
+    Finds images with multiple people + shared object (whiteboard, laptop) [success]
+  Combined result
+    Images matching both visual style AND content relationships [primary]
+```
+
+A customer uploads a reference image and asks: "find images with a similar style that also show people in an office setting." The vector similarity captures the visual style and composition, while the structural constraints ensure the content matches. Both conditions are evaluated in a single pass.
+
+More sophisticated queries can traverse relationships between concepts. A customer searching for "collaborative work" might want images showing multiple people interacting with a shared object. This kind of query is impossible with pure vector search because it requires reasoning about the *relationships* between detected entities - not just whether certain objects are present, but how they relate to each other.
+
+## Results
+
+```steps
+Visual style + conceptual content :: Customers can search by both simultaneously [success]
+Relationship-based discovery :: Find images based on how objects and people relate in the scene [primary]
+Incremental updates :: New images immediately queryable, removed images retract cleanly [success]
+Millions of images indexed :: Combined vector and structural queries at scale [primary]
+```
+
+The incremental computation engine keeps the knowledge graph current as new images are processed. When the vision pipeline extracts structured data from a new image, the facts are added and immediately available for queries. When an image is removed, all its associated facts retract cleanly - no orphaned metadata.
+
+## Key technical insight
+
+```note
+type: tip
+The key design decision was treating image understanding as a knowledge graph problem. Vector embeddings capture visual similarity well, but they compress away the structured information about what's in the image - who's doing what, how objects relate to each other. By extracting that structure and storing it as facts, the company made it queryable through rules. A customer searching for "collaborative work" gets images where multiple people are interacting with a shared object - a relationship that pure vector search can't express.
+```4:Tc3e,
+# Warehouse Optimization
+
+A European appliance manufacturer needed sub-50ms routing decisions for their warehouse picking robots. Their existing databases handled inventory tracking and order management well. The problem was the gap between them: when a robot needed the optimal route, application code had to pull from inventory, cross-reference with order priorities, factor in the warehouse layout, and compute a path. That added hundreds of milliseconds per decision.
+
+They added InputLayer as the reasoning layer. Warehouse layout, inventory positions, and order priorities are ingested as facts. The routing logic is expressed as rules. Result: sub-50ms query latency, down from hundreds of milliseconds.
+
+## The challenge
+
+The company operates large-scale distribution centers across Europe. Inventory tracking, order management, and warehouse layouts each lived in separate systems. They were good at what they did. The problem was stitching them together for real-time decisions.
+
+```flow
+Picking robot needs route -> Inventory DB [primary] -> Order priority DB -> Layout DB -> Application code stitches it all together [highlight]
+```
+
+For a warehouse running thousands of picks per hour, hundreds of milliseconds per routing decision adds up fast. A robot waiting 400ms per decision was spending significant time idle.
+
+## The solution
+
+InputLayer was added alongside the existing infrastructure. Warehouse layout, inventory positions, and order priorities are ingested as facts. The routing logic is expressed as rules that the engine evaluates in real time.
+
+The warehouse layout is encoded as facts: "Aisle 3 connects to Dock B," "Bin 3-14 contains Item X," "Order 2847 needs Item X from high-priority queue." The routing rules compute optimal paths through this graph, taking all factors into account simultaneously.
+
+The path computation is recursive - the engine explores routes through the warehouse graph in one pass rather than requiring separate calls to different systems.
+
+## Results
+
+```steps
+Routing decisions :: Under 50ms (previously hundreds of ms) [success]
+Inventory change propagation :: Only affected routes recompute [primary]
+Stale route elimination :: Automatic - no robots sent to empty bins [success]
+```
+
+The impact was felt almost immediately. Query latency dropped to under 50ms for routing decisions that previously required multiple round-trips between systems.
+
+The incremental computation turned out to be especially valuable. When someone picks Item X from Bin 3-14, the engine only recalculates routes that need Item X - routes for other items stay the same. When an item is fully picked, all dependent routing decisions update automatically. No need to rebuild the entire routing graph every time inventory changes.
+
+## Key technical insight
+
+```note
+type: tip
+The recursive path computation through the warehouse graph is what makes this practical. InputLayer's incremental computation means adding or removing inventory doesn't require recomputing all paths - only the affected routes update. This is what keeps latency under 50ms even as the warehouse state changes continuously.
+```0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"stories":[{"slug":"semantic-image-knowledge-graph","title":"Semantic Image Knowledge Graph","industry":"Media","keyMetric":"Millions of images indexed","content":"$3","toc":[{"level":2,"text":"The challenge","id":"the-challenge"},{"level":2,"text":"The solution","id":"the-solution"},{"level":2,"text":"Combining vector search with structural queries","id":"combining-vector-search-with-structural-queries"},{"level":2,"text":"Results","id":"results"},{"level":2,"text":"Key technical insight","id":"key-technical-insight"}]},{"slug":"warehouse-optimization","title":"Warehouse Optimization","industry":"Manufacturing","keyMetric":"<50ms reasoning latency","content":"$4","toc":[{"level":2,"text":"The challenge","id":"the-challenge"},{"level":2,"text":"The solution","id":"the-solution"},{"level":2,"text":"Results","id":"results"},{"level":2,"text":"Key technical insight","id":"key-technical-insight"}]}]}],null,"$L5"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GBS63Unu3BhcecNEmLSHN"}
+5:["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]
+8:null

@@ -1,0 +1,89 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+0:{"P":null,"c":["","compare","vs-vector-databases",""],"q":"","i":false,"f":[[["",{"children":["compare",{"children":[["slug","vs-vector-databases","d",null],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:[]
+9:"$Wf"
+10:I[8243,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","874","static/chunks/app/compare/%5Bslug%5D/page-353cd09563802f5b.js"],"CompareClient"]
+11:T115b,
+# InputLayer + Vector Databases
+
+Your vector database finds content that looks like your query. InputLayer follows chains of facts to derive conclusions. Most real applications need both.
+
+A shopper asks "ink for my printer." Every cartridge in the catalog is semantically similar to "printer ink" - a Canon PG-245 and an Epson 202 are nearly identical in embedding space. But only one fits the printer the shopper bought eight months ago. That connection - purchase history to compatibility matrix to live inventory - is a chain of structured facts, not a similarity match.
+
+InputLayer traces that chain in a single query and keeps the answer current as inventory changes.
+
+## What each system does
+
+| Capability | Vector DBs | InputLayer | Together |
+|---|---|---|---|
+| Find similar content | Native, optimized at scale | Native | Use either or both |
+| Follow chains of relationships | Outside scope | Native | InputLayer handles this |
+| Evaluate rules recursively | Outside scope | Native | InputLayer handles this |
+| Update conclusions when facts change | Re-index | Native (6.83ms per change) | InputLayer handles this |
+| Retract stale conclusions automatically | Outside scope | Native | InputLayer handles this |
+| Enforce access policies in the query | Metadata filters only | Recursive logic | InputLayer handles hierarchies |
+
+## Three things InputLayer handles that vector databases weren't built for
+
+**Following multi-hop chains.** When the answer requires tracing relationships across separate data sources - supply chain dependencies, corporate ownership structures, medication interactions - InputLayer follows the chain automatically. You define the relationships as rules. The engine walks them to any depth.
+
+```chain
+Port disruption reported
+-- which suppliers ship through this port?
+Supplier A, Supplier C [primary]
+-- which components do they provide?
+Component X, Component Y
+-- which products use those components?
+Product Alpha, Product Beta [highlight]
+=> InputLayer traced the chain from disruption to affected products
+```
+
+**Evaluating access policies at query time.** When permissions involve hierarchies - managers see their reports' documents, and their reports' reports, and so on - InputLayer resolves the full chain as part of the search. Results come back already filtered for what the user is allowed to see.
+
+```chain
+VP of Engineering searches for "deployment best practices"
+-- InputLayer resolves authorization
+Walk org hierarchy: 36 people in reporting chain [primary]
+-- filter documents
+847 documents from authorized authors
+-- rank by similarity
+Top 10 results, all authorized [success]
+=> One query, one pass. Authorization and search together.
+```
+
+**Keeping conclusions current.** When someone changes roles, their permissions update in the next query. When a supplier is reinstated, blocked orders unblock automatically. When a product goes out of stock, recommendations retract in milliseconds. InputLayer tracks which conclusions depend on which facts and updates only what's affected.
+
+## How teams use them together
+
+The most common pattern: your vector database handles straightforward similarity search, and InputLayer handles queries that need reasoning. "Find similar documents" goes to the vector DB. "Find documents similar to X that this user is authorized to see through their reporting chain" goes to InputLayer, which combines the authorization logic with vector search in a single pass.
+
+Some teams use both in parallel. Others move their reasoning-heavy queries entirely to InputLayer and keep the vector DB for high-throughput similarity at scale.
+
+## Performance
+
+InputLayer's incremental computation means that when facts change, only affected conclusions recompute. On a 2,000-node graph with 400,000 derived relationships, a single fact change takes 6.83ms - not the 11.3 seconds a full recompute would take. That's 1,652x faster.
+
+For pure vector similarity at massive scale (billions of vectors), dedicated vector databases are purpose-built and optimized for that specific workload.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. The [vector search documentation](/docs/guides/vectors/) covers how InputLayer's native vector capabilities work, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing stack straightforward.5:["$","$L10",null,{"page":{"slug":"vs-vector-databases","title":"InputLayer + Vector Databases","competitors":["Vector Databases"],"content":"$11","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"Three things InputLayer handles that vector databases weren't built for","id":"three-things-inputlayer-handles-that-vector-databases-werent-built-for"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-vector-databases"}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+12:I[6869,[],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"InputLayer + Vector Databases - InputLayer"}],["$","meta","1",{"name":"description","content":"See how InputLayer compares to Vector Databases."}],["$","meta","2",{"property":"og:title","content":"InputLayer + Vector Databases - InputLayer"}],["$","meta","3",{"property":"og:description","content":"See how InputLayer compares to Vector Databases."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"InputLayer + Vector Databases - InputLayer"}],["$","meta","7",{"name":"twitter:description","content":"See how InputLayer compares to Vector Databases."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L12","11",{}]]

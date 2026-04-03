@@ -1,0 +1,29 @@
+1:"$Sreact.fragment"
+2:I[8428,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-7fd593d8b6507a0f.js","689","static/chunks/689-ef7b1ba408677aaa.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-4ed80423a3fc2157.js"],"DocsPageClient"]
+4:I[484,[],"OutletBoundary"]
+5:"$Sreact.suspense"
+3:T4bf,
+# InputLayer
+
+**Define facts and rules. Get derived conclusions that stay correct as your data changes - with a full audit trail for every result.**
+
+InputLayer follows chains of facts to reach answers that search alone can't. You define relationships - compatibility, ownership, access policies - and the engine derives what follows. When a fact changes, only the affected conclusions update. When you need to know why, every result traces back to the rules and facts that produced it.
+
+## Get Started
+
+- [Quick Start](/docs/guides/quickstart) - Get running in 5 minutes
+- [Installation](/docs/guides/installation) - Install InputLayer on your platform
+- [Your First Program](/docs/guides/first-program) - Write your first InputLayer program
+
+## Core Concepts
+
+- [Data Modeling](/docs/guides/core-concepts) - Relations, facts, and rules
+- [Recursion](/docs/guides/recursion) - Transitive closure and recursive queries
+- [Vector Search](/docs/guides/vectors) - Similarity search with HNSW indexes
+
+## Reference
+
+- [Commands](/docs/reference/commands) - Complete command reference
+- [Functions](/docs/reference/functions) - All built-in functions
+- [Syntax](/docs/reference/syntax) - Query language syntax reference0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"InputLayer Documentation","content":"$3","toc":[{"level":2,"text":"Get Started","id":"get-started"},{"level":2,"text":"Core Concepts","id":"core-concepts"},{"level":2,"text":"Reference","id":"reference"}]},"slugKey":"index"}],null,["$","$L4",null,{"children":["$","$5",null,{"name":"Next.MetadataOutlet","children":"$@6"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GBS63Unu3BhcecNEmLSHN"}
+6:null

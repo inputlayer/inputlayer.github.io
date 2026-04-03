@@ -1,0 +1,692 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+5:I[3255,["661","static/chunks/661-bf4fce185509def8.js","830","static/chunks/830-7bb96fb112090fec.js","74","static/chunks/app/use-cases/page-067cceecff8f333a.js"],"UseCasesIndexClient"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+6:T1286,
+# Sanctions screening through ownership chains
+
+In 2014, a major European bank paid $8.9 billion for processing transactions with sanctioned entities. The transactions themselves looked clean. The exposure was buried multiple levels deep in ownership chains that nobody traced in time.
+
+This is the core challenge of sanctions compliance: the entity you're transacting with might be perfectly legitimate, but if you follow the ownership chain upward - through holding companies, subsidiaries, and partial stakes - you might find a sanctioned person or organization at the top. Miss that chain, and you're liable. Finding it requires recursive reasoning through corporate structures that can be dozens of layers deep, with multiple paths to the same entity.
+
+There's a subtlety that makes this genuinely hard. When an entity gets cleared from a sanctions list, every flag that was derived through that entity needs to retract. But only the flags that depended exclusively on that entity - if there's a second, independent ownership path that still connects to a sanctioned entity, the flag needs to stay. This is called the diamond problem, and getting it wrong means either phantom flags that waste your compliance team's time, or missed exposures that create regulatory risk.
+
+---
+
+## The setup
+
+Alpha owns two subsidiaries: Beta and Delta. Both Beta and Delta own stakes in Gamma. Gamma is on a sanctions list.
+
+```graph
+Alpha --owns-> Beta
+Alpha --owns-> Delta
+Beta --owns-> Gamma [highlight]
+Delta --owns-> Gamma [highlight]
+```
+
+Two independent paths from Alpha to the sanctioned entity. Let's trace what happens.
+
+---
+
+## Loading facts and defining the rule
+
+```datalog
+// The ownership structure
++owns[("alpha", "beta"), ("alpha", "delta"), ("beta", "gamma"), ("delta", "gamma")]
+
+// Gamma is sanctioned
++sanctions_list[("gamma")]
+```
+
+The rule says: an entity is exposed if it owns a sanctioned entity, or if it owns something that is itself exposed. That second clause is recursive - it follows the chain to any depth, whether it's 2 hops or 20.
+
+```datalog
++exposed(E, S) <- owns(E, S), sanctions_list(S)
++exposed(E, S) <- owns(E, Mid), exposed(Mid, S)
+```
+
+---
+
+## Query: is Alpha exposed?
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+┌─────────┬─────────┐
+│ alpha   │ Who     │
+├─────────┼─────────┤
+│ "alpha" │ "gamma" │
+└─────────┴─────────┘
+1 rows
+```
+
+Yes. Alpha is exposed to Gamma through two independent ownership paths.
+
+---
+
+## The diamond problem in action
+
+Beta divests its stake in Gamma.
+
+```datalog
+-owns("beta", "gamma")
+```
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+┌─────────┬─────────┐
+│ alpha   │ Who     │
+├─────────┼─────────┤
+│ "alpha" │ "gamma" │
+└─────────┴─────────┘
+1 rows
+```
+
+Alpha is still exposed. The path through Delta still supports the flag. If this retracted prematurely, a compliance team would look at Alpha, see no flag, and approve a transaction that should have been held. InputLayer tracks both paths independently - the conclusion only retracts when every supporting path is gone.
+
+Now Delta also divests.
+
+```datalog
+-owns("delta", "gamma")
+```
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+No results.
+```
+
+Both paths are gone. The exposure retracts cleanly. No phantom flag lingering in a queue for someone to investigate. No manual cleanup.
+
+---
+
+## Showing the work
+
+When a flag is active, `.why` returns the exact chain of ownership and rules that produced it:
+
+```datalog
+.why ?exposed("alpha", Who)
+```
+
+The proof tree shows: Alpha is exposed to Gamma because Alpha owns Delta, Delta owns Gamma, and Gamma is on the sanctions list. Each link in the chain traces to a specific fact and a specific rule. This is what goes in the case file. This is what the regulator sees.
+
+When a flag is missing and shouldn't be, `.why_not` identifies exactly which condition failed:
+
+```datalog
+.why_not exposed("delta", "gamma")
+```
+
+```
+exposed("delta", "gamma") was NOT derived:
+
+  Rule: exposed (clause 0)
+    exposed(E, S) <- owns(E, S), sanctions_list(S)
+    Blocker: owns("delta", "gamma") - No matching tuples
+
+  Rule: exposed (clause 1)
+    exposed(E, S) <- owns(E, Mid), exposed(Mid, S)
+    Blocker: owns("delta", _) - No matching tuples
+```
+
+Delta is not exposed because it no longer owns anything. The blocker is specific and auditable.
+
+---
+
+## Try it
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.7:T1650,
+# Product recommendations that understand compatibility
+
+A shopper types "I need ink for my printer." There are hundreds of ink cartridges in the catalog. In embedding space, a Canon PG-245 and an Epson 202 are nearly identical - they're both black ink cartridges with similar descriptions, similar prices, similar use cases. A vector search returns both with almost the same score.
+
+But the shopper owns a Canon printer. The Epson doesn't fit. That's not a similarity problem - no amount of embedding refinement will fix it. The connection between a specific printer and its compatible cartridges is a structured fact in a compatibility table, not a distance in vector space.
+
+This matters because recommending an incompatible product isn't just irrelevant - it's a return, a support ticket, and a customer who trusts your suggestions less next time. And the fix isn't post-filtering (checking compatibility after retrieval) because you'd need to stitch together purchase history, compatibility data, inventory status, and similarity ranking across multiple systems for every single query.
+
+---
+
+## The setup
+
+Three cartridges, one printer, one shopper. Two cartridges are compatible with Canon printers. One is not. All three have very similar embeddings.
+
+```datalog
+// Products with embedding vectors
++product[
+    ("pg245", "Canon PG-245 Black Ink", 14.99, [0.82, 0.15, 0.91, 0.44]),
+    ("cl246", "Canon CL-246 Color Ink", 16.99, [0.79, 0.18, 0.88, 0.41]),
+    ("ep202", "Epson 202 Black Ink", 12.99, [0.83, 0.14, 0.90, 0.43])
+]
+
+// Compatibility: which cartridges fit which printers
++compatible[("canon_mg3620", "pg245"), ("canon_mg3620", "cl246")]
+
+// Shopper 42 owns a Canon printer. All three are in stock.
++owns[("shopper_42", "canon_mg3620")]
++in_stock[("pg245"), ("cl246"), ("ep202")]
+```
+
+Look at the embeddings. PG-245 is `[0.82, 0.15, 0.91, 0.44]`. Epson 202 is `[0.83, 0.14, 0.90, 0.43]`. Almost identical. A vector search alone can't distinguish them.
+
+---
+
+## The rule
+
+A product is recommendable to a shopper if they own a compatible device and the product is in stock. One line.
+
+```datalog
++recommendable(S, P) <- owns(S, Dev), compatible(Dev, P), in_stock(P)
+```
+
+This connects three separate facts - purchase history, compatibility matrix, and inventory - into one derivation chain. The engine evaluates it every time any of those facts change.
+
+---
+
+## Rules filter first
+
+```datalog
+?recommendable("shopper_42", Pid)
+```
+
+```
+┌──────────────┬─────────┐
+│ shopper_42   │ Pid     │
+├──────────────┼─────────┤
+│ "shopper_42" │ "cl246" │
+│ "shopper_42" │ "pg245" │
+└──────────────┴─────────┘
+2 rows
+```
+
+Two results. The Epson 202 is excluded - not because of its embedding, but because it's not compatible with a Canon printer. The rule did the filtering before similarity ever ran.
+
+---
+
+## Then vectors rank
+
+Now add cosine distance to rank the compatible results by relevance. Lower distance means more similar.
+
+```datalog
+?recommendable("shopper_42", Pid),
+ product(Pid, Desc, Price, Emb),
+ Dist = cosine(Emb, [0.81, 0.16, 0.89, 0.42]),
+ Dist < 0.05
+```
+
+```
+┌──────────────┬─────────┬──────────────────────────┬───────┬────────────────────────┐
+│ shopper_42   │ Pid     │ Desc                     │ Price │ Dist                   │
+├──────────────┼─────────┼──────────────────────────┼───────┼────────────────────────┤
+│ "shopper_42" │ "pg245" │ "Canon PG-245 Black Ink" │ 14.99 │ 0.0001                 │
+│ "shopper_42" │ "cl246" │ "Canon CL-246 Color Ink" │ 16.99 │ 0.0002                 │
+└──────────────┴─────────┴──────────────────────────┴───────┴────────────────────────┘
+2 rows
+```
+
+One query. Rules filtered to what's compatible, vectors ranked by relevance. The Epson - which would have scored nearly identically on cosine distance - was never considered.
+
+---
+
+## When stock changes
+
+The PG-245 sells out.
+
+```datalog
+-in_stock("pg245")
+```
+
+```datalog
+?recommendable("shopper_42", Pid)
+```
+
+```
+┌──────────────┬─────────┐
+│ shopper_42   │ Pid     │
+├──────────────┼─────────┤
+│ "shopper_42" │ "cl246" │
+└──────────────┴─────────┘
+1 rows
+```
+
+Gone immediately. The shopper never sees a product they can't buy. When it's restocked, the recommendation comes back. No reindex, no cache invalidation - the rule re-evaluates against the current facts.
+
+---
+
+## The pattern
+
+This applies anywhere the connection between "what I have" and "what fits it" is a structured fact: replacement parts for appliances, cables for electronics, lenses for cameras, blades for power tools. In every case, similarity search finds things that look right but might not fit. The compatibility rule is what makes the recommendation trustworthy.
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.8:T133a,
+# Production planning through dependency chains
+
+A planning agent says Line 4 can run the night shift. It checked the equipment status, the parts inventory, the maintenance schedule. Everything looked good at 6:00am. But at 6:03am, an operator's safety certification expired because her training lapsed. Nobody told the planning agent. The shift runs. An auditor finds the uncertified operator three weeks later.
+
+The problem isn't the data - it was there. The problem is that the answer to "can this line run?" depends on a chain of facts that goes several levels deep: a production line depends on a qualified operator, the operator's qualification depends on a current certification, and the certification depends on completed training. When any link in that chain breaks, every conclusion built on it should update immediately. Not at the next refresh. Not when someone checks manually. Immediately.
+
+---
+
+## The setup
+
+Line 4 needs Operator Kim. Line 5 needs Operator Lee. Both are qualified through a shared safety certification. That certification is backed by training Kim completed in January.
+
+```datalog
+// Which lines need which operators
++requires[("line_4", "operator_kim"), ("line_5", "operator_lee")]
+
+// Which operators hold which certifications
++qualified_by[("operator_kim", "cert_safety"), ("operator_lee", "cert_safety")]
+
+// Which training backs the certification
++valid_certification[("cert_safety", "training_jan_2026")]
+
+// The training record
++training_completed[("training_jan_2026")]
+```
+
+A four-level dependency chain: line depends on operator, operator depends on certification, certification depends on training.
+
+---
+
+## The rules
+
+Something is available if everything it depends on is also available. This is recursive - it follows the chain from training up to production line, at any depth.
+
+```datalog
++available(X) <- training_completed(X)
++available(X) <- valid_certification(X, Dep), available(Dep)
++available(X) <- qualified_by(X, Dep), available(Dep)
++available(X) <- requires(X, Dep), available(Dep)
+```
+
+Training completion is the base case. Everything else is available if its dependency is available. The engine chains these together automatically.
+
+---
+
+## Everything is available
+
+```datalog
+?available(X)
+```
+
+```
+┌─────────────────────┐
+│ X                   │
+├─────────────────────┤
+│ "cert_safety"       │
+│ "line_4"            │
+│ "line_5"            │
+│ "operator_kim"      │
+│ "operator_lee"      │
+│ "training_jan_2026" │
+└─────────────────────┘
+6 rows
+```
+
+Six things are available. The engine traced the full chain: training exists, so the certification is valid, so the operators are qualified, so the lines can run.
+
+---
+
+## Training expires
+
+One fact removed. Kim's January training expires.
+
+```datalog
+-training_completed("training_jan_2026")
+```
+
+```datalog
+?available(X)
+```
+
+```
+No results.
+```
+
+Everything collapsed. Training gone, certification invalid, both operators unqualified, both lines unavailable. Four levels of retraction from a single fact change, propagated in milliseconds. This is the moment - in architectures where each system maintains its own derived state independently, that expired training would sit in one database while the planning system in another database still shows Kim as qualified. The planning agent builds a shift plan on stale state. With InputLayer, the planning agent's next query sees current reality.
+
+---
+
+## Recovery
+
+Kim completes new safety training in March.
+
+```datalog
++training_completed[("training_mar_2026")]
++valid_certification[("cert_safety", "training_mar_2026")]
+```
+
+```datalog
+?available(X)
+```
+
+```
+┌─────────────────────┐
+│ X                   │
+├─────────────────────┤
+│ "cert_safety"       │
+│ "line_4"            │
+│ "line_5"            │
+│ "operator_kim"      │
+│ "operator_lee"      │
+│ "training_mar_2026" │
+└─────────────────────┘
+6 rows
+```
+
+Both lines are back. The new training fact propagated up through the entire dependency chain. No manual reconciliation between systems.
+
+---
+
+## The proof trail
+
+```datalog
+.why ?available("line_4")
+```
+
+The proof tree shows: line_4 is available because it requires operator_kim, and operator_kim is available because she's qualified by cert_safety, and cert_safety is available because training_mar_2026 is completed. When an auditor asks why Line 4 was allowed to run, the answer traces through four levels of dependencies to the specific training record.
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.9:T1608,
+# Disruption cascades across supply chains
+
+In March 2021, a container ship blocked the Suez Canal for six days. The disruption cascaded through global supply chains for months - but many companies didn't know which of their orders were affected until days after the blockage began. The information was there (which suppliers used which shipping routes, which orders depended on which suppliers), but connecting the dots across systems took time. By then, the window to reroute had passed.
+
+The challenge isn't knowing that a port is closed. It's knowing, within milliseconds, which of your suppliers ship through that port, which orders depend on those suppliers, which of those orders have SLA penalty clauses, and which customers are about to be impacted. That's a chain of reasoning across your entire supply graph, and it needs to update every time a fact changes - a port closes, a supplier reroutes, a new order is placed.
+
+---
+
+## The setup
+
+Three suppliers. Supplier A and B ship through Shanghai. Supplier C ships through Busan. They feed four orders. Two of those orders have SLA penalty clauses.
+
+```datalog
+// Suppliers and their shipping ports
++ships_via[("supplier_a", "shanghai"), ("supplier_b", "shanghai"), ("supplier_c", "busan")]
+
+// Which suppliers feed which orders
++supplies[
+    ("supplier_a", "order_101"), ("supplier_a", "order_102"),
+    ("supplier_b", "order_103"), ("supplier_c", "order_104")
+]
+
+// SLA penalty clauses
++has_sla[("order_101", "globex_corp", "penalty_5pct"), ("order_103", "initech", "penalty_10pct")]
+
+// Port status
++port_status[("shanghai", "open"), ("busan", "open")]
+```
+
+---
+
+## The rules
+
+Three rules, each one step in the cascade. A supplier is disrupted if its port is closed. An order is at risk if its supplier is disrupted. An SLA is triggered if an at-risk order has a penalty clause.
+
+```datalog
++supplier_disrupted(Sup) <- ships_via(Sup, Port), port_status(Port, "closed")
++order_at_risk(Order) <- supplies(Sup, Order), supplier_disrupted(Sup)
++sla_triggered(Order, Customer, Penalty) <- order_at_risk(Order), has_sla(Order, Customer, Penalty)
+```
+
+---
+
+## Everything is fine
+
+```datalog
+?supplier_disrupted(X)
+```
+
+```
+No results.
+```
+
+No disruptions. All ports are open. All orders are on track.
+
+---
+
+## Shanghai closes
+
+One fact changes.
+
+```datalog
+-port_status("shanghai", "open")
++port_status[("shanghai", "closed")]
+```
+
+The cascade propagates through the entire graph:
+
+```datalog
+?supplier_disrupted(X)
+```
+
+```
+┌──────────────┐
+│ X            │
+├──────────────┤
+│ "supplier_a" │
+│ "supplier_b" │
+└──────────────┘
+2 rows
+```
+
+```datalog
+?order_at_risk(X)
+```
+
+```
+┌─────────────┐
+│ X           │
+├─────────────┤
+│ "order_101" │
+│ "order_102" │
+│ "order_103" │
+└─────────────┘
+3 rows
+```
+
+```datalog
+?sla_triggered(Order, Customer, Penalty)
+```
+
+```
+┌─────────────┬───────────────┬─────────────────┐
+│ Order       │ Customer      │ Penalty         │
+├─────────────┼───────────────┼─────────────────┤
+│ "order_101" │ "globex_corp" │ "penalty_5pct"  │
+│ "order_103" │ "initech"     │ "penalty_10pct" │
+└─────────────┴───────────────┴─────────────────┘
+2 rows
+```
+
+One fact change. Two suppliers disrupted, three orders at risk, two SLA penalties triggered - identified across three levels of the supply graph. Supplier C and order 104 are unaffected (Busan is still open). This is the kind of fan-out that takes hours to trace manually and seconds in a dashboard query - but with InputLayer, the derived state is already current by the time you ask.
+
+---
+
+## Partial recovery
+
+Supplier A reroutes to Busan.
+
+```datalog
+-ships_via("supplier_a", "shanghai")
++ships_via[("supplier_a", "busan")]
+```
+
+```datalog
+?sla_triggered(Order, Customer, Penalty)
+```
+
+```
+┌─────────────┬───────────┬─────────────────┐
+│ Order       │ Customer  │ Penalty         │
+├─────────────┼───────────┼─────────────────┤
+│ "order_103" │ "initech" │ "penalty_10pct" │
+└─────────────┴───────────┴─────────────────┘
+1 rows
+```
+
+Supplier A recovered. Orders 101 and 102 are no longer at risk. Globex's SLA penalty retracted. But Supplier B is still disrupted (still shipping through Shanghai), so order 103 and Initech's penalty remain. Partial recovery, correctly tracked - each path is independent.
+
+---
+
+## The proof trail
+
+```datalog
+.why ?order_at_risk("order_103")
+```
+
+The proof shows: order_103 is at risk because it's supplied by supplier_b, and supplier_b is disrupted because it ships via Shanghai, and Shanghai is closed. Three facts, three rules, one chain. When a procurement team needs to explain to Initech why their order is delayed, the answer is a structured trace, not a phone call to someone who might know.
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.a:T145c,
+# Agent memory that can explain itself
+
+A customer success agent flags Acme Corp as a churn risk. The VP of Customer Success asks: "Why?" The agent says "based on the available data." That's not an answer. Which data? Which logic? What would need to change for Acme to not be at risk? If the agent can't show its work, the VP can't trust the flag, can't prioritize it, and can't act on it.
+
+This is the fundamental problem with agent memory stored as text chunks in a vector database. The agent retrieves relevant passages, generates a conclusion, and the reasoning is whatever happened inside the model. There's no trace to inspect, no rule to audit, no way to ask "what would need to change for this conclusion to be different?"
+
+When agents store observations as structured facts and derive conclusions through explicit rules, every conclusion has a proof tree. You can ask why. You can ask why not. And when the underlying facts change, the conclusions update automatically - no stale beliefs lingering in a context window.
+
+---
+
+## The setup
+
+A customer success agent monitors two accounts. It has stored three observations about each.
+
+```datalog
+// Acme: enterprise customer, $150K contract, declining usage, renewal in April
++customer[("acme", "enterprise", 150000)]
++usage_trend[("acme", "declining")]
++renewal[("acme", "2026-04-15")]
+
+// Globex: startup, $25K contract, growing usage, renewal in September
++customer[("globex", "startup", 25000)]
++usage_trend[("globex", "growing")]
++renewal[("globex", "2026-09-01")]
+```
+
+Six facts. Each one is a specific, testable observation - not a text passage that might or might not be retrieved in the right context window.
+
+---
+
+## The rules
+
+Churn risk requires three conditions: the customer is high-value, their usage is dropping, and their renewal is imminent. Each condition is its own rule with clear criteria.
+
+```datalog
+// High-value: enterprise tier with contract over $100K
++high_value(C) <- customer(C, "enterprise", Amt), Amt > 100000
+
+// Engagement dropping
++engagement_drop(C) <- usage_trend(C, "declining")
+
+// Renewal within the next few months
++renewal_soon(C) <- renewal(C, Date), Date < "2026-06-01"
+
+// Churn risk requires all three
++churn_risk(C) <- high_value(C), engagement_drop(C), renewal_soon(C)
+```
+
+These rules are readable, auditable, and versionable. When the definition of "high-value" changes (say the threshold moves from $100K to $75K), you change one rule and every derivation updates.
+
+---
+
+## Who is at risk?
+
+```datalog
+?churn_risk(C)
+```
+
+```
+┌────────┐
+│ C      │
+├────────┤
+│ "acme" │
+└────────┘
+1 rows
+```
+
+Acme is flagged. Globex is not.
+
+---
+
+## Why is Acme flagged?
+
+This is the point of the entire page. The `.why` command returns the proof tree - the exact chain of facts and rules that produced the conclusion.
+
+```datalog
+.why ?churn_risk("acme")
+```
+
+The proof tree shows three branches: Acme is high-value because it's an enterprise customer with a $150K contract (which exceeds the $100K threshold). Acme has an engagement drop because its usage trend is "declining." Acme's renewal is soon because April 15th is before June 1st. All three conditions met, so the churn_risk rule fired.
+
+This isn't a model's interpretation. It's a deterministic chain you can inspect, challenge, and reproduce. The VP sees exactly which conditions triggered the flag, and can decide which intervention addresses which condition.
+
+---
+
+## Why is Globex NOT flagged?
+
+Equally important: understanding why a conclusion was not reached.
+
+```datalog
+.why_not churn_risk("globex")
+```
+
+```
+churn_risk("globex") was NOT derived:
+
+  Rule: churn_risk (clause 0)
+    churn_risk(C) <- high_value(C), engagement_drop(C), renewal_soon(C)
+    Blocker: high_value("globex") - No matching tuples
+```
+
+Globex is not at churn risk because it's not high-value. It's a startup with a $25K contract, which doesn't meet the enterprise + >$100K threshold. The blocker is specific: the first condition in the rule failed, and here's why. No ambiguity.
+
+---
+
+## The situation changes
+
+The customer success team runs an intervention. Acme's usage stabilizes.
+
+```datalog
+-usage_trend("acme", "declining")
++usage_trend[("acme", "stable")]
+```
+
+```datalog
+?churn_risk(C)
+```
+
+```
+No results.
+```
+
+The churn risk retracted. The engagement_drop condition no longer holds, so the conclusion disappeared automatically. No cleanup logic, no manual flag removal, no stale belief sitting in the agent's memory. The agent's next answer reflects the current state of the world.
+
+---
+
+## Why this matters
+
+Three properties work together here. The rules guarantee that every conclusion follows from specific, inspectable conditions - not from whatever a model generates in a particular context window. The proof tree (`.why` and `.why_not`) makes the reasoning transparent and auditable. And correct retraction means that when facts change, conclusions update - the agent never acts on a belief that's no longer supported by the evidence.
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.0:{"P":null,"c":["","use-cases",""],"q":"","i":false,"f":[[["",{"children":["use-cases",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L5",null,{"useCases":[{"slug":"financial-risk","title":"Financial Risk and Compliance","icon":"Shield","subtitle":"Auditable entity reasoning for sanctions screening, beneficial ownership traversal, and policy enforcement.","order":1,"content":"$6","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"Loading facts and defining the rule","id":"loading-facts-and-defining-the-rule"},{"level":2,"text":"Query: is Alpha exposed?","id":"query-is-alpha-exposed"},{"level":2,"text":"The diamond problem in action","id":"the-diamond-problem-in-action"},{"level":2,"text":"Showing the work","id":"showing-the-work"},{"level":2,"text":"Try it","id":"try-it"}]},{"slug":"commerce","title":"Conversational Commerce","icon":"ShoppingBag","subtitle":"Compatible product recommendations from purchase history and live inventory, in one query.","order":2,"content":"$7","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"The rule","id":"the-rule"},{"level":2,"text":"Rules filter first","id":"rules-filter-first"},{"level":2,"text":"Then vectors rank","id":"then-vectors-rank"},{"level":2,"text":"When stock changes","id":"when-stock-changes"},{"level":2,"text":"The pattern","id":"the-pattern"}]},{"slug":"manufacturing","title":"Manufacturing Operations","icon":"Factory","subtitle":"Live operational reasoning for production planning, equipment availability, and job spec fulfillment.","order":3,"content":"$8","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"The rules","id":"the-rules"},{"level":2,"text":"Everything is available","id":"everything-is-available"},{"level":2,"text":"Training expires","id":"training-expires"},{"level":2,"text":"Recovery","id":"recovery"},{"level":2,"text":"The proof trail","id":"the-proof-trail"}]},{"slug":"supply-chain","title":"Supply Chain","icon":"Truck","subtitle":"Supplier risk propagation, sanctions screening, and order fulfillment reasoning over live entity graphs.","order":4,"content":"$9","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"The rules","id":"the-rules"},{"level":2,"text":"Everything is fine","id":"everything-is-fine"},{"level":2,"text":"Shanghai closes","id":"shanghai-closes"},{"level":2,"text":"Partial recovery","id":"partial-recovery"},{"level":2,"text":"The proof trail","id":"the-proof-trail"}]},{"slug":"agentic-ai","title":"Agentic AI","icon":"Brain","subtitle":"Structured memory, multi-hop reasoning, and policy-aware retrieval for AI agents.","order":5,"content":"$a","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"The rules","id":"the-rules"},{"level":2,"text":"Who is at risk?","id":"who-is-at-risk"},{"level":2,"text":"Why is Acme flagged?","id":"why-is-acme-flagged"},{"level":2,"text":"Why is Globex NOT flagged?","id":"why-is-globex-not-flagged"},{"level":2,"text":"The situation changes","id":"the-situation-changes"},{"level":2,"text":"Why this matters","id":"why-this-matters"}]}]}],null,"$Lb"]}],{},null,false,null]},null,false,"$@c"]},null,false,null],"$Ld",false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:I[484,[],"OutletBoundary"]
+10:"$Sreact.suspense"
+13:I[484,[],"ViewportBoundary"]
+15:I[484,[],"MetadataBoundary"]
+b:["$","$Lf",null,{"children":["$","$10",null,{"name":"Next.MetadataOutlet","children":"$@11"}]}]
+12:[]
+c:"$W12"
+d:["$","$1","h",{"children":[null,["$","$L13",null,{"children":"$L14"}],["$","div",null,{"hidden":true,"children":["$","$L15",null,{"children":["$","$10",null,{"name":"Next.Metadata","children":"$L16"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+14:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+17:I[6869,[],"IconMark"]
+11:null
+16:[["$","title","0",{"children":"InputLayer - Streaming reasoning layer for AI systems"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","3",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L17","5",{}]]

@@ -1,0 +1,160 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+0:{"P":null,"c":["","use-cases","financial-risk",""],"q":"","i":false,"f":[[["",{"children":["use-cases",{"children":[["slug","financial-risk","d",null],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:[]
+9:"$Wf"
+10:I[2154,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","546","static/chunks/app/use-cases/%5Bslug%5D/page-6f61ee1564d20b3e.js"],"UseCaseClient"]
+11:T1286,
+# Sanctions screening through ownership chains
+
+In 2014, a major European bank paid $8.9 billion for processing transactions with sanctioned entities. The transactions themselves looked clean. The exposure was buried multiple levels deep in ownership chains that nobody traced in time.
+
+This is the core challenge of sanctions compliance: the entity you're transacting with might be perfectly legitimate, but if you follow the ownership chain upward - through holding companies, subsidiaries, and partial stakes - you might find a sanctioned person or organization at the top. Miss that chain, and you're liable. Finding it requires recursive reasoning through corporate structures that can be dozens of layers deep, with multiple paths to the same entity.
+
+There's a subtlety that makes this genuinely hard. When an entity gets cleared from a sanctions list, every flag that was derived through that entity needs to retract. But only the flags that depended exclusively on that entity - if there's a second, independent ownership path that still connects to a sanctioned entity, the flag needs to stay. This is called the diamond problem, and getting it wrong means either phantom flags that waste your compliance team's time, or missed exposures that create regulatory risk.
+
+---
+
+## The setup
+
+Alpha owns two subsidiaries: Beta and Delta. Both Beta and Delta own stakes in Gamma. Gamma is on a sanctions list.
+
+```graph
+Alpha --owns-> Beta
+Alpha --owns-> Delta
+Beta --owns-> Gamma [highlight]
+Delta --owns-> Gamma [highlight]
+```
+
+Two independent paths from Alpha to the sanctioned entity. Let's trace what happens.
+
+---
+
+## Loading facts and defining the rule
+
+```datalog
+// The ownership structure
++owns[("alpha", "beta"), ("alpha", "delta"), ("beta", "gamma"), ("delta", "gamma")]
+
+// Gamma is sanctioned
++sanctions_list[("gamma")]
+```
+
+The rule says: an entity is exposed if it owns a sanctioned entity, or if it owns something that is itself exposed. That second clause is recursive - it follows the chain to any depth, whether it's 2 hops or 20.
+
+```datalog
++exposed(E, S) <- owns(E, S), sanctions_list(S)
++exposed(E, S) <- owns(E, Mid), exposed(Mid, S)
+```
+
+---
+
+## Query: is Alpha exposed?
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+┌─────────┬─────────┐
+│ alpha   │ Who     │
+├─────────┼─────────┤
+│ "alpha" │ "gamma" │
+└─────────┴─────────┘
+1 rows
+```
+
+Yes. Alpha is exposed to Gamma through two independent ownership paths.
+
+---
+
+## The diamond problem in action
+
+Beta divests its stake in Gamma.
+
+```datalog
+-owns("beta", "gamma")
+```
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+┌─────────┬─────────┐
+│ alpha   │ Who     │
+├─────────┼─────────┤
+│ "alpha" │ "gamma" │
+└─────────┴─────────┘
+1 rows
+```
+
+Alpha is still exposed. The path through Delta still supports the flag. If this retracted prematurely, a compliance team would look at Alpha, see no flag, and approve a transaction that should have been held. InputLayer tracks both paths independently - the conclusion only retracts when every supporting path is gone.
+
+Now Delta also divests.
+
+```datalog
+-owns("delta", "gamma")
+```
+
+```datalog
+?exposed("alpha", Who)
+```
+
+```
+No results.
+```
+
+Both paths are gone. The exposure retracts cleanly. No phantom flag lingering in a queue for someone to investigate. No manual cleanup.
+
+---
+
+## Showing the work
+
+When a flag is active, `.why` returns the exact chain of ownership and rules that produced it:
+
+```datalog
+.why ?exposed("alpha", Who)
+```
+
+The proof tree shows: Alpha is exposed to Gamma because Alpha owns Delta, Delta owns Gamma, and Gamma is on the sanctions list. Each link in the chain traces to a specific fact and a specific rule. This is what goes in the case file. This is what the regulator sees.
+
+When a flag is missing and shouldn't be, `.why_not` identifies exactly which condition failed:
+
+```datalog
+.why_not exposed("delta", "gamma")
+```
+
+```
+exposed("delta", "gamma") was NOT derived:
+
+  Rule: exposed (clause 0)
+    exposed(E, S) <- owns(E, S), sanctions_list(S)
+    Blocker: owns("delta", "gamma") - No matching tuples
+
+  Rule: exposed (clause 1)
+    exposed(E, S) <- owns(E, Mid), exposed(Mid, S)
+    Blocker: owns("delta", _) - No matching tuples
+```
+
+Delta is not exposed because it no longer owns anything. The blocker is specific and auditable.
+
+---
+
+## Try it
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.5:["$","$L10",null,{"useCase":{"slug":"financial-risk","title":"Financial Risk and Compliance","icon":"Shield","subtitle":"Auditable entity reasoning for sanctions screening, beneficial ownership traversal, and policy enforcement.","order":1,"content":"$11","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"Loading facts and defining the rule","id":"loading-facts-and-defining-the-rule"},{"level":2,"text":"Query: is Alpha exposed?","id":"query-is-alpha-exposed"},{"level":2,"text":"The diamond problem in action","id":"the-diamond-problem-in-action"},{"level":2,"text":"Showing the work","id":"showing-the-work"},{"level":2,"text":"Try it","id":"try-it"}]},"slug":"financial-risk"}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+12:I[6869,[],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"InputLayer - Streaming reasoning layer for AI systems"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","3",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L12","5",{}]]

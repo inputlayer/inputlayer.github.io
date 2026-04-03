@@ -1,0 +1,75 @@
+1:"$Sreact.fragment"
+2:I[8243,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","874","static/chunks/app/compare/%5Bslug%5D/page-353cd09563802f5b.js"],"CompareClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T115b,
+# InputLayer + Vector Databases
+
+Your vector database finds content that looks like your query. InputLayer follows chains of facts to derive conclusions. Most real applications need both.
+
+A shopper asks "ink for my printer." Every cartridge in the catalog is semantically similar to "printer ink" - a Canon PG-245 and an Epson 202 are nearly identical in embedding space. But only one fits the printer the shopper bought eight months ago. That connection - purchase history to compatibility matrix to live inventory - is a chain of structured facts, not a similarity match.
+
+InputLayer traces that chain in a single query and keeps the answer current as inventory changes.
+
+## What each system does
+
+| Capability | Vector DBs | InputLayer | Together |
+|---|---|---|---|
+| Find similar content | Native, optimized at scale | Native | Use either or both |
+| Follow chains of relationships | Outside scope | Native | InputLayer handles this |
+| Evaluate rules recursively | Outside scope | Native | InputLayer handles this |
+| Update conclusions when facts change | Re-index | Native (6.83ms per change) | InputLayer handles this |
+| Retract stale conclusions automatically | Outside scope | Native | InputLayer handles this |
+| Enforce access policies in the query | Metadata filters only | Recursive logic | InputLayer handles hierarchies |
+
+## Three things InputLayer handles that vector databases weren't built for
+
+**Following multi-hop chains.** When the answer requires tracing relationships across separate data sources - supply chain dependencies, corporate ownership structures, medication interactions - InputLayer follows the chain automatically. You define the relationships as rules. The engine walks them to any depth.
+
+```chain
+Port disruption reported
+-- which suppliers ship through this port?
+Supplier A, Supplier C [primary]
+-- which components do they provide?
+Component X, Component Y
+-- which products use those components?
+Product Alpha, Product Beta [highlight]
+=> InputLayer traced the chain from disruption to affected products
+```
+
+**Evaluating access policies at query time.** When permissions involve hierarchies - managers see their reports' documents, and their reports' reports, and so on - InputLayer resolves the full chain as part of the search. Results come back already filtered for what the user is allowed to see.
+
+```chain
+VP of Engineering searches for "deployment best practices"
+-- InputLayer resolves authorization
+Walk org hierarchy: 36 people in reporting chain [primary]
+-- filter documents
+847 documents from authorized authors
+-- rank by similarity
+Top 10 results, all authorized [success]
+=> One query, one pass. Authorization and search together.
+```
+
+**Keeping conclusions current.** When someone changes roles, their permissions update in the next query. When a supplier is reinstated, blocked orders unblock automatically. When a product goes out of stock, recommendations retract in milliseconds. InputLayer tracks which conclusions depend on which facts and updates only what's affected.
+
+## How teams use them together
+
+The most common pattern: your vector database handles straightforward similarity search, and InputLayer handles queries that need reasoning. "Find similar documents" goes to the vector DB. "Find documents similar to X that this user is authorized to see through their reporting chain" goes to InputLayer, which combines the authorization logic with vector search in a single pass.
+
+Some teams use both in parallel. Others move their reasoning-heavy queries entirely to InputLayer and keep the vector DB for high-throughput similarity at scale.
+
+## Performance
+
+InputLayer's incremental computation means that when facts change, only affected conclusions recompute. On a 2,000-node graph with 400,000 derived relationships, a single fact change takes 6.83ms - not the 11.3 seconds a full recompute would take. That's 1,652x faster.
+
+For pure vector similarity at massive scale (billions of vectors), dedicated vector databases are purpose-built and optimized for that specific workload.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. The [vector search documentation](/docs/guides/vectors/) covers how InputLayer's native vector capabilities work, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing stack straightforward.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"slug":"vs-vector-databases","title":"InputLayer + Vector Databases","competitors":["Vector Databases"],"content":"$3","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"Three things InputLayer handles that vector databases weren't built for","id":"three-things-inputlayer-handles-that-vector-databases-werent-built-for"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-vector-databases"}],null,"$L4"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GBS63Unu3BhcecNEmLSHN"}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

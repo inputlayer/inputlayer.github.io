@@ -1,0 +1,173 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+0:{"P":null,"c":["","docs","guides","explainability",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","guides/explainability","oc",null],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:[]
+9:"$Wf"
+10:I[8428,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-7fd593d8b6507a0f.js","689","static/chunks/689-ef7b1ba408677aaa.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-4ed80423a3fc2157.js"],"DocsPageClient"]
+11:T125c,
+# Explainability
+
+Every fact in InputLayer is traceable. When the engine derives a result, you can ask *why* it was derived and get a complete proof tree showing the chain of rules and base facts that produced it. When an expected result is missing, you can ask *why not* and get a precise explanation of which rule condition failed.
+
+This is one of InputLayer's core differentiators: while similarity searches explain results through distance scores, InputLayer provides deterministic logical derivation chains - "the system derived X because rule A applied to facts B and C."
+
+## Query Plans with `.debug`
+
+Before diving into derivation proofs, you can inspect how a query will execute:
+
+```datalog
+.debug ?reachable(1, X)
+```
+
+This shows the compilation pipeline (AST, IR, optimizations) without running the query. Useful for understanding query performance.
+
+## Derivation Proofs with `.why`
+
+The `.why` command builds a proof tree for every result of a query:
+
+```datalog
+// Define some data and rules
++edge[(1, 2), (2, 3), (3, 4)]
++reachable(X, Y) <- edge(X, Y)
++reachable(X, Z) <- edge(X, Y), reachable(Y, Z)
+
+// Ask: why are these tuples in reachable?
+.why ?reachable(X, Y)
+```
+
+Output shows each result with its complete derivation:
+
+```
+Found 6 result(s) for reachable:
+
+--- Result 1 ---
+[rule] reachable (clause 0)
+  clause: reachable(X, Y) <- edge(X, Y)
+  bindings: X=1, Y=2
+[base] edge(1, 2)
+
+--- Result 2 ---
+[rule] reachable (clause 1)
+  clause: reachable(X, Z) <- edge(X, Y), reachable(Y, Z)
+  bindings: X=1, Y=2, Z=3
+[base] edge(1, 2)
+[rule] reachable (clause 0)
+  clause: reachable(X, Y) <- edge(X, Y)
+  bindings: X=2, Y=3
+[base] edge(2, 3)
+```
+
+Each proof node is one of:
+- **[base]** - a fact that exists directly in a relation
+- **[rule]** - a rule clause that fired, with variable bindings and child proofs
+- **[negation]** - proof that a negated condition holds (no matching tuple exists)
+- **[vector_search]** - an HNSW nearest neighbor search result with metric and distance
+- **[aggregation]** - an aggregation over contributing tuples
+- **[truncated]** - proof exceeded the depth limit (default: 50)
+
+### Full Mode
+
+For aggregations with many contributing tuples, use `.why full` to enumerate all contributors:
+
+```datalog
+.why full ?department_count(Dept, Count)
+```
+
+## Negative Explanations with `.why_not`
+
+When an expected fact is missing, `.why_not` explains which rule condition failed:
+
+```datalog
++edge[(1, 2), (3, 4)]
++path(X, Z) <- edge(X, Y), edge(Y, Z)
+
+.why_not path(1, 99)
+```
+
+Output:
+
+```
+path(1, 99) was NOT derived:
+
+  Rule: path (clause 0)
+    path(X, Z) <- edge(X, Y), edge(Y, Z)
+    Blocker: Body predicate 1 (edge(2, 99)) failed: No matching tuples in edge
+```
+
+The blocker identifies the exact body predicate that prevented derivation:
+- **Body atom failed** - no matching tuples in the referenced relation
+- **Comparison failed** - a filter condition evaluated to false
+- **Negation succeeded** - a tuple exists that should be absent
+- **Head unification failed** - the rule head pattern doesn't match the target
+- **HNSW not in top-k** - the target wasn't in the nearest neighbor results
+
+## SDK Usage
+
+### Python
+
+```python
+from inputlayer import InputLayer
+
+async with InputLayer(url="ws://localhost:8080") as il:
+    kg = il.knowledge_graph("my_kg")
+
+    # Proof trees
+    result = await kg.why(Edge)
+    print(result.text)
+    print(f"Explained {result.result_count} results")
+
+    # Full mode for aggregations
+    result = await kg.why(DeptCount, full=True)
+
+    # Negative explanation
+    result = await kg.why_not(Edge, src=1, dst=99)
+    print(result.text)
+```
+
+### TypeScript
+
+```typescript
+
+
+const client = new InputLayer({ url: 'ws://localhost:8080' });
+await client.connect();
+const kg = client.knowledgeGraph('my_kg');
+
+// Proof trees
+const result = await kg.why({ select: [Edge] });
+console.log(result.text);
+console.log(`Explained ${result.resultCount} results`);
+
+// Full mode
+const full = await kg.why({ select: [DeptCount], full: true });
+
+// Negative explanation
+const notResult = await kg.whyNot(Edge, { src: 1, dst: 99 });
+console.log(notResult.text);
+```
+
+## Configuration
+
+- **Depth limit**: Proof trees are capped at 50 levels by default to prevent explosion on deeply recursive rules
+- **Multiple proofs**: When a tuple can be derived multiple ways, up to 5 proofs are shown by default
+- **Aggregation samples**: In default mode, aggregation proofs show 10 sample contributors. Use `.why full` for all
+
+## Next Steps
+
+- [Recursion](recursion) - understand recursive rules that produce deep proof trees
+- [Vector Search](vectors) - HNSW proof traces with distance metrics
+- [REPL Guide](repl) - all available meta commands5:["$","$L10",null,{"page":{"title":"Explainability","content":"$11","toc":[{"level":2,"text":"Query Plans with .debug","id":"query-plans-with-debug"},{"level":2,"text":"Derivation Proofs with .why","id":"derivation-proofs-with-why"},{"level":3,"text":"Full Mode","id":"full-mode"},{"level":2,"text":"Negative Explanations with .whynot","id":"negative-explanations-with-whynot"},{"level":2,"text":"SDK Usage","id":"sdk-usage"},{"level":3,"text":"Python","id":"python"},{"level":3,"text":"TypeScript","id":"typescript"},{"level":2,"text":"Configuration","id":"configuration"},{"level":2,"text":"Next Steps","id":"next-steps"}]},"slugKey":"guides/explainability"}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+12:I[6869,[],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"Explainability - InputLayer Docs"}],["$","meta","1",{"name":"description","content":"InputLayer documentation - Explainability."}],["$","meta","2",{"property":"og:title","content":"Explainability - InputLayer Docs"}],["$","meta","3",{"property":"og:description","content":"InputLayer documentation - Explainability."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Explainability - InputLayer Docs"}],["$","meta","7",{"name":"twitter:description","content":"InputLayer documentation - Explainability."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L12","11",{}]]

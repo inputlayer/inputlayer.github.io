@@ -1,0 +1,221 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+5:I[7428,["661","static/chunks/661-bf4fce185509def8.js","830","static/chunks/830-7bb96fb112090fec.js","402","static/chunks/app/compare/page-097ad41da99658de.js"],"CompareIndexClient"]
+c:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+6:Te9e,
+# InputLayer + All-in-One AI Data Platforms
+
+All-in-one AI data platforms find data that matches your criteria. InputLayer derives new conclusions from connected facts. They solve different problems, and many teams use both.
+
+Here's the distinction. An AI data platform answers: "Find the 50 most similar documents matching these filters." InputLayer answers: "Given these facts and these business rules, which enterprise customers are at churn risk - and here's the derivation proof for each one."
+
+## What each system does
+
+| Capability | All-in-One AI Data | InputLayer |
+|---|---|---|
+| Vector similarity search | Native, optimized | Native |
+| Metadata filtering | Rich, fast | Via rules and joins |
+| Analytics (aggregation, grouping) | Growing | Via aggregation rules |
+| Derive conclusions from rules | Outside scope | Native |
+| Recursive queries | Outside scope | Native |
+| Update conclusions when facts change | Re-index | Incremental (milliseconds) |
+| Retract stale conclusions automatically | Outside scope | Native |
+| Trace relationships across data sources | Limited | Native |
+| Knowledge graph storage | Some platforms | Native |
+
+## When retrieval alone can't get you the answer
+
+Some questions can't be answered by finding the right document. The answer has to be derived.
+
+```chain
+AI agent asked: "Which enterprise customers are at risk of churning?"
+-- needs to combine
+Declining usage metrics (from analytics)
+-- with
+Negative sentiment in support tickets (from CRM)
+-- with
+Upcoming contract renewals (from billing)
+-- with
+Competitive mentions in sales calls (from call transcripts)
+=> "Churn risk" isn't stored anywhere - it's a conclusion derived from combining facts [highlight]
+```
+
+You tell InputLayer: "A customer is at churn risk if they're enterprise, usage declined more than 20%, and renewal is within 90 days." The engine evaluates this rule across your customer data and surfaces matches - with a derivation proof for each one showing exactly which facts triggered it.
+
+## What happens when data changes
+
+AI data platforms handle updates by re-indexing vectors and metadata. That works for retrieval.
+
+But when you have derived conclusions, updates get more interesting.
+
+```steps
+Customer usage drops below threshold :: InputLayer updates the churn risk assessment immediately [success]
+A fact is retracted :: Everything derived from it disappears automatically [success]
+A rule changes :: All affected conclusions recompute - nothing else does [success]
+```
+
+InputLayer's incremental computation means updates propagate through the rules, recomputing only what's affected. A single fact change in a 2,000-node graph takes 6.83ms. Retractions are correct - derived conclusions only disappear when all supporting derivation paths are removed.
+
+## How teams use them together
+
+The most common pattern: the AI data platform handles high-throughput similarity queries where raw retrieval speed matters most. InputLayer handles the reasoning queries where answers need to be derived from relationships and rules. Your application routes each query to the right system.
+
+Some teams also use InputLayer's native vector search for queries that need reasoning and similarity combined - like "find documents similar to X that this user is authorized to see through their org hierarchy." One query, one pass, no glue code.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [data modeling guide](/docs/guides/core-concepts/) explains how to structure your knowledge graph, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing data stack straightforward.7:T1160,
+# InputLayer + Graph Databases
+
+Graph databases traverse relationships that already exist in your data. InputLayer derives new relationships through rules - and keeps them current as facts change.
+
+That's the core difference. A graph database answers "what's connected to what?" InputLayer answers "what can we conclude from these facts and rules?"
+
+## What each system does
+
+Graph databases are built for exploring and traversing stored relationships. They have mature tooling - visual explorers, admin interfaces, clustering. When you need to see the path between two entities or explore a neighborhood of a graph, they're the right tool.
+
+InputLayer evaluates logical rules over facts, computes recursive conclusions, and maintains those conclusions incrementally. When a fact changes, only the affected conclusions update. When a fact is deleted, everything derived from it disappears - but only if no alternative path still supports it.
+
+| Capability | Graph Databases | InputLayer |
+|---|---|---|
+| Traverse stored relationships | Native | Native |
+| Pattern matching on graphs | Native | Native |
+| Derive new relationships from rules | Via procedures | Native |
+| Recursive traversal | Native | Native |
+| Update conclusions when facts change | Recompute per query | Automatic, incremental |
+| Retract derived state when facts are deleted | Recompute per query | Automatic (weight-based) |
+| Vector similarity search | Plugin | Native |
+| Visual exploration tools | Mature | Via API |
+| Clustering | Native | Single-node |
+
+## Where the distinction matters
+
+**Deriving conclusions from multiple sources.** Alice has authority over Charlie through two independent paths: the management chain and a committee membership. A graph database can traverse each path separately. InputLayer expresses both as rules and combines them into a single recursive concept - authority - that the engine evaluates automatically.
+
+```tree
+Authority from two sources [primary]
+  Management chain (recursive)
+    Alice manages Bob, Bob manages Charlie
+    Therefore Alice has authority over Charlie
+  Committee membership
+    Alice sits on committee overseeing Engineering
+    Therefore Alice has authority over everyone in Engineering
+```
+
+In InputLayer, you define both sources of authority as rules. The engine derives the combined result. In a graph query language, you can combine patterns in a single query, but without automatic incremental maintenance when the underlying data changes.
+
+**Keeping derived state consistent.** When someone leaves the company, a graph database still has all the edges you stored. You decide what to invalidate and rebuild. InputLayer tracks which conclusions depend on which facts. Remove "Alice manages Bob" and every conclusion that was derived through that relationship retracts automatically - but conclusions supported by alternative paths survive.
+
+```steps
+A relationship changes in a graph database :: You decide what to rebuild and invalidate [highlight]
+A fact changes in InputLayer :: Only affected conclusions recompute automatically [success]
+A fact is deleted in InputLayer :: Derived conclusions retract, but only if no alternative path exists [success]
+```
+
+## How teams use them together
+
+The most natural pattern: your graph database handles interactive exploration and visualization, and InputLayer handles the reasoning-heavy queries.
+
+Your graph database answers: "Show me the path between these two entities." "What does this part of the graph look like?" These are the queries where visual tools and interactive exploration add real value.
+
+InputLayer answers: "Given these rules, who does Alice have authority over?" "If I change this supplier's status, which orders are affected?" These are the queries that need recursive rule evaluation, incremental updates, and correct retraction.
+
+Some teams compute derived relationships in InputLayer and sync the results back to their graph database for visualization. Reasoning power on one side, exploration tools on the other.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) will get you running. If you're coming from a graph database background, the [data modeling guide](/docs/guides/core-concepts/) explains how InputLayer's fact-and-rule model relates to property graphs, and the [recursion documentation](/docs/guides/recursion/) covers recursive reasoning.8:T115b,
+# InputLayer + Vector Databases
+
+Your vector database finds content that looks like your query. InputLayer follows chains of facts to derive conclusions. Most real applications need both.
+
+A shopper asks "ink for my printer." Every cartridge in the catalog is semantically similar to "printer ink" - a Canon PG-245 and an Epson 202 are nearly identical in embedding space. But only one fits the printer the shopper bought eight months ago. That connection - purchase history to compatibility matrix to live inventory - is a chain of structured facts, not a similarity match.
+
+InputLayer traces that chain in a single query and keeps the answer current as inventory changes.
+
+## What each system does
+
+| Capability | Vector DBs | InputLayer | Together |
+|---|---|---|---|
+| Find similar content | Native, optimized at scale | Native | Use either or both |
+| Follow chains of relationships | Outside scope | Native | InputLayer handles this |
+| Evaluate rules recursively | Outside scope | Native | InputLayer handles this |
+| Update conclusions when facts change | Re-index | Native (6.83ms per change) | InputLayer handles this |
+| Retract stale conclusions automatically | Outside scope | Native | InputLayer handles this |
+| Enforce access policies in the query | Metadata filters only | Recursive logic | InputLayer handles hierarchies |
+
+## Three things InputLayer handles that vector databases weren't built for
+
+**Following multi-hop chains.** When the answer requires tracing relationships across separate data sources - supply chain dependencies, corporate ownership structures, medication interactions - InputLayer follows the chain automatically. You define the relationships as rules. The engine walks them to any depth.
+
+```chain
+Port disruption reported
+-- which suppliers ship through this port?
+Supplier A, Supplier C [primary]
+-- which components do they provide?
+Component X, Component Y
+-- which products use those components?
+Product Alpha, Product Beta [highlight]
+=> InputLayer traced the chain from disruption to affected products
+```
+
+**Evaluating access policies at query time.** When permissions involve hierarchies - managers see their reports' documents, and their reports' reports, and so on - InputLayer resolves the full chain as part of the search. Results come back already filtered for what the user is allowed to see.
+
+```chain
+VP of Engineering searches for "deployment best practices"
+-- InputLayer resolves authorization
+Walk org hierarchy: 36 people in reporting chain [primary]
+-- filter documents
+847 documents from authorized authors
+-- rank by similarity
+Top 10 results, all authorized [success]
+=> One query, one pass. Authorization and search together.
+```
+
+**Keeping conclusions current.** When someone changes roles, their permissions update in the next query. When a supplier is reinstated, blocked orders unblock automatically. When a product goes out of stock, recommendations retract in milliseconds. InputLayer tracks which conclusions depend on which facts and updates only what's affected.
+
+## How teams use them together
+
+The most common pattern: your vector database handles straightforward similarity search, and InputLayer handles queries that need reasoning. "Find similar documents" goes to the vector DB. "Find documents similar to X that this user is authorized to see through their reporting chain" goes to InputLayer, which combines the authorization logic with vector search in a single pass.
+
+Some teams use both in parallel. Others move their reasoning-heavy queries entirely to InputLayer and keep the vector DB for high-throughput similarity at scale.
+
+## Performance
+
+InputLayer's incremental computation means that when facts change, only affected conclusions recompute. On a 2,000-node graph with 400,000 derived relationships, a single fact change takes 6.83ms - not the 11.3 seconds a full recompute would take. That's 1,652x faster.
+
+For pure vector similarity at massive scale (billions of vectors), dedicated vector databases are purpose-built and optimized for that specific workload.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) takes about 5 minutes. The [vector search documentation](/docs/guides/vectors/) covers how InputLayer's native vector capabilities work, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing stack straightforward.0:{"P":null,"c":["","compare",""],"q":"","i":false,"f":[[["",{"children":["compare",{"children":["__PAGE__",{}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[["$","$L5",null,{"pages":[{"slug":"vs-all-in-one-ai-data","title":"InputLayer + All-in-One AI Data Platforms","competitors":["AI Data Platforms"],"content":"$6","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"When retrieval alone can't get you the answer","id":"when-retrieval-alone-cant-get-you-the-answer"},{"level":2,"text":"What happens when data changes","id":"what-happens-when-data-changes"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"vs-graph-databases","title":"InputLayer + Graph Databases","competitors":["Graph Databases"],"content":"$7","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"Where the distinction matters","id":"where-the-distinction-matters"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},{"slug":"vs-vector-databases","title":"InputLayer + Vector Databases","competitors":["Vector Databases"],"content":"$8","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"Three things InputLayer handles that vector databases weren't built for","id":"three-things-inputlayer-handles-that-vector-databases-werent-built-for"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Performance","id":"performance"},{"level":2,"text":"Getting started","id":"getting-started"}]}]}],null,"$L9"]}],{},null,false,null]},null,false,"$@a"]},null,false,null],"$Lb",false]],"m":"$undefined","G":["$c",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+d:I[484,[],"OutletBoundary"]
+e:"$Sreact.suspense"
+11:I[484,[],"ViewportBoundary"]
+13:I[484,[],"MetadataBoundary"]
+9:["$","$Ld",null,{"children":["$","$e",null,{"name":"Next.MetadataOutlet","children":"$@f"}]}]
+10:[]
+a:"$W10"
+b:["$","$1","h",{"children":[null,["$","$L11",null,{"children":"$L12"}],["$","div",null,{"hidden":true,"children":["$","$L13",null,{"children":["$","$e",null,{"name":"Next.Metadata","children":"$L14"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+12:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+15:I[6869,[],"IconMark"]
+f:null
+14:[["$","title","0",{"children":"InputLayer - Streaming reasoning layer for AI systems"}],["$","meta","1",{"name":"description","content":"Store facts, define rules, and derive everything that logically follows. Vector search, graph traversal, and incremental computation in one system."}],["$","link","2",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","3",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","4",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L15","5",{}]]

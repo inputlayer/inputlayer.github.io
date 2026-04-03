@@ -1,0 +1,128 @@
+1:"$Sreact.fragment"
+2:I[2154,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","546","static/chunks/app/use-cases/%5Bslug%5D/page-6f61ee1564d20b3e.js"],"UseCaseClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:T1650,
+# Product recommendations that understand compatibility
+
+A shopper types "I need ink for my printer." There are hundreds of ink cartridges in the catalog. In embedding space, a Canon PG-245 and an Epson 202 are nearly identical - they're both black ink cartridges with similar descriptions, similar prices, similar use cases. A vector search returns both with almost the same score.
+
+But the shopper owns a Canon printer. The Epson doesn't fit. That's not a similarity problem - no amount of embedding refinement will fix it. The connection between a specific printer and its compatible cartridges is a structured fact in a compatibility table, not a distance in vector space.
+
+This matters because recommending an incompatible product isn't just irrelevant - it's a return, a support ticket, and a customer who trusts your suggestions less next time. And the fix isn't post-filtering (checking compatibility after retrieval) because you'd need to stitch together purchase history, compatibility data, inventory status, and similarity ranking across multiple systems for every single query.
+
+---
+
+## The setup
+
+Three cartridges, one printer, one shopper. Two cartridges are compatible with Canon printers. One is not. All three have very similar embeddings.
+
+```datalog
+// Products with embedding vectors
++product[
+    ("pg245", "Canon PG-245 Black Ink", 14.99, [0.82, 0.15, 0.91, 0.44]),
+    ("cl246", "Canon CL-246 Color Ink", 16.99, [0.79, 0.18, 0.88, 0.41]),
+    ("ep202", "Epson 202 Black Ink", 12.99, [0.83, 0.14, 0.90, 0.43])
+]
+
+// Compatibility: which cartridges fit which printers
++compatible[("canon_mg3620", "pg245"), ("canon_mg3620", "cl246")]
+
+// Shopper 42 owns a Canon printer. All three are in stock.
++owns[("shopper_42", "canon_mg3620")]
++in_stock[("pg245"), ("cl246"), ("ep202")]
+```
+
+Look at the embeddings. PG-245 is `[0.82, 0.15, 0.91, 0.44]`. Epson 202 is `[0.83, 0.14, 0.90, 0.43]`. Almost identical. A vector search alone can't distinguish them.
+
+---
+
+## The rule
+
+A product is recommendable to a shopper if they own a compatible device and the product is in stock. One line.
+
+```datalog
++recommendable(S, P) <- owns(S, Dev), compatible(Dev, P), in_stock(P)
+```
+
+This connects three separate facts - purchase history, compatibility matrix, and inventory - into one derivation chain. The engine evaluates it every time any of those facts change.
+
+---
+
+## Rules filter first
+
+```datalog
+?recommendable("shopper_42", Pid)
+```
+
+```
+┌──────────────┬─────────┐
+│ shopper_42   │ Pid     │
+├──────────────┼─────────┤
+│ "shopper_42" │ "cl246" │
+│ "shopper_42" │ "pg245" │
+└──────────────┴─────────┘
+2 rows
+```
+
+Two results. The Epson 202 is excluded - not because of its embedding, but because it's not compatible with a Canon printer. The rule did the filtering before similarity ever ran.
+
+---
+
+## Then vectors rank
+
+Now add cosine distance to rank the compatible results by relevance. Lower distance means more similar.
+
+```datalog
+?recommendable("shopper_42", Pid),
+ product(Pid, Desc, Price, Emb),
+ Dist = cosine(Emb, [0.81, 0.16, 0.89, 0.42]),
+ Dist < 0.05
+```
+
+```
+┌──────────────┬─────────┬──────────────────────────┬───────┬────────────────────────┐
+│ shopper_42   │ Pid     │ Desc                     │ Price │ Dist                   │
+├──────────────┼─────────┼──────────────────────────┼───────┼────────────────────────┤
+│ "shopper_42" │ "pg245" │ "Canon PG-245 Black Ink" │ 14.99 │ 0.0001                 │
+│ "shopper_42" │ "cl246" │ "Canon CL-246 Color Ink" │ 16.99 │ 0.0002                 │
+└──────────────┴─────────┴──────────────────────────┴───────┴────────────────────────┘
+2 rows
+```
+
+One query. Rules filtered to what's compatible, vectors ranked by relevance. The Epson - which would have scored nearly identically on cosine distance - was never considered.
+
+---
+
+## When stock changes
+
+The PG-245 sells out.
+
+```datalog
+-in_stock("pg245")
+```
+
+```datalog
+?recommendable("shopper_42", Pid)
+```
+
+```
+┌──────────────┬─────────┐
+│ shopper_42   │ Pid     │
+├──────────────┼─────────┤
+│ "shopper_42" │ "cl246" │
+└──────────────┴─────────┘
+1 rows
+```
+
+Gone immediately. The shopper never sees a product they can't buy. When it's restocked, the recommendation comes back. No reindex, no cache invalidation - the rule re-evaluates against the current facts.
+
+---
+
+## The pattern
+
+This applies anywhere the connection between "what I have" and "what fits it" is a structured fact: replacement parts for appliances, cables for electronics, lenses for cameras, blades for power tools. In every case, similarity search finds things that look right but might not fit. The compatibility rule is what makes the recommendation trustworthy.
+
+Every code block on this page runs against a live InputLayer instance. Paste them into the [demo](https://demo.inputlayer.ai) to see the results yourself.0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"useCase":{"slug":"commerce","title":"Conversational Commerce","icon":"ShoppingBag","subtitle":"Compatible product recommendations from purchase history and live inventory, in one query.","order":2,"content":"$3","toc":[{"level":2,"text":"The setup","id":"the-setup"},{"level":2,"text":"The rule","id":"the-rule"},{"level":2,"text":"Rules filter first","id":"rules-filter-first"},{"level":2,"text":"Then vectors rank","id":"then-vectors-rank"},{"level":2,"text":"When stock changes","id":"when-stock-changes"},{"level":2,"text":"The pattern","id":"the-pattern"}]},"slug":"commerce"}],null,"$L4"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GBS63Unu3BhcecNEmLSHN"}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null

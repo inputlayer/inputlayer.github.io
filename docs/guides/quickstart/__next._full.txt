@@ -1,0 +1,158 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+0:{"P":null,"c":["","docs","guides","quickstart",""],"q":"","i":false,"f":[[["",{"children":["docs",{"children":[["slug","guides/quickstart","oc",null],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:[]
+9:"$Wf"
+10:I[8428,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-7fd593d8b6507a0f.js","689","static/chunks/689-ef7b1ba408677aaa.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-4ed80423a3fc2157.js"],"DocsPageClient"]
+11:T730,# Quick Start
+
+Get InputLayer running and execute your first query in 5 minutes.
+
+## 1. Install
+
+```bash
+# Clone the repository
+git clone https://github.com/inputlayer/inputlayer.git
+cd inputlayer
+
+# Build (requires Rust 1.88+)
+cargo build --release
+```
+
+## 2. Start the Server and Client
+
+```bash
+# Start the server
+./target/release/inputlayer-server
+
+# In another terminal, start the client
+./target/release/inputlayer-client
+```
+
+You should see:
+```
+Connecting to server at http://127.0.0.1:8080...
+Connected!
+
+Server status: healthy
+Authenticated as: admin
+Current knowledge graph: default
+```
+
+## 3. Add Some Data
+
+```datalog
++person[("alice", 30), ("bob", 25), ("charlie", 35)]
+```
+
+Output:
+```
+Inserted 3 fact(s) into 'person'.
+```
+
+## 4. Query the Data
+
+```datalog
+?person(Name, Age)
+```
+
+Output:
+
+| Name | Age |
+|---|---|
+| "alice" | 30 |
+| "bob" | 25 |
+| "charlie" | 35 |
+
+*3 rows*
+
+## 5. Add a Filter
+
+```datalog
+?person(Name, Age), Age > 28
+```
+
+Output:
+
+| Name | Age |
+|---|---|
+| "alice" | 30 |
+| "charlie" | 35 |
+
+*2 rows*
+
+## 6. Create a Rule
+
+```datalog
++senior(Name) <- person(Name, Age), Age >= 30
+```
+
+Output:
+```
+Rule 'senior' registered.
+```
+
+```datalog
+?senior(X)
+```
+
+Output:
+
+| X |
+|---|
+| "alice" |
+| "charlie" |
+
+*2 rows*
+
+## 7. Use Aggregation
+
+```datalog
++average_age(avg<Age>) <- person(_, Age)
+```
+
+Output:
+```
+Rule 'average_age' registered.
+```
+
+```datalog
+?average_age(X)
+```
+
+Output:
+
+| X |
+|---|
+| 30.0 |
+
+*1 rows*
+
+## What's Next?
+
+- [First Program](first-program) - Learn the basics in depth
+- [Core Concepts](core-concepts) - Understand data modeling
+- [REPL Guide](repl) - Master the interactive environment
+
+## Common Commands
+
+| Command | Description |
+|---------|-------------|
+| `.help` | Show all commands |
+| `.rel` | List all relations |
+| `.rule` | List all rules |
+| `.quit` | Exit the REPL |5:["$","$L10",null,{"page":{"title":"Quick Start","content":"$11","toc":[{"level":2,"text":"1. Install","id":"1-install"},{"level":2,"text":"2. Start the Server and Client","id":"2-start-the-server-and-client"},{"level":2,"text":"3. Add Some Data","id":"3-add-some-data"},{"level":2,"text":"4. Query the Data","id":"4-query-the-data"},{"level":2,"text":"5. Add a Filter","id":"5-add-a-filter"},{"level":2,"text":"6. Create a Rule","id":"6-create-a-rule"},{"level":2,"text":"7. Use Aggregation","id":"7-use-aggregation"},{"level":2,"text":"What's Next?","id":"whats-next"},{"level":2,"text":"Common Commands","id":"common-commands"}]},"slugKey":"guides/quickstart"}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+12:I[6869,[],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"Quick Start - InputLayer Docs"}],["$","meta","1",{"name":"description","content":"InputLayer documentation - Quick Start."}],["$","meta","2",{"property":"og:title","content":"Quick Start - InputLayer Docs"}],["$","meta","3",{"property":"og:description","content":"InputLayer documentation - Quick Start."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Quick Start - InputLayer Docs"}],["$","meta","7",{"name":"twitter:description","content":"InputLayer documentation - Quick Start."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L12","11",{}]]

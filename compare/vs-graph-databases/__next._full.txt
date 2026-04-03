@@ -1,0 +1,86 @@
+1:"$Sreact.fragment"
+2:I[1942,["177","static/chunks/app/layout-7e9963bf811be36b.js"],"ThemeProvider"]
+3:I[7121,[],""]
+4:I[4581,[],""]
+6:I[484,[],"OutletBoundary"]
+7:"$Sreact.suspense"
+a:I[484,[],"ViewportBoundary"]
+c:I[484,[],"MetadataBoundary"]
+e:I[7123,[],"default",1]
+:HL["/_next/static/media/4cf2300e9c8272f7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/93f479601ee12b01-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/2499e93694ab4f6c.css","style"]
+0:{"P":null,"c":["","compare","vs-graph-databases",""],"q":"","i":false,"f":[[["",{"children":["compare",{"children":[["slug","vs-graph-databases","d",null],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",16],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2499e93694ab4f6c.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_188709 __variable_9a8899 font-sans antialiased","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L5",null,["$","$L6",null,{"children":["$","$7",null,{"name":"Next.MetadataOutlet","children":"$@8"}]}]]}],{},null,false,null]},null,false,"$@9"]},null,false,"$@9"]},null,false,null],["$","$1","h",{"children":[null,["$","$La",null,{"children":"$Lb"}],["$","div",null,{"hidden":true,"children":["$","$Lc",null,{"children":["$","$7",null,{"name":"Next.Metadata","children":"$Ld"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$e",[]],"S":true,"h":null,"s":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"GBS63Unu3BhcecNEmLSHN"}
+f:[]
+9:"$Wf"
+10:I[8243,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","874","static/chunks/app/compare/%5Bslug%5D/page-353cd09563802f5b.js"],"CompareClient"]
+11:T1160,
+# InputLayer + Graph Databases
+
+Graph databases traverse relationships that already exist in your data. InputLayer derives new relationships through rules - and keeps them current as facts change.
+
+That's the core difference. A graph database answers "what's connected to what?" InputLayer answers "what can we conclude from these facts and rules?"
+
+## What each system does
+
+Graph databases are built for exploring and traversing stored relationships. They have mature tooling - visual explorers, admin interfaces, clustering. When you need to see the path between two entities or explore a neighborhood of a graph, they're the right tool.
+
+InputLayer evaluates logical rules over facts, computes recursive conclusions, and maintains those conclusions incrementally. When a fact changes, only the affected conclusions update. When a fact is deleted, everything derived from it disappears - but only if no alternative path still supports it.
+
+| Capability | Graph Databases | InputLayer |
+|---|---|---|
+| Traverse stored relationships | Native | Native |
+| Pattern matching on graphs | Native | Native |
+| Derive new relationships from rules | Via procedures | Native |
+| Recursive traversal | Native | Native |
+| Update conclusions when facts change | Recompute per query | Automatic, incremental |
+| Retract derived state when facts are deleted | Recompute per query | Automatic (weight-based) |
+| Vector similarity search | Plugin | Native |
+| Visual exploration tools | Mature | Via API |
+| Clustering | Native | Single-node |
+
+## Where the distinction matters
+
+**Deriving conclusions from multiple sources.** Alice has authority over Charlie through two independent paths: the management chain and a committee membership. A graph database can traverse each path separately. InputLayer expresses both as rules and combines them into a single recursive concept - authority - that the engine evaluates automatically.
+
+```tree
+Authority from two sources [primary]
+  Management chain (recursive)
+    Alice manages Bob, Bob manages Charlie
+    Therefore Alice has authority over Charlie
+  Committee membership
+    Alice sits on committee overseeing Engineering
+    Therefore Alice has authority over everyone in Engineering
+```
+
+In InputLayer, you define both sources of authority as rules. The engine derives the combined result. In a graph query language, you can combine patterns in a single query, but without automatic incremental maintenance when the underlying data changes.
+
+**Keeping derived state consistent.** When someone leaves the company, a graph database still has all the edges you stored. You decide what to invalidate and rebuild. InputLayer tracks which conclusions depend on which facts. Remove "Alice manages Bob" and every conclusion that was derived through that relationship retracts automatically - but conclusions supported by alternative paths survive.
+
+```steps
+A relationship changes in a graph database :: You decide what to rebuild and invalidate [highlight]
+A fact changes in InputLayer :: Only affected conclusions recompute automatically [success]
+A fact is deleted in InputLayer :: Derived conclusions retract, but only if no alternative path exists [success]
+```
+
+## How teams use them together
+
+The most natural pattern: your graph database handles interactive exploration and visualization, and InputLayer handles the reasoning-heavy queries.
+
+Your graph database answers: "Show me the path between these two entities." "What does this part of the graph look like?" These are the queries where visual tools and interactive exploration add real value.
+
+InputLayer answers: "Given these rules, who does Alice have authority over?" "If I change this supplier's status, which orders are affected?" These are the queries that need recursive rule evaluation, incremental updates, and correct retraction.
+
+Some teams compute derived relationships in InputLayer and sync the results back to their graph database for visualization. Reasoning power on one side, exploration tools on the other.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) will get you running. If you're coming from a graph database background, the [data modeling guide](/docs/guides/core-concepts/) explains how InputLayer's fact-and-rule model relates to property graphs, and the [recursion documentation](/docs/guides/recursion/) covers recursive reasoning.5:["$","$L10",null,{"page":{"slug":"vs-graph-databases","title":"InputLayer + Graph Databases","competitors":["Graph Databases"],"content":"$11","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"Where the distinction matters","id":"where-the-distinction-matters"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-graph-databases"}]
+b:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+12:I[6869,[],"IconMark"]
+8:null
+d:[["$","title","0",{"children":"InputLayer + Graph Databases - InputLayer"}],["$","meta","1",{"name":"description","content":"See how InputLayer compares to Graph Databases."}],["$","meta","2",{"property":"og:title","content":"InputLayer + Graph Databases - InputLayer"}],["$","meta","3",{"property":"og:description","content":"See how InputLayer compares to Graph Databases."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"InputLayer + Graph Databases - InputLayer"}],["$","meta","7",{"name":"twitter:description","content":"See how InputLayer compares to Graph Databases."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L12","11",{}]]

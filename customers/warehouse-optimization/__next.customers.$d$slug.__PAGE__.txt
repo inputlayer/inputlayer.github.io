@@ -1,0 +1,49 @@
+1:"$Sreact.fragment"
+2:I[4782,["661","static/chunks/661-bf4fce185509def8.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-7bb96fb112090fec.js","689","static/chunks/689-ef7b1ba408677aaa.js","792","static/chunks/app/customers/%5Bslug%5D/page-17626dceb106e964.js"],"CustomerClient"]
+5:I[484,[],"OutletBoundary"]
+6:"$Sreact.suspense"
+3:Tc3e,
+# Warehouse Optimization
+
+A European appliance manufacturer needed sub-50ms routing decisions for their warehouse picking robots. Their existing databases handled inventory tracking and order management well. The problem was the gap between them: when a robot needed the optimal route, application code had to pull from inventory, cross-reference with order priorities, factor in the warehouse layout, and compute a path. That added hundreds of milliseconds per decision.
+
+They added InputLayer as the reasoning layer. Warehouse layout, inventory positions, and order priorities are ingested as facts. The routing logic is expressed as rules. Result: sub-50ms query latency, down from hundreds of milliseconds.
+
+## The challenge
+
+The company operates large-scale distribution centers across Europe. Inventory tracking, order management, and warehouse layouts each lived in separate systems. They were good at what they did. The problem was stitching them together for real-time decisions.
+
+```flow
+Picking robot needs route -> Inventory DB [primary] -> Order priority DB -> Layout DB -> Application code stitches it all together [highlight]
+```
+
+For a warehouse running thousands of picks per hour, hundreds of milliseconds per routing decision adds up fast. A robot waiting 400ms per decision was spending significant time idle.
+
+## The solution
+
+InputLayer was added alongside the existing infrastructure. Warehouse layout, inventory positions, and order priorities are ingested as facts. The routing logic is expressed as rules that the engine evaluates in real time.
+
+The warehouse layout is encoded as facts: "Aisle 3 connects to Dock B," "Bin 3-14 contains Item X," "Order 2847 needs Item X from high-priority queue." The routing rules compute optimal paths through this graph, taking all factors into account simultaneously.
+
+The path computation is recursive - the engine explores routes through the warehouse graph in one pass rather than requiring separate calls to different systems.
+
+## Results
+
+```steps
+Routing decisions :: Under 50ms (previously hundreds of ms) [success]
+Inventory change propagation :: Only affected routes recompute [primary]
+Stale route elimination :: Automatic - no robots sent to empty bins [success]
+```
+
+The impact was felt almost immediately. Query latency dropped to under 50ms for routing decisions that previously required multiple round-trips between systems.
+
+The incremental computation turned out to be especially valuable. When someone picks Item X from Bin 3-14, the engine only recalculates routes that need Item X - routes for other items stay the same. When an item is fully picked, all dependent routing decisions update automatically. No need to rebuild the entire routing graph every time inventory changes.
+
+## Key technical insight
+
+```note
+type: tip
+The recursive path computation through the warehouse graph is what makes this practical. InputLayer's incremental computation means adding or removing inventory doesn't require recomputing all paths - only the affected routes update. This is what keeps latency under 50ms even as the warehouse state changes continuously.
+```0:{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"story":{"slug":"warehouse-optimization","title":"Warehouse Optimization","industry":"Manufacturing","keyMetric":"<50ms reasoning latency","content":"$3","toc":[{"level":2,"text":"The challenge","id":"the-challenge"},{"level":2,"text":"The solution","id":"the-solution"},{"level":2,"text":"Results","id":"results"},{"level":2,"text":"Key technical insight","id":"key-technical-insight"}]},"slug":"warehouse-optimization"}],null,"$L4"]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"GBS63Unu3BhcecNEmLSHN"}
+4:["$","$L5",null,{"children":["$","$6",null,{"name":"Next.MetadataOutlet","children":"$@7"}]}]
+7:null
