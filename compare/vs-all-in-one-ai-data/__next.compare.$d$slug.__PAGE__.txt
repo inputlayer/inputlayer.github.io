@@ -1,0 +1,96 @@
+1:"$Sreact.fragment"
+2:I[8243,["661","static/chunks/661-63cf87d99b552766.js","121","static/chunks/121-aece4f809b101dc1.js","830","static/chunks/830-ab730efc8465a571.js","689","static/chunks/689-85ea892b64182e04.js","874","static/chunks/app/compare/%5Bslug%5D/page-353cd09563802f5b.js"],"CompareClient"]
+3:Te9e,
+# InputLayer + All-in-One AI Data Platforms
+
+All-in-one AI data platforms find data that matches your criteria. InputLayer derives new conclusions from connected facts. They solve different problems, and many teams use both.
+
+Here's the distinction. An AI data platform answers: "Find the 50 most similar documents matching these filters." InputLayer answers: "Given these facts and these business rules, which enterprise customers are at churn risk - and here's the derivation proof for each one."
+
+## What each system does
+
+| Capability | All-in-One AI Data | InputLayer |
+|---|---|---|
+| Vector similarity search | Native, optimized | Native |
+| Metadata filtering | Rich, fast | Via rules and joins |
+| Analytics (aggregation, grouping) | Growing | Via aggregation rules |
+| Derive conclusions from rules | Outside scope | Native |
+| Recursive queries | Outside scope | Native |
+| Update conclusions when facts change | Re-index | Incremental (milliseconds) |
+| Retract stale conclusions automatically | Outside scope | Native |
+| Trace relationships across data sources | Limited | Native |
+| Knowledge graph storage | Some platforms | Native |
+
+## When retrieval alone can't get you the answer
+
+Some questions can't be answered by finding the right document. The answer has to be derived.
+
+```chain
+AI agent asked: "Which enterprise customers are at risk of churning?"
+-- needs to combine
+Declining usage metrics (from analytics)
+-- with
+Negative sentiment in support tickets (from CRM)
+-- with
+Upcoming contract renewals (from billing)
+-- with
+Competitive mentions in sales calls (from call transcripts)
+=> "Churn risk" isn't stored anywhere - it's a conclusion derived from combining facts [highlight]
+```
+
+You tell InputLayer: "A customer is at churn risk if they're enterprise, usage declined more than 20%, and renewal is within 90 days." The engine evaluates this rule across your customer data and surfaces matches - with a derivation proof for each one showing exactly which facts triggered it.
+
+## What happens when data changes
+
+AI data platforms handle updates by re-indexing vectors and metadata. That works for retrieval.
+
+But when you have derived conclusions, updates get more interesting.
+
+```steps
+Customer usage drops below threshold :: InputLayer updates the churn risk assessment immediately [success]
+A fact is retracted :: Everything derived from it disappears automatically [success]
+A rule changes :: All affected conclusions recompute - nothing else does [success]
+```
+
+InputLayer's incremental computation means updates propagate through the rules, recomputing only what's affected. A single fact change in a 2,000-node graph takes 6.83ms. Retractions are correct - derived conclusions only disappear when all supporting derivation paths are removed.
+
+## How teams use them together
+
+The most common pattern: the AI data platform handles high-throughput similarity queries where raw retrieval speed matters most. InputLayer handles the reasoning queries where answers need to be derived from relationships and rules. Your application routes each query to the right system.
+
+Some teams also use InputLayer's native vector search for queries that need reasoning and similarity combined - like "find documents similar to X that this user is authorized to see through their org hierarchy." One query, one pass, no glue code.
+
+## Getting started
+
+```bash
+docker run -p 8080:8080 ghcr.io/inputlayer/inputlayer
+```
+
+The [quickstart guide](/docs/guides/quickstart/) gets you running in about 5 minutes. The [data modeling guide](/docs/guides/core-concepts/) explains how to structure your knowledge graph, and the [Python SDK](/docs/guides/python-sdk/) makes integration with your existing data stack straightforward.6:X
+b:X
+b:C
+0:{"buildId":"ve8jw2ksqu7OHvg1CCfCl","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"slug":"vs-all-in-one-ai-data","title":"InputLayer + All-in-One AI Data Platforms","competitors":["AI Data Platforms"],"content":"$3","toc":[{"level":2,"text":"What each system does","id":"what-each-system-does"},{"level":2,"text":"When retrieval alone can't get you the answer","id":"when-retrieval-alone-cant-get-you-the-answer"},{"level":2,"text":"What happens when data changes","id":"what-happens-when-data-changes"},{"level":2,"text":"How teams use them together","id":"how-teams-use-them-together"},{"level":2,"text":"Getting started","id":"getting-started"}]},"slug":"vs-all-in-one-ai-data"}],null,"$L4"]}],"isPartial":"$@5","staleTime":"$6","varyParams":null},{"rsc":"$L7","isPartial":"$@8","staleTime":"$6","varyParams":null},{"rsc":"$L9","isPartial":"$@a","staleTime":"$6","varyParams":"$b"},{"rsc":"$Lc","isPartial":"$@d","staleTime":"$6","varyParams":"$b"},{"rsc":"$Le","isPartial":"$@f","staleTime":"$6","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@10","rootVaryParams":null,"needsRuntimeRequest":"$@11"}
+12:I[484,[],"OutletBoundary"]
+13:"$Sreact.suspense"
+15:I[484,[],"ViewportBoundary"]
+16:I[484,[],"MetadataBoundary"]
+17:I[6869,[],"IconMark"]
+18:I[7121,[],""]
+19:I[4581,[],""]
+1a:I[1942,["177","static/chunks/app/layout-51b94f561cc33957.js"],"ThemeProvider"]
+:HL["/_next/static/css/508410e5e895cb66.css","style"]
+4:["$","$L12",null,{"children":["$","$13",null,{"name":"Next.MetadataOutlet","children":"$@14"}]}]
+7:["$","$1","h",{"children":[null,["$","$L15",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L16",null,{"children":["$","$13",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"InputLayer + All-in-One AI Data Platforms - InputLayer"}],["$","meta","1",{"name":"description","content":"See how InputLayer compares to AI Data Platforms."}],["$","meta","2",{"property":"og:title","content":"InputLayer + All-in-One AI Data Platforms - InputLayer"}],["$","meta","3",{"property":"og:description","content":"See how InputLayer compares to AI Data Platforms."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"InputLayer + All-in-One AI Data Platforms - InputLayer"}],["$","meta","7",{"name":"twitter:description","content":"See how InputLayer compares to AI Data Platforms."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L17","11",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+9:["$","$1","c",{"children":[null,["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}]}]]}]
+c:["$","$1","c",{"children":[null,["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}]}]]}]
+e:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/508410e5e895cb66.css","precedence":"next"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_246ccd __variable_c29908 font-sans antialiased","children":["$","$L1a",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}]}]}]]}]
+14:null
+11:true
+6:300
+6:C
+10:0
+8:"$undefined"
+a:"$undefined"
+d:"$undefined"
+f:"$undefined"
+5:"$undefined"

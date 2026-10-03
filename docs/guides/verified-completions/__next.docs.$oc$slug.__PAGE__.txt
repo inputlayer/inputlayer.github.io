@@ -1,0 +1,278 @@
+1:"$Sreact.fragment"
+2:I[8428,["661","static/chunks/661-63cf87d99b552766.js","121","static/chunks/121-aece4f809b101dc1.js","502","static/chunks/502-7fd593d8b6507a0f.js","689","static/chunks/689-85ea892b64182e04.js","870","static/chunks/app/docs/%5B%5B...slug%5D%5D/page-0b234b25687989d5.js"],"DocsPageClient"]
+3:T39f1,# Verified Completions
+
+LLMs contradict themselves. A travel assistant that confirms a departure on August 14th will happily plan around "we leave on the 12th" three messages later, and neither the model nor the user notices until something breaks. InputLayer catches this class of failure at the source: conversations flowing through an OpenAI-compatible chat API are translated into typed facts inside a knowledge graph, an ontology's rules evaluate them incrementally, and every finding comes back with the exact quoted spans that clash - plus the engine's proof tree showing the derivation.
+
+Three design decisions shape everything:
+
+- **The chat API is the only ingestion path.** There is no "submit for evaluation" endpoint. You chat; evaluation happens to the traffic.
+- **Translation is opt-in and ontology-bound.** A request that selects KG/ontology pairs gets translated against exactly those packs - never open-domain. A request without a selection is a pure OpenAI proxy call, untouched.
+- **The engine owns ontologies.** Loading an ontology into a knowledge graph is an engine command (`.ontology install`), governed by the engine's own users and ACLs. The gateway never deploys rules - it translates, stores, and reads.
+
+## The stack
+
+- **Engine** (`inputlayer`): the reasoning core. Owns knowledge graphs, rules, facts, and the ontology lifecycle. Fetches packs from the [ontology registry](https://github.com/inputlayer/ontology-registry) - or from a local clone, for deployments with no outbound network (`INPUTLAYER_REGISTRY` accepts a filesystem path).
+- **Model gateway** (`inputlayer-gateway`): the only component holding the model provider key. Serves the OpenAI-compatible chat API and the per-conversation events stream.
+
+```yaml
+services:
+  inputlayer:
+    image: ghcr.io/inputlayer/inputlayer:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - inputlayer-data:/var/lib/inputlayer/data
+    environment:
+      INPUTLAYER_ADMIN_PASSWORD: ${INPUTLAYER_ADMIN_PASSWORD:-}
+      INPUTLAYER_BOOTSTRAP_API_KEY: ${INPUTLAYER_BOOTSTRAP_API_KEY:-}
+      INPUTLAYER_HTTP__HOST: "0.0.0.0"
+
+  gateway:
+    image: ghcr.io/inputlayer/inputlayer-gateway:latest
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      GATEWAY_HOST: "0.0.0.0"
+      GATEWAY_API_KEY: ${GATEWAY_API_KEY:-}
+      INPUTLAYER_URL: "http://inputlayer:8080"
+      INPUTLAYER_API_KEY: ${INPUTLAYER_BOOTSTRAP_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes:
+      - gateway-cache:/var/lib/inputlayer
+    depends_on:
+      - inputlayer
+
+volumes:
+  inputlayer-data:
+  gateway-cache:
+```
+
+```bash
+export INPUTLAYER_ADMIN_PASSWORD=change-me
+export INPUTLAYER_BOOTSTRAP_API_KEY=$(openssl rand -hex 16)
+export GATEWAY_API_KEY=$(openssl rand -hex 16)
+export ANTHROPIC_API_KEY=sk-ant-...   # your model provider key
+docker compose up -d
+```
+
+`GATEWAY_API_KEY` is what your applications present to the gateway - in the OpenAI SDK it is simply `api_key`. Left unset, the gateway runs open with a loud warning: acceptable on a private network, never on a public one.
+
+## 1. Install an ontology into a knowledge graph
+
+Ontology loading is an engine command. The `il` CLI (installed from source: `cargo install --git https://github.com/inputlayer/inputlayer --bin il inputlayer`) delegates to it:
+
+```bash
+il search
+```
+
+```
+ONTOLOGY                 LATEST    ENGINE     TITLE
+consistency-core         1.0.4     >=0.1.0    Verified Completions
+```
+
+```bash
+il install consistency-core --kg support --create --api-key $INPUTLAYER_BOOTSTRAP_API_KEY
+```
+
+```
+installed consistency-core@1.0.4 into support (107 statements)
+digest sha256:161835125f386207c681ffab3d8dc7bab839f618e07e20a05007a761f6979fb8
+recorded 47 rule(s), 21 relation(s) in pack_item
+```
+
+Under the hood this sends `.ontology install consistency-core` over the engine's WebSocket API: the engine fetches the pack (digest-verified), deploys its rules into the `support` KG, pins the exact version and digest in `pack_meta`, and records the deployed rule/relation inventory so `il upgrade` (rules re-deployed, data kept) and `il remove` (everything torn down) are exact. Any WS client - the Studio included - can send the same command, and the engine's per-user auth and per-KG ACLs govern who may.
+
+## 2. Chat - and let evaluation happen
+
+Point any OpenAI SDK at the gateway. Selection is a list of `<kg>/<ontology>` pairs in the `x-il-ontology` header; a conversation id groups turns:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="http://127.0.0.1:8081/v1",
+    api_key="gw-secret",  # your GATEWAY_API_KEY
+    default_headers={
+        "x-il-ontology": "support/consistency-core",
+        "x-il-conversation": "trip-42",
+    },
+)
+r = client.chat.completions.create(
+    model="claude-haiku-4-5",
+    messages=[
+        {"role": "user", "content": "We fly out of Geneva on August 14th."},
+        {"role": "assistant", "content": "Noted: departure August 14th."},
+        {"role": "user", "content": "Since we leave on the 12th, do we need an earlier taxi?"},
+    ],
+)
+print(r.choices[0].message.content)          # a normal completion
+print(r.model_extra["inputlayer"])           # ... with per-ontology reports
+```
+
+The completion behaves like any OpenAI chat call. Alongside it, the conversation was translated into the pack's typed claims (one extraction prompt per selected pack), every identifier prefixed with `trip-42:` so conversations are isolated namespaces inside the shared `support` KG, the tuples stored, and the pack's rules evaluated incrementally - the engine's differential core processes each turn's delta. The report:
+
+```json
+{ "reports": [ {
+    "kg": "support",
+    "ontology": "consistency-core@1.0.4",
+    "digest": "sha256:161835125f386207c681ffab3d8dc7bab839f618e07e20a05007a761f6979fb8",
+    "status": "complete",
+    "findings": [ {
+        "view": "finding_src(K, Sev, C1, M1, S1, C2, M2, S2)",
+        "title": "functional - hard",
+        "blocking": true,
+        "spans": [ { "message": "0", "surface": "August 14th" },
+                   { "message": "2", "surface": "we leave on the 12th" } ],
+        "row": ["functional", "hard", "trip-42:c_m0_2", "0", "August 14th",
+                 "trip-42:c_m2_1", "2", "we leave on the 12th"],
+        "proof": [ { "roots": ["n15"], "nodes": {
+            "n0":  { "kind": "fact", "source": "edb", "conclusion": { "pred": "claim",
+                     "args": ["trip-42:c_m0_2", "trip-42:trip", "departure_date", "2026-08-14"] } },
+            "n2":  { "kind": "rule", "children": ["n0", "n1"],
+                     "rule_id": "active(C, E, A, V) <- claim(C, E, A, V), claim_modality(C, \"asserted\")",
+                     "conclusion": { "pred": "active", "args": ["trip-42:c_m0_2", "trip-42:trip",
+                                     "departure_date", "2026-08-14"] } },
+            "n14": { "kind": "rule", "children": ["n2", "n5", "n12", "n13"],
+                     "rule_id": "conflict_functional(C1, C2) <- active(C1, E1, A, V1), active(C2, E2, A, V2), coentity(E1, E2), functional(A), V1 != V2",
+                     "conclusion": { "pred": "conflict_functional",
+                                     "args": ["trip-42:c_m0_2", "trip-42:c_m2_1"] } }
+        } } ]
+    } ],
+    "dropped": []
+} ] }
+```
+
+(The `proof` excerpt keeps 3 of 16 nodes: the real tree runs from the base `claim` facts through `active`, `mentioned`, `coentity`, and the `functional` seed up to `conflict`, every node carrying its rule text and variable bindings. Each base fact is a claim with its quoted span, so the chain reads end to end: quote -> claim -> rules -> finding. This conversation also yields a second finding, because the assistant's own "departure August 14th" confirmation is extracted as another conflicting claim.)
+
+Requests **without** `x-il-ontology` are pure proxy calls: no translation, no engine involvement, no `inputlayer` key on the response. Requests with a selection but no conversation id evaluate one-shot: a synthetic prefix, facts retracted after the response, reports inline only.
+
+## 3. Watch a conversation live
+
+Observers subscribe per conversation - the Studio's live panel is exactly this:
+
+```python
+
+
+async def watch():
+    uri = "ws://127.0.0.1:8081/v1/events?conversation=trip-42&token=gw-secret"
+    async with websockets.connect(uri) as ws:
+        while True:
+            event = json.loads(await ws.recv())
+            print(event["type"], event.get("title") or "")
+
+asyncio.run(watch())
+```
+
+```
+translation
+finding functional - hard
+report
+```
+
+Three event kinds per evaluated request, per ontology: `translation` (the stored tuples), `finding` (the watch-view row with spans and the engine proof tree), and `report` (the per-ontology close). Everything traceable in the stream comes from the engine; the gateway relays.
+
+Every event carries `seq`, increasing by one per conversation. A ring buffer (256 events per conversation) replays recent events to late subscribers; to resume after a disconnect, pass the last `seq` you processed:
+
+```
+ws://127.0.0.1:8081/v1/events?conversation=trip-42&after_seq=41&token=gw-secret
+```
+
+You receive only events with `seq > 41`. Two control events say when that is not the whole story:
+
+| Event | When | What to do |
+|---|---|---|
+| `{"type": "lagged", "after_seq": N, "skipped": K}` | Events N+1..N+K left the ring (or were dropped live while you fell behind) | Treat them as lost; resume from the next `seq` you receive |
+| `{"type": "resync", "after_seq": N, "latest_seq": L}` | N is ahead of the stream: the gateway restarted or evicted the conversation | Reset your cursor; the full ring follows |
+
+## 4. Extract-only turns for real-time agents
+
+A voice agent (or any caller that produces its own replies) does not want a completion - it wants each new utterance checked against everything said so far, at the cost of that utterance only. `POST /v1/conversations/{id}/turns` does exactly that:
+
+```bash
+curl -s http://127.0.0.1:8081/v1/conversations/call-7/turns \
+  -H "Authorization: Bearer gw-secret" \
+  -H "x-il-ontology: support/consistency-core" \
+  -d '{"messages": [{"role": "user", "content": "Since we leave on the 12th, check visas."}]}'
+```
+
+```json
+{
+  "conversation": "call-7",
+  "kg": "support",
+  "ontology": "consistency-core@1.0.7",
+  "messages": { "first_index": 2, "count": 1 },
+  "inserted": 5,
+  "retracted": [],
+  "dropped": [],
+  "findings": [ { "title": "functional - hard", "blocking": true, "spans": [...], "proof": {...} } ],
+  "status": "complete"
+}
+```
+
+- **Only new messages.** The body carries the messages since the last turn. The gateway appends them to a message ledger kept in the KG (`il_message(conv, idx, role, content)`), so indices are global, survive gateway restarts, and claims cite them (`c_m2_1` quotes message 2).
+- **Prior state from the KG.** Live claims of the conversation (`il_row`) are rendered into the extraction prompt as `CLAIMS_SO_FAR`, the last 8 messages as read-only context. One extraction call per turn, whatever the history length; the prompt's static head is prompt-cached.
+- **One write batch.** Facts, ledger rows, and any retractions land in one program; the watch views are evaluated and `translation` / `finding` / `report` events go out on `/v1/events` as for chat. `findings` is the conversation's full current set.
+- **Selection and auth** are the chat forms: `x-il-ontology` or `il_ontology`, exactly one `<kg>/<ontology>` pair (the message ledger lives in that KG). `x-il-trace: 1` adds a `trace` with the extraction, statements, rendered prompt, and model usage.
+- **Annotate semantics only.** There is no completion to withhold, so `il_mode: enforce` is a 400; act on `findings[].blocking` yourself.
+- **Failure records nothing.** Extraction or engine failure returns 503 `verification_unavailable` with `status: "incomplete"` and `reason`; resend the same messages.
+
+Serve one conversation from one gateway replica at a time: turns of a conversation are serialized in-process (index allocation is read-then-write).
+
+## 5. Corrections retract
+
+"Actually, scratch that - we leave on the 14th" is a revision, not a contradiction. The extractor reports it as a retraction targeting the earlier claim's id (`{target, kind, msg, surface}`, packs declaring `retract_by`), and the gateway deletes every tuple it inserted for that id - replayed from the ledger in the KG (`il_fact(conv, owner, stmt)`), not from gateway memory. The finding that depended on the claim disappears; the retracted id is listed in `retracted`. Retractions pass the same quote gate as claims (the revision marker must be quoted verbatim from the message it cites), reach only their own conversation's ids, and an unknown target is dropped, never guessed. This works on turns and on chat requests that carry a conversation id.
+
+## 6. Enforce - and fail closed
+
+`x-il-mode: enforce` (or `il_mode` in the body) verifies before completing, and it fails CLOSED:
+
+| Situation | Response |
+|---|---|
+| Any blocking finding (packs mark their watch views `blocking = true`) | HTTP 422 `consistency_violation`, no completion tokens spent |
+| Any selected pair could not be evaluated (engine down, ontology not installed in that KG, extraction failed or dropped rows) | HTTP 503 `verification_unavailable`, no completion |
+| Everything evaluated clean | Completion proceeds, reports attached |
+
+There is no fail-open enforcement variant: content engineered to break extraction blocks the completion instead of sneaking past. Callers who prefer availability over enforcement use `annotate` (the default) and read the reports themselves. Informational ontologies whose views are not `blocking` never refuse anything.
+
+## Response contract
+
+| Report `status` | Meaning |
+|---|---|
+| `complete` | Translation ran, tuples stored, rules evaluated. `findings` may be empty or not. |
+| `incomplete` | This pair could not be evaluated (`reason` says why). Under `annotate` the completion still goes out; under `enforce` the request is refused. |
+
+Errors you can act on: `400` for malformed pairs, unknown ontologies, version mismatches against the gateway's pin, or `enforce` without a selection; `401` without a valid bearer token; `503` when no model key or no ontologies are configured.
+
+## Where this is going
+
+Streaming completions and the rest of the session lifecycle (retention TTLs, edited-history retraction for chat, conversation purge) are M2 ([#85](https://github.com/inputlayer/inputlayer/issues/85)); checking the model's own reply before it is returned, with repair mode, is M3 ([#86](https://github.com/inputlayer/inputlayer/issues/86)). The registry grows independently: each new pack published becomes available to every gateway restart and every `.ontology install`, pinned and digest-verified.6:X
+b:X
+b:C
+0:{"buildId":"ve8jw2ksqu7OHvg1CCfCl","data":[{"rsc":["$","$1","c",{"children":[["$","$L2",null,{"page":{"title":"Verified Completions","content":"$3","toc":[{"level":2,"text":"The stack","id":"the-stack"},{"level":2,"text":"1. Install an ontology into a knowledge graph","id":"1-install-an-ontology-into-a-knowledge-graph"},{"level":2,"text":"2. Chat - and let evaluation happen","id":"2-chat-and-let-evaluation-happen"},{"level":2,"text":"3. Watch a conversation live","id":"3-watch-a-conversation-live"},{"level":2,"text":"4. Extract-only turns for real-time agents","id":"4-extract-only-turns-for-real-time-agents"},{"level":2,"text":"5. Corrections retract","id":"5-corrections-retract"},{"level":2,"text":"6. Enforce - and fail closed","id":"6-enforce-and-fail-closed"},{"level":2,"text":"Response contract","id":"response-contract"},{"level":2,"text":"Where this is going","id":"where-this-is-going"}]},"slugKey":"guides/verified-completions"}],null,"$L4"]}],"isPartial":"$@5","staleTime":"$6","varyParams":null},{"rsc":"$L7","isPartial":"$@8","staleTime":"$6","varyParams":null},{"rsc":"$L9","isPartial":"$@a","staleTime":"$6","varyParams":"$b"},{"rsc":"$Lc","isPartial":"$@d","staleTime":"$6","varyParams":"$b"},{"rsc":"$Le","isPartial":"$@f","staleTime":"$6","varyParams":null}],"isUpgradeableISRFallback":false,"a":"$@10","rootVaryParams":null,"needsRuntimeRequest":"$@11"}
+12:I[484,[],"OutletBoundary"]
+13:"$Sreact.suspense"
+15:I[484,[],"ViewportBoundary"]
+16:I[484,[],"MetadataBoundary"]
+17:I[6869,[],"IconMark"]
+18:I[7121,[],""]
+19:I[4581,[],""]
+1a:I[1942,["177","static/chunks/app/layout-51b94f561cc33957.js"],"ThemeProvider"]
+:HL["/_next/static/css/508410e5e895cb66.css","style"]
+4:["$","$L12",null,{"children":["$","$13",null,{"name":"Next.MetadataOutlet","children":"$@14"}]}]
+7:["$","$1","h",{"children":[null,["$","$L15",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","div",null,{"hidden":true,"children":["$","$L16",null,{"children":["$","$13",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"Verified Completions - InputLayer Docs"}],["$","meta","1",{"name":"description","content":"InputLayer documentation - Verified Completions."}],["$","meta","2",{"property":"og:title","content":"Verified Completions - InputLayer Docs"}],["$","meta","3",{"property":"og:description","content":"InputLayer documentation - Verified Completions."}],["$","meta","4",{"property":"og:type","content":"article"}],["$","meta","5",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","6",{"name":"twitter:title","content":"Verified Completions - InputLayer Docs"}],["$","meta","7",{"name":"twitter:description","content":"InputLayer documentation - Verified Completions."}],["$","link","8",{"rel":"icon","href":"/favicon.ico","sizes":"any"}],["$","link","9",{"rel":"icon","href":"/favicon_32.png","sizes":"32x32","type":"image/png"}],["$","link","10",{"rel":"apple-touch-icon","href":"/favicon_180.png","sizes":"180x180","type":"image/png"}],["$","$L17","11",{}]]}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}]
+9:["$","$1","c",{"children":[null,["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}]}]]}]
+c:["$","$1","c",{"children":[null,["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}]}]]}]
+e:["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/508410e5e895cb66.css","precedence":"next"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":["$","body",null,{"className":"__variable_246ccd __variable_c29908 font-sans antialiased","children":["$","$L1a",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":["$","$L18",null,{"parallelRouterKey":"children","template":["$","$L19",null,{}],"notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]]}]}]}]}]]}]
+14:null
+11:true
+6:300
+6:C
+10:0
+8:"$undefined"
+a:"$undefined"
+d:"$undefined"
+f:"$undefined"
+5:"$undefined"
